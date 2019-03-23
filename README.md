@@ -1,17 +1,15 @@
 # RIFT Renderer
-Just a personal toolbox for rendering experiments.  Originally started as an implementation of Peter Shirley's "Raytracing in One Weekend", because why not?
+This is a personal toolbox for rendering experiments.  Originally it started as an implementation of Peter Shirley's "Raytracing in One Weekend", because why not?
 
-Eventually decided I wanted a challenge so this is a re-write of the original RIFT renderer, only this time as a DLL library.
+Eventually decided I wanted a challenge so this is a re-write and re engineering of the original RIFT renderer, this time as a DLL library.
 
-Name is an acronym for "Reduction in Free Time".
+Name is an acronym for a “Reduction in Free Time".
 
-With no plugins it compiles with all major compilers: VC++, GCC and Clang.  Clang seems to be the fastest.  
-
-With plugins enabled, only VC++ is supported at this time (cause that's the only one I built dependencies for).
+Currently compiles on Windows only with Visual Studio 2017. Other compilers and operating systems haven’t been tested.
 
 Includes headers from the STB image library: https://github.com/nothings/stb
 
-Current (optional) plugins and versions:
+The default ‘no frills’ build has PNG and JPEG export.  There’s also an optional OpenImageIO exporter, and it requires the following dependency versions:
 
 * Boost - 1.66
 * OpenImageIO - 2.0.6

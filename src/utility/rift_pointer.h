@@ -21,6 +21,7 @@
 // SOFTWARE.
 
 #pragma once
+
 #include <cassert>
 
 // Rift implementation of a smart pointer.  Not too sophisticated but it gets
@@ -35,11 +36,15 @@ class RiftPointer
     // Take ownership of pointer passed to constructor
     explicit RiftPointer(R* in_ptr = nullptr)
       : m_ptr_(in_ptr)
-    {
-        in_ptr = nullptr;
-    }
+    {}
 
-    ~RiftPointer() { delete m_ptr_; };
+    ~RiftPointer()
+    {
+        if (m_ptr_)
+        {
+            delete m_ptr_;
+        }
+    }
 
     // Delete copy operator
     RiftPointer(const RiftPointer& rhs) = delete;

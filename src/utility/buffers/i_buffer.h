@@ -22,8 +22,10 @@
 
 #pragma once
 
-namespace render_worker
+class IBuffer
 {
-void run_thread();
-
-} // namespace render_worker
+public:
+    virtual ~IBuffer() = default;
+    virtual void reserve_buffer(int size) = 0;
+    virtual void clear_buffer() = 0;
+};

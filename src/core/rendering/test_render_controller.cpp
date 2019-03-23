@@ -20,10 +20,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#pragma once
+#include "test_render_controller.h"
 
-namespace render_worker
+#include <cstdio>
+
+class TestRenderController::Impl
 {
-void run_thread();
+  public:
+    rift::RenderSettings* m_render_settings;
+};
 
-} // namespace render_worker
+TestRenderController::TestRenderController(rift::RenderSettings* settings)
+  : m_impl_(new Impl)
+{
+    m_impl_->m_render_settings = settings;
+}
+
+void TestRenderController::render() {}
+
+void TestRenderController::cleanup()
+{
+    printf("Render cleanup\n");
+}
+
+TestRenderController::~TestRenderController()
+{
+    delete m_impl_;
+}

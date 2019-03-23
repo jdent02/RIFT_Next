@@ -22,7 +22,7 @@
 
 #pragma once
 
-#ifdef RIFT_EXPORT
+#ifdef RIFT_EXPORTS
 #define RIFT_DLL __declspec(dllexport)
 #else
 #define RIFT_DLL __declspec(dllimport)

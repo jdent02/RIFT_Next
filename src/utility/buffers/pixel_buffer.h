@@ -22,8 +22,15 @@
 
 #pragma once
 
-namespace render_worker
-{
-void run_thread();
+#include "utility/buffers/i_buffer.h"
 
-} // namespace render_worker
+class PixelBuffer : public IBuffer
+{
+  public:
+    PixelBuffer() = default;
+    explicit PixelBuffer(int size);
+    void reserve_buffer(int size) override;
+    void clear_buffer() override;
+
+    float* m_pixels;
+};

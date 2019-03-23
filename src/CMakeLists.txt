@@ -1,24 +1,24 @@
-# Released under MIT License
+#Released under MIT License
 
-# Copyright (c) 2018 Jonathan Dent.
+#Copyright(c) 2018 Jonathan Dent.
 
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
+#Permission is hereby granted, free of charge, to any person obtaining a copy
+#of this software and associated documentation files(the "Software"), to deal
+#in the Software without restriction, including without limitation the rights
+#to use, copy, modify, merge, publish, distribute, sublicense, and / or sell
+#copies of the Software, and to permit persons to whom the Software is
+#furnished to do so, subject to the following conditions:
 
-# The above copyright notice and this permission notice shall be included in
-# all copies or substantial portions of the Software.
+#The above copyright notice and this permission notice shall be included in
+#all copies or substantial portions of the Software.
 
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
+#THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+#IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+#FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN NO EVENT SHALL THE
+#AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+#LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+#OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+#SOFTWARE.
 
 set (
     CAMERA_SOURCES
@@ -60,8 +60,12 @@ set (
     core/lighting_integrators/light_sample_path.h
     core/lighting_integrators/path_tracer.h
     core/lighting_integrators/path_tracer.cpp
-    core/rendering/render_controller.h
-    core/rendering/render_controller.cpp
+    core/rendering/final_render_controller.h
+    core/rendering/final_render_controller.cpp
+    core/rendering/test_render_controller.h
+    core/rendering/test_render_controller.cpp
+    core/rendering/final_render_controller.h
+    core/rendering/i_render_controller.h
     core/rendering/render_worker.h
     core/rendering/render_worker.cpp
     core/rendering/color_functions.h
@@ -134,6 +138,9 @@ set (
     utility/math_functions/pdfs/mixture_pdf.h
     utility/math_functions/onb.h
     utility/math_functions/scatter_functions.h
+    utility/buffers/pixel_buffer.h
+    utility/buffers/i_buffer.h
+    utility/buffers/pixel_buffer.cpp
     utility/rng/xoroshiro128.h
     utility/rng/xoroshiro128.cpp
     utility/rng/i_rand_generator.h
@@ -166,12 +173,6 @@ target_include_directories(
     .
 )
 
-target_compile_definitions(
-    RIFT
-    PUBLIC
-    RIFT_EXPORT
-)
-
 if (MSVC)
     target_compile_definitions(
         RIFT
@@ -180,7 +181,7 @@ if (MSVC)
     )
 endif()
 
-# Optional libraries for OpenImageIO
+#Optional libraries for OpenImageIO
 if(USE_PLUGINS)
     target_include_directories(
         RIFT
@@ -200,32 +201,45 @@ if(USE_PLUGINS)
         ${RIFT_DEPENDENCIES_DIR}/ilmbase-release/lib/Iex-2_2.lib
         ${RIFT_DEPENDENCIES_DIR}/ilmbase-release/lib/IexMath-2_2.lib
         ${RIFT_DEPENDENCIES_DIR}/ilmbase-release/lib/Imath-2_2.lib
+        ${RIFT_DEPENDENCIES_DIR}/openexr-debug/lib/IlmImf-2_2.lib
+        ${RIFT_DEPENDENCIES_DIR}/openexr-debug/lib/IlmImfUtil-2_2.lib
+        ${RIFT_DEPENDENCIES_DIR}/ilmbase-debug/lib/Half.lib
+        ${RIFT_DEPENDENCIES_DIR}/ilmbase-debug/lib/IlmThread-2_2.lib
+        ${RIFT_DEPENDENCIES_DIR}/ilmbase-debug/lib/Iex-2_2.lib
+        ${RIFT_DEPENDENCIES_DIR}/ilmbase-debug/lib/IexMath-2_2.lib
+        ${RIFT_DEPENDENCIES_DIR}/ilmbase-debug/lib/Imath-2_2.lib
     )
 
     set(
         ZLIB_LIBS
         ${RIFT_DEPENDENCIES_DIR}/zlib-release/lib/zlibstatic.lib
+        ${RIFT_DEPENDENCIES_DIR}/zlib-debug/lib/zlibstaticd.lib
     )
 
     set(
         OIIO_LIBS
         ${RIFT_DEPENDENCIES_DIR}/oiio-release/lib/OpenImageIO.lib
         ${RIFT_DEPENDENCIES_DIR}/oiio-release/lib/OpenImageIO_Util.lib
+        ${RIFT_DEPENDENCIES_DIR}/oiio-debug/lib/OpenImageIO.lib
+        ${RIFT_DEPENDENCIES_DIR}/oiio-debug/lib/OpenImageIO_Util.lib
     )
 
     set(
         TIFF_LIB
         ${RIFT_DEPENDENCIES_DIR}/libtiff-release/lib/libtiff.lib
+        ${RIFT_DEPENDENCIES_DIR}/libtiff-debug/lib/libtiff.lib
         )
 
     set(
         PNG_LIB
         ${RIFT_DEPENDENCIES_DIR}/libpng-release/lib/libpng16_static.lib
+        ${RIFT_DEPENDENCIES_DIR}/libpng-debug/lib/libpng16_staticd.lib
     )
 
     set(
         JPEG_LIB
         ${RIFT_DEPENDENCIES_DIR}/libjpeg-turbo-release/lib/jpeg-static.lib
+        ${RIFT_DEPENDENCIES_DIR}/libjpeg-turbo-debug/lib/jpeg-static.lib
     )
 
     target_link_libraries(
@@ -257,7 +271,15 @@ if (MSVC)
     )
 endif()
 
-# Visual Studio folder layout
+add_custom_command (TARGET RIFT POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/vcpp_build/src/Release/RIFT.dll ${PROJECT_SOURCE_DIR}/vcpp_build/applications/RIFT_cli/Release
+)
+
+add_custom_command (TARGET RIFT POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/vcpp_debug_build/src/Debug/RIFT.dll ${PROJECT_SOURCE_DIR}/vcpp_debug_build/applications/RIFT_cli/Debug
+)
+
+#Visual Studio folder layout
 source_group(
     "src\\core\\acceleration_structures" REGULAR_EXPRESSION
     core/acceleration_structures/.*
@@ -316,6 +338,11 @@ source_group(
 source_group(
     "src\\utility\\containers" REGULAR_EXPRESSION
     utility/containers/.*
+)
+
+source_group(
+    "src\\utility\\buffers" REGULAR_EXPRESSION
+    utility/buffers/.*
 )
 
 source_group(

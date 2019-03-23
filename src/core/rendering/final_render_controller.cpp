@@ -20,10 +20,5 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#pragma once
+#include "final_render_controller.h"
 
-namespace render_worker
-{
-void run_thread();
-
-} // namespace render_worker

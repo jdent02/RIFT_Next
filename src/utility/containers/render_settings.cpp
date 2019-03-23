@@ -26,7 +26,7 @@
 
 struct rift::RenderSettings::Impl
 {
-    SettingsMatrix* m_settings;
+    SettingsMatrix m_settings;
 };
 
 rift::RenderSettings::RenderSettings()
@@ -35,12 +35,15 @@ rift::RenderSettings::RenderSettings()
 
 rift::RenderSettings::~RenderSettings()
 {
-    delete m_impl_->m_settings;
     delete m_impl_;
 }
 
-void rift::RenderSettings::load_settings(SettingsMatrix* matrix) const
+void rift::RenderSettings::load_settings(const SettingsMatrix matrix) const
 {
     m_impl_->m_settings = matrix;
-    matrix = nullptr;
+}
+
+SettingsMatrix& rift::RenderSettings::get_settings() const
+{
+    return m_impl_->m_settings;
 }

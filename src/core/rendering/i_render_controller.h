@@ -22,8 +22,12 @@
 
 #pragma once
 
-namespace render_worker
-{
-void run_thread();
+#include "utility/system/_dll/dll_symbol.h"
 
-} // namespace render_worker
+class RIFT_DLL IRenderController
+{
+  public:
+    virtual ~IRenderController() = default;
+    virtual void render() = 0;
+    virtual void cleanup() = 0;
+};

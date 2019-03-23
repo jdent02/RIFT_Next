@@ -20,5 +20,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "render_controller.h"
+#pragma once
 
+#include "core/rendering/i_render_controller.h"
+#include "utility/containers/render_settings.h"
+#include "utility/system/_dll/dll_symbol.h"
+
+class RIFT_DLL TestRenderController : public IRenderController
+{
+  public:
+    explicit TestRenderController(rift::RenderSettings* settings);
+    ~TestRenderController() override;
+
+    void render() override;
+
+    void cleanup() override;
+
+  private:
+    class Impl;
+    Impl* m_impl_;
+};

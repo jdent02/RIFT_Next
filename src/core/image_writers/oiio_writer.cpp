@@ -22,11 +22,11 @@
 
 #include "oiio_writer.h"
 
-#include "OpenImageIO/imageio.h"
+// #include "OpenImageIO/imageio.h"
 
 #include <half.h>
 
-using namespace OpenImageIO_v2_0;
+// using namespace OpenImageIO_v2_0;
 
 void renderer::OIIOWriter::write(
     const float*       buffer,
@@ -34,7 +34,7 @@ void renderer::OIIOWriter::write(
     int                size_x,
     int                size_y) const
 {
-    std::string out_filename = filename + ".png";
+    /*std::string out_filename = filename + ".png";
     const int   xres = 480;
     const int   yres = 480;
 
@@ -50,10 +50,8 @@ void renderer::OIIOWriter::write(
 
     for (int i = 0; i < buffer_size; i++)
     {
-        pixels[i] =
-            static_cast<unsigned char>(int(255 * std::sqrt(buffer[i])));
+        pixels[i] = static_cast<unsigned char>(int(255 * std::sqrt(buffer[i])));
     }
-
 
     std::unique_ptr<ImageOutput> out = ImageOutput::create(out_filename);
     if (out == nullptr)
@@ -65,5 +63,5 @@ void renderer::OIIOWriter::write(
     out->open(out_filename, spec);
     out->write_image(TypeDesc::UINT8, pixels);
 
-    out->close();
+    out->close();*/
 }

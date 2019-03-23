@@ -20,10 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#pragma once
+#include "pixel_buffer.h"
 
-namespace render_worker
+PixelBuffer::PixelBuffer(const int size)
+  : m_pixels(new float[size])
+{}
+
+void PixelBuffer::reserve_buffer(const int size)
 {
-void run_thread();
+    delete[] m_pixels;
+    m_pixels = new float[size];
+}
 
-} // namespace render_worker
+void PixelBuffer::clear_buffer()
+{
+    delete[] m_pixels;
+}

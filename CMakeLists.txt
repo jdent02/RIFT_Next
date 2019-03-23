@@ -49,6 +49,10 @@ if (USE_PLUGINS)
     find_package (Boost 1.66 REQUIRED COMPONENTS chrono date_time filesystem regex system thread)
 endif()
 
+IF(CMAKE_BUILD_TYPE MATCHES RELEASE)
+  add_definitions(-DNDEBUG)
+ENDIF()
+
 add_subdirectory(
     applications/RIFT_cli
 )

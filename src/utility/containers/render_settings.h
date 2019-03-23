@@ -33,7 +33,9 @@ class RIFT_DLL RenderSettings
     RenderSettings();
     ~RenderSettings();
 
-    void load_settings(SettingsMatrix* matrix) const;
+    void load_settings(SettingsMatrix matrix) const;
+
+    SettingsMatrix& get_settings() const;
 
   private:
     struct Impl;

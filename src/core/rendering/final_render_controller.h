@@ -22,7 +22,9 @@
 
 #pragma once
 
-class RenderController
+#include "i_render_controller.h"
+
+class RenderController : public IRenderController
 {
   
 };

@@ -25,6 +25,9 @@
 
 #include <cstdio>
 #include <ctime>
+#include "core/rendering/i_render_controller.h"
+#include "core/rendering/test_render_controller.h"
+#include "utility/rift_pointer.h"
 
 int main(const int argc, char* argv[])
 {
@@ -32,9 +35,15 @@ int main(const int argc, char* argv[])
 
     CommandLineParser parser;
 
-    auto* settings = new rift::RenderSettings();
+    rift::RenderSettings* settings = new rift::RenderSettings();
 
     parser.parse(argc, argv, settings);
+
+    rift::RiftPointer<IRenderController> engine(new TestRenderController(settings));
+
+    settings = nullptr;
+
+    engine->render();
 
     // generate scene
     // set up render controller
@@ -44,6 +53,8 @@ int main(const int argc, char* argv[])
     // cleanup?
 
     const time_t end_time = time(nullptr);
+
+    engine->cleanup();
 
     printf(
         "Render Finished; Total Time: %f\n",

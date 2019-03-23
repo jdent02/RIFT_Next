@@ -12,7 +12,7 @@
 void CommandLineParser::parse(
     const int             argc,
     char*                 argv[],
-    rift::RenderSettings* settings)
+    rift::RenderSettings* settings) const
 {
     int         threads{static_cast<int>(std::thread::hardware_concurrency())};
     int         xres{1920};
@@ -22,16 +22,6 @@ void CommandLineParser::parse(
     std::string integrator_string{"Path Tracer"};
     renderer::OutWriterEnum  out_writer{renderer::OPENIMAGEIO};
     renderer::IntegratorEnum integrator{renderer::PATH_TRACING};
-
-    auto* matrix = new SettingsMatrix();
-
-    matrix->m_integrator = integrator;
-    matrix->m_samples = samples;
-    matrix->m_threads = threads;
-    matrix->m_writer = out_writer;
-    matrix->m_xres = xres;
-    matrix->m_yres = yres;
-    matrix->out_path = filepath.c_str();
 
     for (int i = 0; i < argc; i++)
     {
@@ -115,10 +105,20 @@ void CommandLineParser::parse(
         integrator_string.c_str(),
         threads);
 
+    SettingsMatrix matrix{};
+
+    matrix.m_integrator = integrator;
+    matrix.m_samples = samples;
+    matrix.m_threads = threads;
+    matrix.m_writer = out_writer;
+    matrix.m_xres = xres;
+    matrix.m_yres = yres;
+    matrix.out_path = filepath.c_str();
+
     settings->load_settings(matrix);
 }
 
-int CommandLineParser::convert_number(size_t& length, const char* number)
+int CommandLineParser::convert_number(size_t& length, const char* number) const
 {
     int m_digit{0};
 

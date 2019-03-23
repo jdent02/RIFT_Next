@@ -24,8 +24,8 @@
 
 struct Scene::Impl
 {
-    rift::RiftPointer<ICamera> m_cam;
-    rift::RiftPointer<IHitable> m_world;
+    rift::RiftPointer<ICamera>  m_cam{nullptr};
+    rift::RiftPointer<IHitable> m_world{nullptr};
 };
 
 Scene::Scene()

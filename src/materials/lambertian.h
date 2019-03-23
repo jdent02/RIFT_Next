@@ -1,42 +1,51 @@
-#ifndef LAMBERTIAN_H
-#define LAMBERTIAN_H
+// Released under MIT License
 
-#include "material.h"
-#include "ray.h"
-#include "texture.h"
-#include "vec3.h"
+// Copyright (c) 2018 Jonathan Dent.
 
-vec3 random_in_unit_sphere();
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 
-class lambertian :
-    public material
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
+#pragma once
+
+#include "utility/data_types/hit_record.h"
+#include "materials/i_material.h"
+#include "textures/i_texture.h"
+
+struct ScatterRecord;
+
+class Lambertian : public IMaterial
 {
-public:
-    lambertian(texture* a);
-    ~lambertian() = default;
+  public:
+    explicit Lambertian(ITexture* a)
+      : m_albedo_(a){};
 
-    virtual bool scatter(
-        const ray& r_in,
-        const hit_record& rec,
-        vec3& attenuation,
-        ray& scattered) const override;
+    ~Lambertian() = default;
 
-    texture* albedo;
+    bool scatter(
+        const Ray&       r_in,
+        const HitRecord& hrec,
+        ScatterRecord&   srec) const override;
+
+    float scatter_weight(
+        const Ray&       r_in,
+        const HitRecord& rec,
+        const Ray&       scattered) const override;
+
+  private:
+    ITexture* m_albedo_;
 };
-
-inline lambertian::lambertian(texture* a)
-    : albedo(a) {}
-
-inline bool lambertian::scatter(
-    const ray& r_in, 
-    const hit_record& rec, 
-    vec3& attenuation, 
-    ray& scattered) const
-{
-    const vec3 target = rec.p + rec.normal + random_in_unit_sphere();
-    scattered = ray(rec.p, target - rec.p);
-    attenuation = albedo->value(0.f, 0.f, rec.p);
-    return true;
-}
-
-#endif // LAMBERTIAN_H

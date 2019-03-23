@@ -1,93 +1,76 @@
+# Released under MIT License
+
+# Copyright (c) 2018 Jonathan Dent.
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
 cmake_minimum_required(VERSION 3.0.0)
-project(FARTS_renderer VERSION 0.1.0)
 
-include_directories(
-    src/camera
-    src/hitables
-    src/materials
-    src/rendering
-    src/textures
-    src/utility
-)
+set (CMAKE_CONFIGURATION_TYPES "Debug;Release;Profile;Ship" CACHE STRING "" FORCE)
 
-set (CAMERA_SOURCES
-    src/camera/camera.h
-    src/camera/camera.cpp
-)
+project(RIFT_renderer VERSION 0.1.0)
 
-set (HITABLES_SOURCES
-    src/hitables/hitable_list.h
-    src/hitables/hitable.h
-    src/hitables/sphere.h
+set(CMAKE_CXX_STANDARD 14)
+
+set (version_major    0)
+set (version_minor    1)
+set (version_patch    0)
+set (version_maturity alpha)
+
+configure_file (
+    ${PROJECT_SOURCE_DIR}/src/utility/system/version.h.in
+    ${PROJECT_SOURCE_DIR}/src/utility/system/version.h
 )
 
-set (MATERIAL_SOURCES
-    src/materials/dielectric.h
-	src/materials/dielectric.cpp
-    src/materials/edf.h
-    src/materials/lambertian.h
-    src/materials/material.h
-    src/materials/metal.h
+# Options
+option(USE_PLUGINS "Enable external plugins" Off)
+set(RIFT_DEPENDENCIES_DIR "" CACHE PATH "Path to dependencies dirctory")
+
+if (USE_PLUGINS)
+    add_definitions(-DRIFT_USE_PLUGINS)
+    add_definitions(-DOIIO_STATIC_BUILD)
+    set (Boost_USE_STATIC_LIBS TRUE)
+    find_package (Boost 1.66 REQUIRED COMPONENTS chrono date_time filesystem regex system thread)
+endif()
+
+add_subdirectory(
+    applications/RIFT_cli
 )
 
-set (RENDERING_SOURCES
-    src/rendering/render.h
-    src/rendering/render.cpp
+add_subdirectory(
+    src
 )
 
-set (TEXTURE_SOURCES
-    src/textures/constant_tex.h
-    src/textures/texture.h
-    src/textures/checker_tex.h
-    src/textures/checker_tex.cpp
-)
+if (MSVC)
+    set(
+        CMAKE_C_FLAGS_RELEASE
+        "/Zi /O2 /Ob2 /Oi /Ot /Oy /MD /GS- /GL"
+    )
 
-set (UTILITY_SOURCES
-    src/utility/generators.h
-    src/utility/generators.cpp
-    src/utility/ray.h
-    src/utility/utilities.h
-    src/utility/vec3.h
-)
+    set(
+        CMAKE_CXX_FLAGS_RELEASE
+        "/Zi /O2 /Ob2 /Oi /Ot /Oy /MD /GS- /GL"
+    )
 
-set (MAIN_SOURCE
-    main.cpp
-)
+    set(
+        CMAKE_EXE_LINKER_FLAGS_RELEASE
+        "/OPT:REF /OPT:ICF /LTCG /INCREMENTAL:NO"
+    )
+endif()
 
-set (CPP_SOURCES
-    ${MAIN_SOURCE}
-    ${CAMERA_SOURCES}
-    ${HITABLES_SOURCES}
-    ${MATERIAL_SOURCES}
-    ${RENDERING_SOURCES}
-    ${TEXTURE_SOURCES}
-    ${UTILITY_SOURCES}
-)
-
-source_group("src\\cameras" FILES
-    ${CAMERA_SOURCES}
-)
-
-source_group("src\\hitables" FILES
-    ${HITABLES_SOURCES}
-)
-
-source_group("src\\materials" FILES
-    ${MATERIAL_SOURCES}
-)
-
-source_group("src\\rendering" FILES
-    ${RENDERING_SOURCES}
-)
-
-source_group("src\\textures" FILES
-    ${TEXTURE_SOURCES}
-)
-
-source_group("src\\utilities" FILES
-    ${UTILITY_SOURCES}
-)
- 
-add_executable(FARTS_renderer
-    ${CPP_SOURCES}    
-)

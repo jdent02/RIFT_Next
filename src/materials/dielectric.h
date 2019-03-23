@@ -1,23 +1,44 @@
-#ifndef DIELECTRIC_H
-#define DIELECTRIC_H
+// Released under MIT License
 
-#include "hitable.h"
-#include "material.h"
-#include "ray.h"
+// Copyright (c) 2018 Jonathan Dent.
 
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
 
-class dielectric
-    :public material
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
+#pragma once
+
+#include "utility/data_types/hit_record.h"
+#include "materials/i_material.h"
+
+// Forward declaration
+class Vec3;
+
+class Dielectric : public IMaterial
 {
-public:
-    explicit dielectric(float ri) : ref_idx(ri) {};
-    virtual ~dielectric() override = default;
-    virtual bool scatter(
-        const ray& r_in, 
-        const hit_record& rec, 
-        vec3& attenuation, 
-        ray& scattered) const override;
-    float ref_idx;
-};
+  public:
+    explicit Dielectric(const float ri)
+      : m_ref_idx_(ri){};
 
-#endif // DIELECTRIC_H
+    ~Dielectric() override = default;
+
+    bool scatter(const Ray& r_in, const HitRecord& rec, ScatterRecord& srec)
+        const override;
+
+  private:
+    float m_ref_idx_;
+};

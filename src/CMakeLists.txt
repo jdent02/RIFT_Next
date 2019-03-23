@@ -189,7 +189,6 @@ if(USE_PLUGINS)
         ${RIFT_DEPENDENCIES_DIR}/ilmbase-release/include
         ${RIFT_DEPENDENCIES_DIR}/ilmbase-release/include/OpenEXR
         ${RIFT_DEPENDENCIES_DIR}/openexr-release/include
-        ${RIFT_DEPENDENCIES_DIR}/openexr-release/include
         ${Boost_INCLUDE_DIRS}
     )
     set(

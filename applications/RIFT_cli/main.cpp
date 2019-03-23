@@ -21,6 +21,7 @@
 // SOFTWARE.
 
 #include "command_line_parser.h"
+#include "utility/containers/render_settings.h"
 
 #include <cstdio>
 #include <ctime>
@@ -28,6 +29,19 @@
 int main(const int argc, char* argv[])
 {
     const time_t start_time = time(nullptr);
+
+    CommandLineParser parser;
+
+    auto* settings = new rift::RenderSettings();
+
+    parser.parse(argc, argv, settings);
+
+    // generate scene
+    // set up render controller
+    // do render
+    // write outputs
+    // delete render controller
+    // cleanup?
 
     const time_t end_time = time(nullptr);
 

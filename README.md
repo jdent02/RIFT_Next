@@ -1,6 +1,8 @@
 # RIFT Renderer
 Just a personal toolbox for rendering experiments.  Originally started as an implementation of Peter Shirley's "Raytracing in One Weekend", because why not?
 
+Eventually decided I wanted a challenge so this is a re-write of the original RIFT renderer, only this time as a DLL library.
+
 Name is an acronym for "Reduction in Free Time".
 
 With no plugins it compiles with all major compilers: VC++, GCC and Clang.  Clang seems to be the fastest.  

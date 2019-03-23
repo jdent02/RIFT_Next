@@ -1,5 +1,7 @@
 #include "command_line_parser.h"
 
+#include "core/image_writers/i_out_writer.h"
+#include "core/lighting_integrators/i_light_integrator.h"
 #include "utility/system/version.h"
 
 #include <cmath>
@@ -7,17 +9,29 @@
 #include <cstring>
 #include <thread>
 
-RenderSettings command_line_parser::parse(const int argc, char* argv[])
+void CommandLineParser::parse(
+    const int             argc,
+    char*                 argv[],
+    rift::RenderSettings* settings)
 {
     int         threads{static_cast<int>(std::thread::hardware_concurrency())};
     int         xres{1920};
     int         yres{1080};
     int         samples{100};
-    samplers    sampler{XORO_128};
     std::string filepath{"../image_vcpp"};
     std::string integrator_string{"Path Tracer"};
-    output_writers out_writer{OPENIMAGEIO};
-    IntegratorEnum integrator{PATH_TRACING};
+    renderer::OutWriterEnum  out_writer{renderer::OPENIMAGEIO};
+    renderer::IntegratorEnum integrator{renderer::PATH_TRACING};
+
+    auto* matrix = new SettingsMatrix();
+
+    matrix->m_integrator = integrator;
+    matrix->m_samples = samples;
+    matrix->m_threads = threads;
+    matrix->m_writer = out_writer;
+    matrix->m_xres = xres;
+    matrix->m_yres = yres;
+    matrix->out_path = filepath.c_str();
 
     for (int i = 0; i < argc; i++)
     {
@@ -44,16 +58,16 @@ RenderSettings command_line_parser::parse(const int argc, char* argv[])
         {
             if (!static_cast<bool>(strcmp(argv[i + 1], "path")))
             {
-                integrator = PATH_TRACING;
+                integrator = renderer::PATH_TRACING;
             }
             else if (!static_cast<bool>(strcmp(argv[i + 1], "direct")))
             {
-                integrator = DIRECT_LIGHTING;
+                integrator = renderer::DIRECT_LIGHTING;
                 integrator_string = "Direct Lighting";
             }
             else if (!static_cast<bool>(strcmp(argv[i + 1], "importance")))
             {
-                integrator = LIGHT_SAMPLE_PATH_TRACING;
+                integrator = renderer::LIGHT_SAMPLE_PATH_TRACING;
                 integrator_string = "Material Importance Sampling";
             }
         }
@@ -71,12 +85,12 @@ RenderSettings command_line_parser::parse(const int argc, char* argv[])
         {
             if (!static_cast<bool>(strcmp(argv[i + 1], "jpeg")))
             {
-                out_writer = JPEG;
+                out_writer = renderer::JPEG;
             }
 #ifdef RIFT_USE_PLUGINS
             else if (!static_cast<bool>(strcmp(argv[i + 1], "oiio")))
             {
-                out_writer = OPENIMAGEIO;
+                out_writer = renderer::OPENIMAGEIO;
             }
 #else
             else if (!static_cast<bool>(strcmp(argv[i + 1], "oiio")))
@@ -101,17 +115,10 @@ RenderSettings command_line_parser::parse(const int argc, char* argv[])
         integrator_string.c_str(),
         threads);
 
-    return RenderSettings{xres,
-                          yres,
-                          samples,
-                          integrator,
-                          threads,
-                          sampler,
-                          out_writer,
-                          filepath};
+    settings->load_settings(matrix);
 }
 
-int command_line_parser::convert_number(size_t& length, const char* number)
+int CommandLineParser::convert_number(size_t& length, const char* number)
 {
     int m_digit{0};
 
@@ -125,7 +132,7 @@ int command_line_parser::convert_number(size_t& length, const char* number)
     return m_digit;
 }
 
-void command_line_parser::print_help()
+void CommandLineParser::print_help()
 {
     printf(
         "RIFT Renderer version %s\n\n"

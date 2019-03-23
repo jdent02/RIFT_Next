@@ -2,14 +2,15 @@
 
 #include "utility/containers/render_settings.h"
 
-class command_line_parser
+class CommandLineParser
 {
   public:
-    command_line_parser() = default;
-
-    int convert_number(size_t& length, const char* number);
+    CommandLineParser() = default;
 
     void print_help();
 
-    RenderSettings parse(int argc, char* argv[]);
+    void parse(int argc, char* argv[], rift::RenderSettings* settings);
+
+  private:
+    int convert_number(size_t& length, const char* number);
 };

@@ -113,6 +113,7 @@ set (
     utility/noises/perlin.h
     utility/containers/scene.h
     utility/containers/scene.cpp
+    utility/containers/settings_matrix.h
     utility/containers/render_settings.h
     utility/containers/render_settings.cpp
     utility/containers/param_array.h
@@ -237,6 +238,23 @@ if(USE_PLUGINS)
         ${OIIO_LIBS}
         ${PNG_LIB}
         ${JPEG_LIB}
+    )
+endif()
+
+if (MSVC)
+    set(
+        CMAKE_C_FLAGS_RELEASE
+        "/Zi /O2 /Ob2 /Oi /Ot /Oy /MD /GS- /GL"
+    )
+
+    set(
+        CMAKE_CXX_FLAGS_RELEASE
+        "/Zi /O2 /Ob2 /Oi /Ot /Oy /MD /GS- /GL"
+    )
+
+    set(
+        CMAKE_EXE_LINKER_FLAGS_RELEASE
+        "/OPT:REF /OPT:ICF /LTCG /INCREMENTAL:NO"
     )
 endif()
 

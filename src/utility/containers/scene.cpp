@@ -25,6 +25,7 @@
 struct Scene::Impl
 {
     rift::RiftPointer<ICamera> m_cam;
+    rift::RiftPointer<IHitable> m_world;
 };
 
 Scene::Scene()
@@ -36,9 +37,12 @@ Scene::~Scene()
     delete m_impl_;
 }
 
-bool Scene::set_cam(ICamera* in_cam) const
+void Scene::set_cam(ICamera* in_cam) const
 {
     m_impl_->m_cam = in_cam;
-    in_cam = nullptr;
-    return true;
+}
+
+void Scene::set_world(IHitable* in_world) const
+{
+    m_impl_->m_world = in_world;
 }

@@ -52,7 +52,7 @@ class RiftPointer
         return temp_ptr;
     }
 
-    // Assume ownership of passed pointer data
+    // Assume ownership of passed pointer data and zero out originator
     RiftPointer& operator=(R* rhs)
     {
         if (m_ptr_ != rhs)

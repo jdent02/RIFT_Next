@@ -26,7 +26,7 @@
 
 namespace renderer
 {
-    enum output_writers
+    enum OutWriterEnum
     {
         JPEG,
         PNG,

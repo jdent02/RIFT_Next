@@ -57,20 +57,3 @@ add_subdirectory(
     src
 )
 
-if (MSVC)
-    set(
-        CMAKE_C_FLAGS_RELEASE
-        "/Zi /O2 /Ob2 /Oi /Ot /Oy /MD /GS- /GL"
-    )
-
-    set(
-        CMAKE_CXX_FLAGS_RELEASE
-        "/Zi /O2 /Ob2 /Oi /Ot /Oy /MD /GS- /GL"
-    )
-
-    set(
-        CMAKE_EXE_LINKER_FLAGS_RELEASE
-        "/OPT:REF /OPT:ICF /LTCG /INCREMENTAL:NO"
-    )
-endif()
-

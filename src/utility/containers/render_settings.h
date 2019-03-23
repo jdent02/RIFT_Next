@@ -23,8 +23,20 @@
 #pragma once
 
 #include "utility/system/_dll/dll_symbol.h"
+#include "settings_matrix.h"
 
+namespace rift
+{
 class RIFT_DLL RenderSettings
 {
- 
+  public:
+    RenderSettings();
+    ~RenderSettings();
+
+    void load_settings(SettingsMatrix* matrix) const;
+
+  private:
+    struct Impl;
+    Impl* m_impl_;
 };
+} // namespace rift

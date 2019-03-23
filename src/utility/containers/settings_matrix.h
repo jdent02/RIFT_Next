@@ -22,16 +22,17 @@
 
 #pragma once
 
+#include "core/image_writers/i_out_writer.h"
+#include "core/lighting_integrators/i_light_integrator.h"
 #include "utility/system/_dll/dll_symbol.h"
-#include "utility/containers/scene.h"
-#include "utility/containers/render_settings.h"
 
-// Utility function to generate a random Scene
-class RIFT_DLL SceneGenerator
+struct RIFT_DLL SettingsMatrix
 {
-public:
-    SceneGenerator();
-    ~SceneGenerator() = default;
-
-    void make_cornell_box(Scene* scene_data, rift::RenderSettings* settings);
+    int                      m_threads;
+    int                      m_xres;
+    int                      m_yres;
+    int                      m_samples;
+    const char*              out_path;
+    renderer::IntegratorEnum m_integrator;
+    renderer::OutWriterEnum  m_writer;
 };

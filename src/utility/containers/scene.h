@@ -25,6 +25,7 @@
 #include "objects/camera/i_camera.h"
 #include "utility/rift_pointer.h"
 #include "utility/system/_dll/dll_symbol.h"
+#include "objects/hitables/i_hitable.h"
 
 class RIFT_DLL Scene
 {
@@ -33,7 +34,8 @@ class RIFT_DLL Scene
     ~Scene();
 
     // Setters
-    bool set_cam(ICamera* in_cam) const;
+    void set_cam(ICamera* in_cam) const;
+    void set_world(IHitable* in_world) const;
 
   private:
     struct Impl;

@@ -22,17 +22,15 @@
 
 #pragma once
 
-#include "core/image_writers/i_out_writer.h"
-#include "core/lighting_integrators/i_light_integrator.h"
-#include "utility/system/_dll/dll_symbol.h"
+#include "utility/data_types/vec3.h"
 
-struct RIFT_DLL SettingsMatrix
+struct CameraSettings
 {
-    int                      m_threads;
-    int                      m_xres;
-    int                      m_yres;
-    int                      m_samples;
-    const char*              out_path;
-    renderer::IntegratorEnum m_integrator;
-    renderer::OutWriterEnum  m_writer;
+    Vec3  m_origin;
+    Vec3  m_lower_left_corner;
+    Vec3  m_horizontal;
+    Vec3  m_vertical;
+    Vec3  m_u, m_v, m_w;
+    float m_lens_radius;
+    float m_time0, m_time1;
 };

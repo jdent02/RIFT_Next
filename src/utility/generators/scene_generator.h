@@ -22,16 +22,18 @@
 
 #pragma once
 
-#include "utility/system/_dll/dll_symbol.h"
-#include "utility/containers/scene.h"
 #include "utility/containers/render_settings.h"
+#include "utility/system/_dll/dll_symbol.h"
+
+class Scene;
 
 // Utility function to generate a random Scene
 class RIFT_DLL SceneGenerator
 {
-public:
-    SceneGenerator();
+  public:
+    SceneGenerator() = default;
+    
     ~SceneGenerator() = default;
 
-    void make_cornell_box(Scene* scene_data, rift::RenderSettings* settings);
+    static void make_cornell_box(Scene* scene, RenderSettings& settings);
 };

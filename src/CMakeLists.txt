@@ -66,6 +66,7 @@ set (
     core/rendering/test_render_controller.cpp
     core/rendering/final_render_controller.h
     core/rendering/i_render_controller.h
+    core/rendering/i_controller_factory.h
     core/rendering/render_worker.h
     core/rendering/render_worker.cpp
     core/rendering/color_functions.h
@@ -117,11 +118,12 @@ set (
     utility/noises/perlin.h
     utility/containers/scene.h
     utility/containers/scene.cpp
-    utility/containers/settings_matrix.h
-    utility/containers/render_settings.h
-    utility/containers/render_settings.cpp
     utility/containers/param_array.h
     utility/containers/param_array.cpp
+    utility/containers/render_settings.h
+    utility/containers/camera_settings.h
+    utility/containers/texture_store.h
+    utility/containers/texture_store.cpp
     utility/system/version.h
     utility/system/_dll/dll_symbol.h
     utility/system/_dll/dllmain.cpp
@@ -146,7 +148,6 @@ set (
     utility/rng/i_rand_generator.h
     utility/rng/drand48.cpp
     utility/rng/drand48.h
-    utility/rift_pointer.h
 )
 
 set (
@@ -275,9 +276,9 @@ add_custom_command (TARGET RIFT POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/vcpp_build/src/Release/RIFT.dll ${PROJECT_SOURCE_DIR}/vcpp_build/applications/RIFT_cli/Release
 )
 
-add_custom_command (TARGET RIFT POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/vcpp_debug_build/src/Debug/RIFT.dll ${PROJECT_SOURCE_DIR}/vcpp_debug_build/applications/RIFT_cli/Debug
-)
+# add_custom_command (TARGET RIFT POST_BUILD
+#     COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/vcpp_debug_build/src/Debug/RIFT.dll ${PROJECT_SOURCE_DIR}/vcpp_debug_build/applications/RIFT_cli/Debug
+# )
 
 #Visual Studio folder layout
 source_group(

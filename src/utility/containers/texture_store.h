@@ -20,30 +20,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "render_settings.h"
+#pragma once
 
-#include "settings_matrix.h"
+#include "param_array.h"
+#include "utility/system/_dll/dll_symbol.h"
 
-struct rift::RenderSettings::Impl
+class RIFT_DLL TextureStore
 {
-    SettingsMatrix m_settings;
+  public:
+    TextureStore();
+    ~TextureStore();
+
+    void add_texture(const char* key, const char* model, ParamArray& params);
+
+private:
+    struct Impl;
+    Impl* m_impl_;
 };
-
-rift::RenderSettings::RenderSettings()
-  : m_impl_(new Impl)
-{}
-
-rift::RenderSettings::~RenderSettings()
-{
-    delete m_impl_;
-}
-
-void rift::RenderSettings::load_settings(const SettingsMatrix matrix) const
-{
-    m_impl_->m_settings = matrix;
-}
-
-SettingsMatrix& rift::RenderSettings::get_settings() const
-{
-    return m_impl_->m_settings;
-}

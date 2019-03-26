@@ -23,9 +23,11 @@
 #pragma once
 
 #include "objects/camera/i_camera.h"
-#include "utility/rift_pointer.h"
-#include "utility/system/_dll/dll_symbol.h"
 #include "objects/hitables/i_hitable.h"
+#include "utility/system/_dll/dll_symbol.h"
+
+#include <memory>
+#include "texture_store.h"
 
 class RIFT_DLL Scene
 {
@@ -34,10 +36,31 @@ class RIFT_DLL Scene
     ~Scene();
 
     // Setters
-    void set_cam(ICamera* in_cam) const;
-    void set_world(IHitable* in_world) const;
+    ICamera* create_cam(
+        const char* model,
+        Vec3        lookfrom,
+        Vec3        lookat,
+        Vec3        vup,
+        float       vfov,
+        float       aspect,
+        float       t0,
+        float       t1,
+        float       aperture = 0.f,
+        float       focus_dist = 0.f) const;
+
+    void set_world() const;
+
+    ICamera*  get_cam() const;
+    IHitable* get_world() const;
+    TextureStore& get_texture_store() const;
 
   private:
     struct Impl;
     Impl* m_impl_;
+};
+
+class RIFT_DLL SceneFactory
+{
+  public:
+    static std::unique_ptr<Scene> create_scene();
 };

@@ -23,6 +23,7 @@
 #pragma once
 
 #include "utility/data_types/ray.h"
+#include "utility/containers/camera_settings.h"
 
 class ICamera
 {
@@ -30,4 +31,7 @@ class ICamera
     virtual ~ICamera() = default;
 
     virtual Ray get_ray(float s, float t) const = 0;
+
+    virtual CameraSettings& get_cam_settings() const = 0;
+
 };

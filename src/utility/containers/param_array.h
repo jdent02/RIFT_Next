@@ -26,4 +26,15 @@
 
 class RIFT_DLL ParamArray
 {
+  public:
+    ParamArray();
+    ~ParamArray();
+
+    ParamArray& add_entry(const char* key, const char* value);
+
+    const char* get_entry(const char* key) const;
+
+  private:
+    struct Impl;
+    Impl* m_impl_;
 };

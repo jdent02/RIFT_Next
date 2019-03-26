@@ -25,16 +25,11 @@
 #include <cstdio>
 
 class TestRenderController::Impl
-{
-  public:
-    rift::RenderSettings* m_render_settings;
-};
+{};
 
-TestRenderController::TestRenderController(rift::RenderSettings* settings)
+TestRenderController::TestRenderController()
   : m_impl_(new Impl)
-{
-    m_impl_->m_render_settings = settings;
-}
+{}
 
 void TestRenderController::render() {}
 

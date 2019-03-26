@@ -23,13 +23,12 @@
 #pragma once
 
 #include "core/rendering/i_render_controller.h"
-#include "utility/containers/render_settings.h"
 #include "utility/system/_dll/dll_symbol.h"
 
 class RIFT_DLL TestRenderController : public IRenderController
 {
   public:
-    explicit TestRenderController(rift::RenderSettings* settings);
+    TestRenderController();
     ~TestRenderController() override;
 
     void render() override;

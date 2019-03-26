@@ -29,6 +29,7 @@
 class ThinLensCamera : public ICamera
 {
   public:
+    ~ThinLensCamera();
     ThinLensCamera(
         Vec3  lookfrom,
         Vec3  lookat,
@@ -42,12 +43,9 @@ class ThinLensCamera : public ICamera
 
     Ray get_ray(float s, float t) const override;
 
+    CameraSettings& get_cam_settings() const override;
+
   private:
-    Vec3  m_origin_;
-    Vec3  m_lower_left_corner_;
-    Vec3  m_horizontal_;
-    Vec3  m_vertical_;
-    Vec3  m_u_, m_v_, m_w_;
-    float m_lens_radius_;
-    float m_time0_, m_time1_;
+    struct Impl;
+    Impl* m_impl_;
 };

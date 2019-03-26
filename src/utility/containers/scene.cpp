@@ -22,10 +22,20 @@
 
 #include "scene.h"
 
+#include "objects/camera/i_camera.h"
+#include "objects/camera/thin_lens_camera.h"
+#include "objects/hitables/i_hitable.h"
+#include "texture_store.h"
+
+#include <memory>
+#include <unordered_map>
+
 struct Scene::Impl
 {
-    rift::RiftPointer<ICamera>  m_cam{nullptr};
-    rift::RiftPointer<IHitable> m_world{nullptr};
+    std::unique_ptr<ICamera>  m_cam;
+    std::unique_ptr<IHitable> m_world;
+    std::unique_ptr<IHitable> m_lights{nullptr};
+    TextureStore              m_textures;
 };
 
 Scene::Scene()
@@ -37,12 +47,46 @@ Scene::~Scene()
     delete m_impl_;
 }
 
-void Scene::set_cam(ICamera* in_cam) const
+ICamera* Scene::create_cam(
+    const char* model,
+    const Vec3  lookfrom,
+    const Vec3  lookat,
+    const Vec3  vup,
+    const float vfov,
+    const float aspect,
+    const float t0,
+    const float t1,
+    const float aperture,
+    const float focus_dist) const
 {
-    m_impl_->m_cam = in_cam;
+    if (strcmp(model, "thin_lens") != 0)
+    {
+        m_impl_->m_cam = std::make_unique<ThinLensCamera>(
+            lookfrom, lookat, vup, vfov, aspect, aperture, focus_dist, t0, t1);
+    }
+
+    return m_impl_->m_cam.get();
 }
 
-void Scene::set_world(IHitable* in_world) const
+ICamera* Scene::get_cam() const
 {
-    m_impl_->m_world = in_world;
+    return m_impl_->m_cam.get();
+}
+
+void Scene::set_world() const {}
+
+IHitable* Scene::get_world() const
+{
+    return m_impl_->m_world.get();
+}
+
+TextureStore& Scene::get_texture_store() const
+{
+    return m_impl_->m_textures;
+}
+
+// Scene factory
+std::unique_ptr<Scene> SceneFactory::create_scene()
+{
+    return std::make_unique<Scene>();
 }

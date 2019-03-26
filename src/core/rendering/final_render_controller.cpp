@@ -22,3 +22,42 @@
 
 #include "final_render_controller.h"
 
+#include "utility/containers/scene.h"
+
+struct FinalRenderController::Impl
+{
+    Scene*         render_scene;
+    RenderSettings settings;
+};
+
+FinalRenderController::FinalRenderController()
+  : m_impl_(new Impl)
+{}
+
+FinalRenderController::~FinalRenderController()
+{
+    delete m_impl_;
+}
+
+void FinalRenderController::add_settings(const RenderSettings settings)
+{
+    m_impl_->settings = settings;
+}
+
+void FinalRenderController::add_scene(Scene* render_scene)
+{
+    m_impl_->render_scene = render_scene;
+}
+
+void FinalRenderController::render() {}
+void FinalRenderController::cleanup() {}
+
+RenderSettings& FinalRenderController::get_settings()
+{
+    return m_impl_->settings;
+}
+
+std::unique_ptr<IRenderController> FinalRenderControllerFactory::create()
+{
+    return std::make_unique<FinalRenderController>();
+}

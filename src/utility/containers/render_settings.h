@@ -22,23 +22,17 @@
 
 #pragma once
 
-#include "utility/system/_dll/dll_symbol.h"
-#include "settings_matrix.h"
+#include "core/image_writers/i_out_writer.h"
+#include "core/lighting_integrators/i_light_integrator.h"
+#include <thread>
 
-namespace rift
+struct RenderSettings
 {
-class RIFT_DLL RenderSettings
-{
-  public:
-    RenderSettings();
-    ~RenderSettings();
-
-    void load_settings(SettingsMatrix matrix) const;
-
-    SettingsMatrix& get_settings() const;
-
-  private:
-    struct Impl;
-    Impl* m_impl_;
+    int                      m_threads{static_cast<int>(std::thread::hardware_concurrency())};
+    int                      m_xres{1920};
+    int                      m_yres{1080};
+    int                      m_samples{100};
+    renderer::IntegratorEnum m_light_integrator{renderer::PATH_TRACING};
+    renderer::OutWriterEnum  m_output_writer{renderer::PNG};
+    const char*              m_output_filepath{"../image_vcpp"};
 };
-} // namespace rift

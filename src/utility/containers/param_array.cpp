@@ -21,3 +21,30 @@
 // SOFTWARE.
 
 #include "param_array.h"
+
+#include <unordered_map>
+
+struct ParamArray::Impl
+{
+    std::unordered_map<const char*, const char*> m_entries;
+};
+
+ParamArray::ParamArray()
+  : m_impl_(new Impl)
+{}
+
+ParamArray::~ParamArray()
+{
+    delete m_impl_;
+}
+
+ParamArray& ParamArray::add_entry(const char* key, const char* value)
+{
+    m_impl_->m_entries.emplace(key, value);
+    return *this;
+}
+
+const char* ParamArray::get_entry(const char* key) const
+{
+    return m_impl_->m_entries.find(key)->second;
+}

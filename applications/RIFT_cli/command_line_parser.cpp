@@ -2,26 +2,20 @@
 
 #include "core/image_writers/i_out_writer.h"
 #include "core/lighting_integrators/i_light_integrator.h"
+#include "utility/math_functions/utility_functions.h"
 #include "utility/system/version.h"
 
-#include <cmath>
 #include <cstdio>
 #include <cstring>
 #include <thread>
 
-void CommandLineParser::parse(
-    const int             argc,
-    char*                 argv[],
-    rift::RenderSettings* settings) const
+RenderSettings CommandLineParser::parse(
+    const int       argc,
+    char*           argv[])
 {
-    int         threads{static_cast<int>(std::thread::hardware_concurrency())};
-    int         xres{1920};
-    int         yres{1080};
-    int         samples{100};
-    std::string filepath{"../image_vcpp"};
-    std::string integrator_string{"Path Tracer"};
-    renderer::OutWriterEnum  out_writer{renderer::OPENIMAGEIO};
-    renderer::IntegratorEnum integrator{renderer::PATH_TRACING};
+    const char* integrator_string{"Path Tracer"};
+
+    RenderSettings settings{};
 
     for (int i = 0; i < argc; i++)
     {
@@ -29,35 +23,36 @@ void CommandLineParser::parse(
         {
             char*  temp_threads = argv[i + 1];
             size_t str_len = strlen(temp_threads);
-            threads = convert_number(str_len, temp_threads);
+            settings.m_threads = convert_number(str_len, temp_threads);
         }
         else if (!static_cast<bool>(strcmp(argv[i], "--resolution")))
         {
             char*  x = argv[i + 1];
             size_t x_len = strlen(x);
-            xres = convert_number(x_len, x);
+            settings.m_xres = convert_number(x_len, x);
             char*  y = argv[i + 2];
             size_t y_len = strlen(y);
-            yres = convert_number(y_len, y);
+            settings.m_yres = convert_number(y_len, y);
         }
         else if (!static_cast<bool>(strcmp(argv[i], "--filepath")))
         {
-            filepath = argv[i + 1];
+            settings.m_output_filepath = argv[i + 1];
         }
         else if (!static_cast<bool>(strcmp(argv[i], "--integrator")))
         {
             if (!static_cast<bool>(strcmp(argv[i + 1], "path")))
             {
-                integrator = renderer::PATH_TRACING;
+                settings.m_light_integrator = renderer::PATH_TRACING;
             }
             else if (!static_cast<bool>(strcmp(argv[i + 1], "direct")))
             {
-                integrator = renderer::DIRECT_LIGHTING;
+                settings.m_light_integrator = renderer::DIRECT_LIGHTING;
                 integrator_string = "Direct Lighting";
             }
             else if (!static_cast<bool>(strcmp(argv[i + 1], "importance")))
             {
-                integrator = renderer::LIGHT_SAMPLE_PATH_TRACING;
+                settings.m_light_integrator =
+                    renderer::LIGHT_SAMPLE_PATH_TRACING;
                 integrator_string = "Material Importance Sampling";
             }
         }
@@ -65,7 +60,7 @@ void CommandLineParser::parse(
         {
             char*  sample_num = argv[i + 1];
             size_t str_len = strlen(sample_num);
-            samples = convert_number(str_len, sample_num);
+            settings.m_samples = convert_number(str_len, sample_num);
         }
         else if (!static_cast<bool>(strcmp(argv[i], "--help")))
         {
@@ -75,12 +70,12 @@ void CommandLineParser::parse(
         {
             if (!static_cast<bool>(strcmp(argv[i + 1], "jpeg")))
             {
-                out_writer = renderer::JPEG;
+                settings.m_output_writer = renderer::JPEG;
             }
 #ifdef RIFT_USE_PLUGINS
             else if (!static_cast<bool>(strcmp(argv[i + 1], "oiio")))
             {
-                out_writer = renderer::OPENIMAGEIO;
+                settings.m_output_writer = renderer::OPENIMAGEIO;
             }
 #else
             else if (!static_cast<bool>(strcmp(argv[i + 1], "oiio")))
@@ -99,37 +94,13 @@ void CommandLineParser::parse(
         "Number of Samples: %i\n"
         "Integrator: %s\n"
         "Rendering Threads: %i\n",
-        xres,
-        yres,
-        samples,
-        integrator_string.c_str(),
-        threads);
+        settings.m_xres,
+        settings.m_yres,
+        settings.m_samples,
+        integrator_string,
+        settings.m_threads);
 
-    SettingsMatrix matrix{};
-
-    matrix.m_integrator = integrator;
-    matrix.m_samples = samples;
-    matrix.m_threads = threads;
-    matrix.m_writer = out_writer;
-    matrix.m_xres = xres;
-    matrix.m_yres = yres;
-    matrix.out_path = filepath.c_str();
-
-    settings->load_settings(matrix);
-}
-
-int CommandLineParser::convert_number(size_t& length, const char* number) const
-{
-    int m_digit{0};
-
-    for (size_t i = 0; i < length - 1; i++)
-    {
-        m_digit += int((number[i] - '0') * pow(10, length - 1 - i));
-    }
-
-    m_digit += number[length - 1] - '0';
-
-    return m_digit;
+    return settings;
 }
 
 void CommandLineParser::print_help()

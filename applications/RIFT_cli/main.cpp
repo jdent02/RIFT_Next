@@ -21,29 +21,30 @@
 // SOFTWARE.
 
 #include "command_line_parser.h"
+#include "core/rendering/final_render_controller.h"
+#include "core/rendering/i_render_controller.h"
 #include "utility/containers/render_settings.h"
+#include "utility/containers/scene.h"
+#include "utility/generators/scene_generator.h"
 
 #include <cstdio>
 #include <ctime>
-#include "core/rendering/i_render_controller.h"
-#include "core/rendering/test_render_controller.h"
-#include "utility/rift_pointer.h"
 
 int main(const int argc, char* argv[])
 {
     const time_t start_time = time(nullptr);
 
-    CommandLineParser parser;
+    RenderSettings settings = CommandLineParser::parse(argc, argv);
 
-    rift::RenderSettings* settings = new rift::RenderSettings();
+    const std::unique_ptr<Scene> scene = SceneFactory::create_scene();
 
-    parser.parse(argc, argv, settings);
+    SceneGenerator::make_cornell_box(scene.get(), settings);
 
-    rift::RiftPointer<IRenderController> engine(new TestRenderController(settings));
+    std::unique_ptr<IRenderController> engine =
+        FinalRenderControllerFactory::create();
 
-    settings = nullptr;
-
-    engine->render();
+    engine->add_scene(scene.get());
+    engine->add_settings(settings);
 
     // generate scene
     // set up render controller
@@ -53,8 +54,6 @@ int main(const int argc, char* argv[])
     // cleanup?
 
     const time_t end_time = time(nullptr);
-
-    engine->cleanup();
 
     printf(
         "Render Finished; Total Time: %f\n",

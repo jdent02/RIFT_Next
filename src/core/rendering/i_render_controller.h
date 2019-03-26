@@ -23,6 +23,10 @@
 #pragma once
 
 #include "utility/system/_dll/dll_symbol.h"
+#include "utility/containers/render_settings.h"
+
+
+class Scene;
 
 class RIFT_DLL IRenderController
 {
@@ -30,4 +34,7 @@ class RIFT_DLL IRenderController
     virtual ~IRenderController() = default;
     virtual void render() = 0;
     virtual void cleanup() = 0;
+    virtual void add_scene(Scene* render_scene) = 0;
+    virtual void add_settings(RenderSettings settings) = 0;
+    virtual RenderSettings& get_settings() = 0;
 };

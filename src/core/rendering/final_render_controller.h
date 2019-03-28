@@ -22,7 +22,6 @@
 
 #pragma once
 
-#include "core/rendering/i_controller_factory.h"
 #include "core/rendering/i_render_controller.h"
 #include "utility/containers/render_settings.h"
 #include "utility/system/_dll/dll_symbol.h"
@@ -40,9 +39,18 @@ class RIFT_DLL FinalRenderController : public IRenderController
     void add_scene(Scene* render_scene) override;
 
     void render() override;
+
     void cleanup() override;
 
     RenderSettings& get_settings() override;
+
+    void set_output_writer() override;
+
+    void write_output() override;
+
+    void set_buffer() override;
+
+    IBuffer* get_buffer() override;
 
   private:
     struct Impl;
@@ -52,8 +60,5 @@ class RIFT_DLL FinalRenderController : public IRenderController
 class RIFT_DLL FinalRenderControllerFactory : IControllerFactory
 {
   public:
-    FinalRenderControllerFactory() = default;
-    ~FinalRenderControllerFactory() = default;
-
     static std::unique_ptr<IRenderController> create();
 };

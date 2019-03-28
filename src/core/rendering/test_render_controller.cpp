@@ -23,22 +23,58 @@
 #include "test_render_controller.h"
 
 #include <cstdio>
+#include "core/image_writers/oiio_writer.h"
 
-class TestRenderController::Impl
-{};
+struct TestRenderController::Impl
+{
+    RenderSettings                        settings;
+    std::unique_ptr<IBuffer>              m_buffer;
+    std::unique_ptr<renderer::IOutWriter> m_output_writer;
+};
 
 TestRenderController::TestRenderController()
   : m_impl_(new Impl)
 {}
 
-void TestRenderController::render() {}
+TestRenderController::~TestRenderController()
+{
+    delete m_impl_;
+}
+
+void TestRenderController::render()
+{
+    set_buffer();
+}
 
 void TestRenderController::cleanup()
 {
     printf("Render cleanup\n");
 }
 
-TestRenderController::~TestRenderController()
+void TestRenderController::add_settings(RenderSettings settings) {}
+
+RenderSettings& TestRenderController::get_settings()
 {
-    delete m_impl_;
+    return m_impl_->settings;
 }
+
+void TestRenderController::set_buffer() {}
+
+IBuffer* TestRenderController::get_buffer()
+{
+    return m_impl_->m_buffer.get();
+}
+
+void TestRenderController::set_output_writer()
+{
+    m_impl_->m_output_writer = std::make_unique<renderer::OIIOWriter>();
+}
+
+void TestRenderController::write_output() {}
+
+std::unique_ptr<IRenderController> TestRenderControllerFactory::create()
+{
+    return std::make_unique<TestRenderController>();
+}
+
+

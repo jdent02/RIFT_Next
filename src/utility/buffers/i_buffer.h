@@ -28,4 +28,5 @@ public:
     virtual ~IBuffer() = default;
     virtual void reserve_buffer(int size) = 0;
     virtual void clear_buffer() = 0;
+    virtual float* get_pixels() const = 0;
 };

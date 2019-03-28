@@ -66,10 +66,6 @@ set (
     core/rendering/test_render_controller.cpp
     core/rendering/final_render_controller.h
     core/rendering/i_render_controller.h
-    core/rendering/i_controller_factory.h
-    core/rendering/render_worker.h
-    core/rendering/render_worker.cpp
-    core/rendering/color_functions.h
     core/image_writers/jpeg_writer.cpp
     core/image_writers/jpeg_writer.h
     core/image_writers/i_out_writer.h
@@ -139,10 +135,11 @@ set (
     utility/math_functions/pdfs/hitable_pdf.h
     utility/math_functions/pdfs/mixture_pdf.h
     utility/math_functions/onb.h
+    utility/math_functions/color_functions.h
     utility/math_functions/scatter_functions.h
-    utility/buffers/pixel_buffer.h
     utility/buffers/i_buffer.h
-    utility/buffers/pixel_buffer.cpp
+    utility/buffers/rgba_buffer.h
+    utility/buffers/rgba_buffer.cpp
     utility/rng/xoroshiro128.h
     utility/rng/xoroshiro128.cpp
     utility/rng/i_rand_generator.h

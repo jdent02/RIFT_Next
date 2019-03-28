@@ -20,4 +20,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "core/rendering/render_worker.h"
+#pragma once
+
+#include "i_buffer.h"
+
+#include <memory>
+
+class RgbaBuffer : public IBuffer
+{
+  public:
+    RgbaBuffer() = default;
+    ~RgbaBuffer() = default;
+
+    void   reserve_buffer(int size) override;
+    void   clear_buffer() override;
+    float* get_pixels() const override;
+
+  private:
+    std::unique_ptr<float[]> m_pixels_;
+};

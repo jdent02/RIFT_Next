@@ -35,7 +35,25 @@ class RIFT_DLL TestRenderController : public IRenderController
 
     void cleanup() override;
 
+    void add_settings(RenderSettings settings) override;
+
+    RenderSettings& get_settings() override;
+
+    void set_buffer() override;
+
+    IBuffer* get_buffer() override;
+
+    void set_output_writer() override;
+
+    void write_output() override;
+
   private:
-    class Impl;
+    struct Impl;
     Impl* m_impl_;
+};
+
+class RIFT_DLL TestRenderControllerFactory : IControllerFactory
+{
+  public:
+    static std::unique_ptr<IRenderController> create();
 };

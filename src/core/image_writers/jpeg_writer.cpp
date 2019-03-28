@@ -27,27 +27,29 @@
 #include <iostream>
 
 void renderer::JpegWriter::write(
-    const float*       buffer,
-    const std::string& filename,
-    const int          size_x,
-    const int          size_y) const
+    const IBuffer* buffer,
+    const char*    filename,
+    int            size_x,
+    int            size_y) const
 {
     std::cout << "Writing Output" << std::endl;
 
-    const int buffer_size{size_x * size_y * 3};
+    std::string out_filename = filename;
 
-    std::string out_filename = filename + ".jpg";
+    out_filename += ".jpg";
 
-    auto* out_buffer = new unsigned char[buffer_size];
+    const int out_buffer_size{size_x * size_y * 4};
 
-    for (int i = 0; i < buffer_size; i++)
+    auto* out_buffer = new unsigned char[out_buffer_size];
+
+    for (int i = 0; i < out_buffer_size; i++)
     {
         out_buffer[i] =
-            static_cast<unsigned char>(int(255 * std::sqrt(buffer[i])));
+            static_cast<unsigned char>(int(255 * std::sqrt(buffer->get_pixels()[i])));
     }
 
     const int success =
-        stbi_write_jpg(out_filename.c_str(), size_x, size_y, 3, out_buffer, 90);
+        stbi_write_jpg(out_filename.c_str(), size_x, size_y, 4, out_buffer, 90);
 
     if (success != 0)
     {

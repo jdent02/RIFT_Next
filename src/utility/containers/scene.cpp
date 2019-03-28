@@ -86,7 +86,7 @@ TextureStore& Scene::get_texture_store() const
 }
 
 // Scene factory
-std::unique_ptr<Scene> SceneFactory::create_scene()
+std::unique_ptr<Scene> SceneFactory::create()
 {
     return std::make_unique<Scene>();
 }

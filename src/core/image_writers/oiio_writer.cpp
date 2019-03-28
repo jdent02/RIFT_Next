@@ -22,46 +22,37 @@
 
 #include "oiio_writer.h"
 
-// #include "OpenImageIO/imageio.h"
+#include "OpenEXR/half.h"
+#include "OpenImageIO/imageio.h"
 
-#include <half.h>
-
-// using namespace OpenImageIO_v2_0;
+using namespace OpenImageIO_v2_0;
 
 void renderer::OIIOWriter::write(
-    const float*       buffer,
-    const std::string& filename,
-    int                size_x,
-    int                size_y) const
+    const IBuffer* buffer,
+    const char*    filename,
+    const int      size_x,
+    const int      size_y) const
 {
-    /*std::string out_filename = filename + ".png";
-    const int   xres = 480;
-    const int   yres = 480;
+    const int buffer_size = size_x * size_y * 4;
 
-    // half* pixels = new half[xres * yres * 3];
+    auto pixels = std::make_unique<unsigned char>(buffer_size);
 
-    // for (int i = 0; i < xres * yres * 3; i++)
-    // {
-    //     pixels[i] = static_cast<half>(buffer[i]);
-    // }
-    int buffer_size = xres * yres * 3;
-
-    auto* pixels = new unsigned char[buffer_size];
+    const TypeDesc pixel_type = TypeDesc::HALF;
 
     for (int i = 0; i < buffer_size; i++)
     {
-        pixels[i] = static_cast<unsigned char>(int(255 * std::sqrt(buffer[i])));
+        pixels.get()[i] = static_cast<half>(buffer->get_pixels()[i]);
     }
 
-    std::unique_ptr<ImageOutput> out = ImageOutput::create(out_filename);
+    std::unique_ptr<ImageOutput> out = ImageOutput::create(filename);
     if (out == nullptr)
     {
         return;
     }
 
-    ImageSpec spec(xres, yres, 3, TypeDesc::UINT8);
-    out->open(out_filename, spec);
-    out->write_image(TypeDesc::UINT8, pixels);
+    const ImageSpec spec(size_x, size_y, 4, pixel_type);
+    out->open(filename, spec);
+    out->write_image(pixel_type, pixels.get());
 
-    out->close();*/
+    out->close();
 }

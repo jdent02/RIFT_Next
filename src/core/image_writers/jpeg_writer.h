@@ -35,8 +35,8 @@ namespace renderer
     {
     public:
         void write(
-            const float*       buffer,
-            const std::string& filename,
+            const IBuffer* buffer,
+            const char*    filename,
             int                size_x,
             int                size_y) const override;
     };

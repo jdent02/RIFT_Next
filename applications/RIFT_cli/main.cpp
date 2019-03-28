@@ -23,6 +23,7 @@
 #include "command_line_parser.h"
 #include "core/rendering/final_render_controller.h"
 #include "core/rendering/i_render_controller.h"
+#include "core/rendering/test_render_controller.h"
 #include "utility/containers/render_settings.h"
 #include "utility/containers/scene.h"
 #include "utility/generators/scene_generator.h"
@@ -34,16 +35,11 @@ int main(const int argc, char* argv[])
 {
     const time_t start_time = time(nullptr);
 
-    RenderSettings settings = CommandLineParser::parse(argc, argv);
-
-    const std::unique_ptr<Scene> scene = SceneFactory::create_scene();
-
-    SceneGenerator::make_cornell_box(scene.get(), settings);
+    const RenderSettings settings = CommandLineParser::parse(argc, argv);
 
     std::unique_ptr<IRenderController> engine =
-        FinalRenderControllerFactory::create();
+        TestRenderControllerFactory::create();
 
-    engine->add_scene(scene.get());
     engine->add_settings(settings);
 
     // generate scene

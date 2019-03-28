@@ -20,19 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "pixel_buffer.h"
+#include "rgba_buffer.h"
 
-PixelBuffer::PixelBuffer(const int size)
-  : m_pixels(new float[size])
-{}
-
-void PixelBuffer::reserve_buffer(const int size)
+void RgbaBuffer::reserve_buffer(const int size)
 {
-    delete[] m_pixels;
-    m_pixels = new float[size];
+    m_pixels_ = std::make_unique<float[]>(size);
 }
 
-void PixelBuffer::clear_buffer()
+void RgbaBuffer::clear_buffer()
 {
-    delete[] m_pixels;
+    m_pixels_.reset();
+}
+
+float* RgbaBuffer::get_pixels() const
+{
+    return m_pixels_.get();
 }

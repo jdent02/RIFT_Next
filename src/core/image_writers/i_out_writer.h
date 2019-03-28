@@ -22,26 +22,28 @@
 
 #pragma once
 
+#include "utility/buffers/i_buffer.h"
+
 #include <string>
 
 namespace renderer
 {
-    enum OutWriterEnum
-    {
-        JPEG,
-        PNG,
-        OPENIMAGEIO
-    };
+enum OutWriterEnum
+{
+    JPEG,
+    PNG,
+    OPENIMAGEIO
+};
 
-    class IOutWriter
-    {
-    public:
-        virtual ~IOutWriter() = default;
+class IOutWriter
+{
+  public:
+    virtual ~IOutWriter() = default;
 
-        virtual void write(
-            const float*       buffer,
-            const std::string& filename,
-            int                size_x,
-            int                size_y) const = 0;
-    };
-}
+    virtual void write(
+        const IBuffer* buffer,
+        const char*    filename,
+        int            size_x,
+        int            size_y) const = 0;
+};
+} // namespace renderer

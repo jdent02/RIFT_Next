@@ -24,6 +24,7 @@
 
 #include "utility/system/_dll/dll_symbol.h"
 #include "utility/containers/render_settings.h"
+#include "utility/buffers/i_buffer.h"
 
 
 class Scene;
@@ -32,9 +33,26 @@ class RIFT_DLL IRenderController
 {
   public:
     virtual ~IRenderController() = default;
+
     virtual void render() = 0;
     virtual void cleanup() = 0;
+
     virtual void add_scene(Scene* render_scene) = 0;
+
     virtual void add_settings(RenderSettings settings) = 0;
     virtual RenderSettings& get_settings() = 0;
+
+    virtual void set_buffer() = 0;
+    virtual IBuffer* get_buffer() = 0;
+
+    virtual void set_output_writer() = 0;
+    virtual void write_output() = 0;
+};
+
+class RIFT_DLL IControllerFactory
+{
+public:
+    virtual ~IControllerFactory() = default;
+
+    virtual std::unique_ptr<IRenderController> create() = 0;
 };

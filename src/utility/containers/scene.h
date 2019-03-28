@@ -62,5 +62,5 @@ class RIFT_DLL Scene
 class RIFT_DLL SceneFactory
 {
   public:
-    static std::unique_ptr<Scene> create_scene();
+    static std::unique_ptr<Scene> create();
 };

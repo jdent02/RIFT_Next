@@ -28,10 +28,10 @@
 #include <iostream>
 
 void renderer::PngWriter::write(
-    const float*       buffer,
-    const std::string& filename,
-    const int          size_x,
-    const int          size_y) const
+    const IBuffer* buffer,
+    const char*    filename,
+    int            size_x,
+    int            size_y) const
 {
     std::cout << "Writing Output\n";
 
@@ -39,16 +39,18 @@ void renderer::PngWriter::write(
 
     auto* out_buffer = new unsigned char[buffer_size];
 
-    std::string out_filename = filename + ".png";
+    std::string out_filename = filename;
+
+    out_filename += ".png";
 
     for (int i = 0; i < buffer_size; i++)
     {
         out_buffer[i] =
-            static_cast<unsigned char>(int(255 * std::sqrt(buffer[i])));
+            static_cast<unsigned char>(int(255 * std::sqrt(buffer->get_pixels()[i])));
     }
 
     const int success = stbi_write_png(
-        out_filename.c_str(), size_x, size_y, 3, out_buffer, size_x * 3);
+        out_filename.c_str(), size_x, size_y, 4, out_buffer, size_x * 4);
 
     if (success != 0)
     {

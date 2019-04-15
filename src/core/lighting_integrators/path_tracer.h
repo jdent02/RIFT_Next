@@ -24,13 +24,10 @@
 
 #include "i_light_integrator.h"
 
-namespace renderer
+class PathTracer : public ILightIntegrator
 {
-    class PathTracer: public ILightIntegrator
-    {
-    public:
-        PathTracer() = default;
-        Vec3 trace(const Ray& r, IHitable* world, IHitable* light_shape, int depth)
-            const override;
-    };
-}
+  public:
+    PathTracer() = default;
+    Vec3 trace(const Ray& r, IHitable* world, IHitable* light_shape, int depth)
+        const override;
+};

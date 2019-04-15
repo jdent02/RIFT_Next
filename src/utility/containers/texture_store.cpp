@@ -24,8 +24,12 @@
 
 #include "textures/i_texture.h"
 
+#include <iostream>
 #include <memory>
+#include <sstream>
+#include <string>
 #include <unordered_map>
+#include "utility/math_functions/utility_functions.h"
 
 struct TextureStore::Impl
 {
@@ -46,5 +50,31 @@ void TextureStore::add_texture(
     const char* model,
     ParamArray& params)
 {
-    
+    if (strcmp(model, "constant_texture") != 0)
+    {
+        m_impl_->m_textures[key] = add_constant_color(params);
+    }
+}
+
+std::unique_ptr<ITexture> TextureStore::add_constant_color(ParamArray& params)
+{
+    const char*        albedo = params.get_entry("albedo");
+    std::vector<float> alb_colors = convert_str_to_flt(albedo);
+}
+
+std::vector<float> TextureStore::convert_str_to_flt(const char* in_string)
+{
+    std::istringstream f = static_cast<std::istringstream>(in_string);
+
+    std::vector<float> floats_list;
+
+    std::string s;
+
+    while (std::getline(f, s, ';'))
+    {
+        std::cout << s << std::endl;
+        floats_list.push_back(convert_number(static_cast<size_t>(s.size()), s.c_str()));
+    }
+
+    return floats_list;
 }

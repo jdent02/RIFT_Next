@@ -34,23 +34,8 @@ class RIFT_DLL FinalRenderController : public IRenderController
     FinalRenderController();
     ~FinalRenderController();
 
-    void add_settings(RenderSettings settings) override;
-
-    void add_scene(Scene* render_scene) override;
-
-    void render() override;
-
+    void render() const override;
     void cleanup() override;
-
-    RenderSettings& get_settings() override;
-
-    void set_output_writer() override;
-
-    void write_output() override;
-
-    void set_buffer() override;
-
-    IBuffer* get_buffer() override;
 
   private:
     struct Impl;

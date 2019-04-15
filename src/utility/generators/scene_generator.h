@@ -27,12 +27,11 @@
 
 class Scene;
 
-// Utility function to generate a random Scene
+// Utility function to generate a pre defined Scene
 class RIFT_DLL SceneGenerator
 {
   public:
     SceneGenerator() = default;
-    
     ~SceneGenerator() = default;
 
     static void make_cornell_box(Scene* scene, RenderSettings& settings);

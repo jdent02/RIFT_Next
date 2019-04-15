@@ -20,24 +20,46 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#pragma once
+#include "png_writer.h"
 
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-#define STBI_MSC_SECURE_CRT
+#include "third_party/stb_image_write.h"
 
-#include "core/image_writers/i_out_writer.h"
+#include <cmath>
+#include <iostream>
 
-#include <string>
-
-namespace renderer
+void PngWriter::write(
+    const IBuffer* buffer,
+    const char*    filename,
+    const int      x_res,
+    const int      y_res)
 {
-    class JpegWriter: public IOutWriter
+    std::cout << "Writing Output\n";
+
+    const int buffer_size{x_res * y_res * 4};
+
+    auto* out_buffer = new unsigned char[buffer_size];
+
+    std::string out_filename = filename;
+
+    out_filename += ".png";
+
+    for (int i = 0; i < buffer_size; i++)
     {
-    public:
-        void write(
-            const IBuffer* buffer,
-            const char*    filename,
-            int                size_x,
-            int                size_y) const override;
-    };
+        out_buffer[i] = static_cast<unsigned char>(
+            int(255 * std::sqrt(buffer->get_pixels()[i])));
+    }
+
+    const int success = stbi_write_png(
+        out_filename.c_str(), x_res, y_res, 4, out_buffer, x_res * 4);
+
+    if (success != 0)
+    {
+        std::cout << "Done Writing Output\n";
+    }
+    else
+    {
+        std::cout << "Image Write Failed\n";
+    }
+
+    delete[] out_buffer;
 }

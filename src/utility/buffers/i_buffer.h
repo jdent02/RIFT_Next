@@ -22,11 +22,21 @@
 
 #pragma once
 
-class IBuffer
+#include "utility/system/_dll/dll_symbol.h"
+#include <memory>
+
+class RIFT_DLL IBuffer
 {
-public:
+  public:
     virtual ~IBuffer() = default;
-    virtual void reserve_buffer(int size) = 0;
-    virtual void clear_buffer() = 0;
+    virtual void   reserve_buffer(int size) = 0;
+    virtual void   clear_buffer() = 0;
     virtual float* get_pixels() const = 0;
+};
+
+class RIFT_DLL IBufferFactory
+{
+  public:
+    virtual ~IBufferFactory() = default;
+    virtual std::unique_ptr<IBuffer> create() = 0;
 };

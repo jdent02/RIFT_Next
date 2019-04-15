@@ -23,27 +23,42 @@
 #include "test_render_controller.h"
 
 #include <cstdio>
-#include "core/image_writers/oiio_writer.h"
 
 struct TestRenderController::Impl
 {
-    RenderSettings                        settings;
-    std::unique_ptr<IBuffer>              m_buffer;
-    std::unique_ptr<renderer::IOutWriter> m_output_writer;
+    RenderSettings* m_settings;
+    IBuffer* m_pixel_buffer;
 };
 
-TestRenderController::TestRenderController()
+TestRenderController::TestRenderController(RenderSettings* settings, IBuffer* pixel_buffer)
   : m_impl_(new Impl)
-{}
+{
+    m_impl_->m_settings = settings;
+    m_impl_->m_pixel_buffer = pixel_buffer;
+}
 
 TestRenderController::~TestRenderController()
 {
     delete m_impl_;
 }
 
-void TestRenderController::render()
+void TestRenderController::render() const
 {
-    set_buffer();
+    const int x_dim = m_impl_->m_settings->m_xres;
+    const int y_dim = m_impl_->m_settings->m_yres;
+
+    int buffer_pos = 0;
+
+    for (int j = y_dim - 1; j >= 0; j--)
+    {
+        for (int i = 0; i <x_dim; i++)
+        {
+            m_impl_->m_pixel_buffer->get_pixels()[buffer_pos++] = float(i) / float(x_dim);
+            m_impl_->m_pixel_buffer->get_pixels()[buffer_pos++] = float(j) / float(y_dim);
+            m_impl_->m_pixel_buffer->get_pixels()[buffer_pos++] = 0.2;
+            m_impl_->m_pixel_buffer->get_pixels()[buffer_pos++] = 1.f;
+        }
+    }
 }
 
 void TestRenderController::cleanup()
@@ -51,30 +66,7 @@ void TestRenderController::cleanup()
     printf("Render cleanup\n");
 }
 
-void TestRenderController::add_settings(RenderSettings settings) {}
-
-RenderSettings& TestRenderController::get_settings()
+std::unique_ptr<IRenderController> TestRenderControllerFactory::create(RenderSettings* settings, IBuffer* pixel_buffer)
 {
-    return m_impl_->settings;
+    return std::make_unique<TestRenderController>(settings, pixel_buffer);
 }
-
-void TestRenderController::set_buffer() {}
-
-IBuffer* TestRenderController::get_buffer()
-{
-    return m_impl_->m_buffer.get();
-}
-
-void TestRenderController::set_output_writer()
-{
-    m_impl_->m_output_writer = std::make_unique<renderer::OIIOWriter>();
-}
-
-void TestRenderController::write_output() {}
-
-std::unique_ptr<IRenderController> TestRenderControllerFactory::create()
-{
-    return std::make_unique<TestRenderController>();
-}
-
-

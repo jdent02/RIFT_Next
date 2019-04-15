@@ -27,7 +27,7 @@
 
 #include <cfloat>
 
-Vec3 renderer::PathTracer::trace(
+Vec3 PathTracer::trace(
     const Ray& r,
     IHitable*  world,
     IHitable*  light_shape,

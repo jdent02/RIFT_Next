@@ -1,7 +1,6 @@
 #pragma once
 #include "utility/containers/render_settings.h"
 
-
 class CommandLineParser
 {
   public:
@@ -9,5 +8,5 @@ class CommandLineParser
 
     static void print_help();
 
-    static RenderSettings parse(const int argc, char* argv[]);
+    static std::unique_ptr<RenderSettings> parse(int argc, char* argv[]);
 };

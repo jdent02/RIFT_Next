@@ -20,45 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "jpeg_writer.h"
+#include "tile_pool.h"
 
-#include "third_party/stb_image_write.h"
+void TilePool::create_pool(const int x_res, const int y_res, const int tile_size) {}
 
-#include <iostream>
-
-void renderer::JpegWriter::write(
-    const IBuffer* buffer,
-    const char*    filename,
-    int            size_x,
-    int            size_y) const
+Tile& TilePool::get_next_tile()
 {
-    std::cout << "Writing Output" << std::endl;
-
-    std::string out_filename = filename;
-
-    out_filename += ".jpg";
-
-    const int out_buffer_size{size_x * size_y * 4};
-
-    auto* out_buffer = new unsigned char[out_buffer_size];
-
-    for (int i = 0; i < out_buffer_size; i++)
-    {
-        out_buffer[i] =
-            static_cast<unsigned char>(int(255 * std::sqrt(buffer->get_pixels()[i])));
-    }
-
-    const int success =
-        stbi_write_jpg(out_filename.c_str(), size_x, size_y, 4, out_buffer, 90);
-
-    if (success != 0)
-    {
-        std::cout << "Done Writing Output" << std::endl;
-    }
-    else
-    {
-        std::cout << "Image Write Failed" << std::endl;
-    }
-
-    delete[] out_buffer;
+    return m_tile_pool_[m_tile_index_++];
 }

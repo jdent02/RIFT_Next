@@ -22,17 +22,36 @@
 
 #include "rgba_buffer.h"
 
+struct RgbaBuffer::Impl
+{
+    std::unique_ptr<float[]> m_pixels;
+};
+
+RgbaBuffer::RgbaBuffer()
+  : m_impl_(new Impl)
+{}
+
+RgbaBuffer::~RgbaBuffer()
+{
+    delete m_impl_;
+}
+
 void RgbaBuffer::reserve_buffer(const int size)
 {
-    m_pixels_ = std::make_unique<float[]>(size);
+    m_impl_->m_pixels = std::make_unique<float[]>(size);
 }
 
 void RgbaBuffer::clear_buffer()
 {
-    m_pixels_.reset();
+    m_impl_->m_pixels.reset();
 }
 
 float* RgbaBuffer::get_pixels() const
 {
-    return m_pixels_.get();
+    return m_impl_->m_pixels.get();
+}
+
+std::unique_ptr<IBuffer> RgbaBufferFactory::create()
+{
+    return std::make_unique<RgbaBuffer>();
 }

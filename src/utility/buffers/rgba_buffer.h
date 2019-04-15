@@ -22,20 +22,29 @@
 
 #pragma once
 
-#include "i_buffer.h"
+#include "utility/buffers/i_buffer.h"
+#include "utility/containers/render_settings.h"
+#include "utility/system/_dll/dll_symbol.h"
 
 #include <memory>
 
-class RgbaBuffer : public IBuffer
+class RIFT_DLL RgbaBuffer : public IBuffer
 {
   public:
-    RgbaBuffer() = default;
-    ~RgbaBuffer() = default;
+    RgbaBuffer();
+    ~RgbaBuffer();
 
     void   reserve_buffer(int size) override;
     void   clear_buffer() override;
     float* get_pixels() const override;
 
   private:
-    std::unique_ptr<float[]> m_pixels_;
+      struct Impl;
+      Impl* m_impl_;
+};
+
+class RIFT_DLL RgbaBufferFactory : public IBufferFactory
+{
+  public:
+    static std::unique_ptr<IBuffer> create();
 };

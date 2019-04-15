@@ -24,7 +24,7 @@
 
 #include "core/lighting_integrators/i_light_integrator.h"
 
-class DirectLighting : public renderer::ILightIntegrator
+class DirectLighting : public ILightIntegrator
 {
   public:
     DirectLighting() = default;

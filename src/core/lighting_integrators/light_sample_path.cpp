@@ -29,7 +29,7 @@
 
 #include <cfloat>
 
-Vec3 renderer::LightSamplePath::trace(
+Vec3 LightSamplePath::trace(
     const Ray& r,
     IHitable*  world,
     IHitable*  light_shape,

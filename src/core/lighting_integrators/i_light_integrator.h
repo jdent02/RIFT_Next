@@ -26,23 +26,20 @@ class IHitable;
 class Ray;
 class Vec3;
 
-namespace renderer
+enum IntegratorEnum
 {
-    enum IntegratorEnum
-    {
-        PATH_TRACING,
-        LIGHT_SAMPLE_PATH_TRACING,
-        DIRECT_LIGHTING
-    };
+    PATH_TRACING,
+    LIGHT_SAMPLE_PATH_TRACING,
+    DIRECT_LIGHTING
+};
 
-    class ILightIntegrator
-    {
-    public:
-        virtual ~ILightIntegrator() = default;
-        virtual Vec3 trace(
-            const Ray& r,
-            IHitable*  world,
-            IHitable*  light_shape,
-            int        depth) const = 0;
-    };
-}
+class ILightIntegrator
+{
+  public:
+    virtual ~ILightIntegrator() = default;
+    virtual Vec3 trace(
+        const Ray& r,
+        IHitable*  world,
+        IHitable*  light_shape,
+        int        depth) const = 0;
+};

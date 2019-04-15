@@ -23,7 +23,11 @@
 #pragma once
 
 #include "param_array.h"
+#include "textures/i_texture.h"
 #include "utility/system/_dll/dll_symbol.h"
+
+#include <memory>
+#include <vector>
 
 class RIFT_DLL TextureStore
 {
@@ -33,7 +37,10 @@ class RIFT_DLL TextureStore
 
     void add_texture(const char* key, const char* model, ParamArray& params);
 
-private:
+  private:
     struct Impl;
-    Impl* m_impl_;
+    Impl*                     m_impl_;
+    std::unique_ptr<ITexture> add_constant_color(ParamArray& params);
+
+    std::vector<float> convert_str_to_flt(const char* in_string);
 };

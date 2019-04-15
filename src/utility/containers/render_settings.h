@@ -22,17 +22,18 @@
 
 #pragma once
 
-#include "core/image_writers/i_out_writer.h"
 #include "core/lighting_integrators/i_light_integrator.h"
+#include "utility/image_writers/i_out_writer.h"
+
 #include <thread>
 
 struct RenderSettings
 {
-    int                      m_threads{static_cast<int>(std::thread::hardware_concurrency())};
-    int                      m_xres{1920};
-    int                      m_yres{1080};
-    int                      m_samples{100};
-    renderer::IntegratorEnum m_light_integrator{renderer::PATH_TRACING};
-    renderer::OutWriterEnum  m_output_writer{renderer::PNG};
-    const char*              m_output_filepath{"../image_vcpp"};
+    int m_threads{static_cast<int>(std::thread::hardware_concurrency())};
+    int m_xres{1920};
+    int m_yres{1080};
+    int m_samples{100};
+    IntegratorEnum m_light_integrator{PATH_TRACING};
+    OutWriterEnum  m_output_writer{OPENIMAGEIO};
+    const char*    m_output_filepath{"../../../image_vcpp.exr"};
 };

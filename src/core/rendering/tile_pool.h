@@ -20,39 +20,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "oiio_writer.h"
+#pragma once
 
-#include "OpenEXR/half.h"
-#include "OpenImageIO/imageio.h"
+#include <vector>
 
-using namespace OpenImageIO_v2_0;
-
-void renderer::OIIOWriter::write(
-    const IBuffer* buffer,
-    const char*    filename,
-    const int      size_x,
-    const int      size_y) const
+struct Tile
 {
-    const int buffer_size = size_x * size_y * 4;
+    const int x_min, x_max, y_min, y_max;
+};
 
-    auto pixels = std::make_unique<unsigned char>(buffer_size);
+class TilePool
+{
+  public:
+    TilePool() = default;
+    ~TilePool() = default;
 
-    const TypeDesc pixel_type = TypeDesc::HALF;
+    void create_pool(int x_res, int y_res, int tile_size);
 
-    for (int i = 0; i < buffer_size; i++)
-    {
-        pixels.get()[i] = static_cast<half>(buffer->get_pixels()[i]);
-    }
+    Tile& get_next_tile();
 
-    std::unique_ptr<ImageOutput> out = ImageOutput::create(filename);
-    if (out == nullptr)
-    {
-        return;
-    }
-
-    const ImageSpec spec(size_x, size_y, 4, pixel_type);
-    out->open(filename, spec);
-    out->write_image(pixel_type, pixels.get());
-
-    out->close();
-}
+  private:
+    std::vector<Tile> m_tile_pool_;
+    int               m_tile_index_{0};
+};

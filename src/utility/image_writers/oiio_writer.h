@@ -22,28 +22,14 @@
 
 #pragma once
 
-#include "utility/buffers/i_buffer.h"
+#include "utility/image_writers/i_out_writer.h"
 
-#include <string>
-
-namespace renderer
-{
-enum OutWriterEnum
-{
-    JPEG,
-    PNG,
-    OPENIMAGEIO
-};
-
-class IOutWriter
+class RIFT_DLL OIIOWriter : public IOutWriter
 {
   public:
-    virtual ~IOutWriter() = default;
-
-    virtual void write(
+    static void write(
         const IBuffer* buffer,
         const char*    filename,
-        int            size_x,
-        int            size_y) const = 0;
+        int            x_res,
+        int            y_res);
 };
-} // namespace renderer

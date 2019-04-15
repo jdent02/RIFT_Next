@@ -26,14 +26,16 @@
 #include "objects/hitables/i_hitable.h"
 #include "utility/data_types/hit_record.h"
 
+#include <utility>
 #include <vector>
 
 class HitableList : public IHitable
 {
   public:
     HitableList() = default;
+    ~HitableList();
 
-    explicit HitableList(std::vector<IHitable*>* l);
+    explicit HitableList(std::unique_ptr<std::vector<IHitable*>> l);
 
     bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec)
         const override;
@@ -41,11 +43,19 @@ class HitableList : public IHitable
     bool bounding_box(float t0, float t1, AABB& box) const override;
 
   private:
-    std::vector<IHitable*>* m_list_;
+    std::unique_ptr<std::vector<IHitable*>> m_list_;
 };
 
-inline HitableList::HitableList(std::vector<IHitable*>* l)
-  : m_list_(l)
+inline HitableList::~HitableList()
+{
+    for (auto hitable : *m_list_)
+    {
+        delete hitable;
+    }
+}
+
+inline HitableList::HitableList(std::unique_ptr<std::vector<IHitable*>> l)
+  : m_list_(std::move(l))
 {}
 
 inline bool HitableList::hit(
@@ -85,7 +95,7 @@ inline bool HitableList::bounding_box(float t0, float t1, AABB& box) const
 
     box = temp_box;
 
-    for (auto& item : *m_list_)
+    for (auto item : *m_list_)
     {
         if (item->bounding_box(t0, t1, temp_box))
         {

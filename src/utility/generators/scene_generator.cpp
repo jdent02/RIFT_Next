@@ -26,14 +26,10 @@
 
 void SceneGenerator::make_cornell_box(Scene* scene, RenderSettings& settings)
 {
-
-    ParamArray red_params;
-    red_params.add_entry("albedo", "0.78, 0.78, 0.78");
-
     scene->get_texture_store().add_texture(
         "red_tex",
         "constant_texture",
-        ParamArray().add_entry("albedo", "0.78, 0.78, 0.78"));
+        ParamArray().add_entry("albedo", "0.78 0.78 0.78"));
 
     // Camera
     const Vec3  lookfrom(278.f, 278.f, -800.f);
@@ -41,7 +37,7 @@ void SceneGenerator::make_cornell_box(Scene* scene, RenderSettings& settings)
     const float dist_to_focus = (lookfrom - lookat).length();
     const float aperture = 0.05f;
 
-    ICamera* cam = scene->create_cam(
+    scene->create_cam(
         "thin_lens",
         lookfrom,
         lookat,

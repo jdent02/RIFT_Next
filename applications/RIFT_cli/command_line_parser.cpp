@@ -1,21 +1,20 @@
 #include "command_line_parser.h"
 
-#include "core/image_writers/i_out_writer.h"
 #include "core/lighting_integrators/i_light_integrator.h"
+#include "utility/image_writers/i_out_writer.h"
 #include "utility/math_functions/utility_functions.h"
 #include "utility/system/version.h"
 
 #include <cstdio>
 #include <cstring>
+#include <memory>
 #include <thread>
 
-RenderSettings CommandLineParser::parse(
-    const int       argc,
-    char*           argv[])
+std::unique_ptr<RenderSettings> CommandLineParser::parse(const int argc, char* argv[])
 {
     const char* integrator_string{"Path Tracer"};
 
-    RenderSettings settings{};
+    std::unique_ptr<RenderSettings> settings = std::make_unique<RenderSettings>();
 
     for (int i = 0; i < argc; i++)
     {
@@ -23,36 +22,35 @@ RenderSettings CommandLineParser::parse(
         {
             char*  temp_threads = argv[i + 1];
             size_t str_len = strlen(temp_threads);
-            settings.m_threads = convert_number(str_len, temp_threads);
+            settings->m_threads = convert_number(str_len, temp_threads);
         }
         else if (!static_cast<bool>(strcmp(argv[i], "--resolution")))
         {
             char*  x = argv[i + 1];
             size_t x_len = strlen(x);
-            settings.m_xres = convert_number(x_len, x);
+            settings->m_xres = convert_number(x_len, x);
             char*  y = argv[i + 2];
             size_t y_len = strlen(y);
-            settings.m_yres = convert_number(y_len, y);
+            settings->m_yres = convert_number(y_len, y);
         }
         else if (!static_cast<bool>(strcmp(argv[i], "--filepath")))
         {
-            settings.m_output_filepath = argv[i + 1];
+            settings->m_output_filepath = argv[i + 1];
         }
         else if (!static_cast<bool>(strcmp(argv[i], "--integrator")))
         {
             if (!static_cast<bool>(strcmp(argv[i + 1], "path")))
             {
-                settings.m_light_integrator = renderer::PATH_TRACING;
+                settings->m_light_integrator = PATH_TRACING;
             }
             else if (!static_cast<bool>(strcmp(argv[i + 1], "direct")))
             {
-                settings.m_light_integrator = renderer::DIRECT_LIGHTING;
+                settings->m_light_integrator = DIRECT_LIGHTING;
                 integrator_string = "Direct Lighting";
             }
             else if (!static_cast<bool>(strcmp(argv[i + 1], "importance")))
             {
-                settings.m_light_integrator =
-                    renderer::LIGHT_SAMPLE_PATH_TRACING;
+                settings->m_light_integrator = LIGHT_SAMPLE_PATH_TRACING;
                 integrator_string = "Material Importance Sampling";
             }
         }
@@ -60,7 +58,7 @@ RenderSettings CommandLineParser::parse(
         {
             char*  sample_num = argv[i + 1];
             size_t str_len = strlen(sample_num);
-            settings.m_samples = convert_number(str_len, sample_num);
+            settings->m_samples = convert_number(str_len, sample_num);
         }
         else if (!static_cast<bool>(strcmp(argv[i], "--help")))
         {
@@ -70,12 +68,12 @@ RenderSettings CommandLineParser::parse(
         {
             if (!static_cast<bool>(strcmp(argv[i + 1], "jpeg")))
             {
-                settings.m_output_writer = renderer::JPEG;
+                settings->m_output_writer = JPEG;
             }
 #ifdef RIFT_USE_PLUGINS
             else if (!static_cast<bool>(strcmp(argv[i + 1], "oiio")))
             {
-                settings.m_output_writer = renderer::OPENIMAGEIO;
+                settings->m_output_writer = OPENIMAGEIO;
             }
 #else
             else if (!static_cast<bool>(strcmp(argv[i + 1], "oiio")))
@@ -94,11 +92,11 @@ RenderSettings CommandLineParser::parse(
         "Number of Samples: %i\n"
         "Integrator: %s\n"
         "Rendering Threads: %i\n",
-        settings.m_xres,
-        settings.m_yres,
-        settings.m_samples,
+        settings->m_xres,
+        settings->m_yres,
+        settings->m_samples,
         integrator_string,
-        settings.m_threads);
+        settings->m_threads);
 
     return settings;
 }

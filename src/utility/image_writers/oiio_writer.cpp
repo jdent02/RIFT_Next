@@ -20,15 +20,41 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#pragma once
+#include "oiio_writer.h"
 
-#include "core/samplers/rng/i_rand_generator.h"
+#include "utility/containers/render_settings.h"
 
-#include <memory>
+#include "OpenEXR/half.h"
+#include "OpenImageIO/imageio.h"
 
-class ISampler
+using namespace OpenImageIO_v2_0;
+
+void OIIOWriter::write(
+    const IBuffer* buffer,
+    const char*    filename,
+    const int      x_res,
+    const int      y_res)
 {
-  public:
-    std::unique_ptr<IRandGenerator> m_rand_gen;
-    std::unique_ptr<IRandGenerator> m_mc_gen;
-};
+    const int buffer_size = x_res * y_res * 4;
+
+    auto pixels = new half[buffer_size];
+
+    const TypeDesc pixel_type = TypeDesc::HALF;
+
+    for (int i = 0; i < buffer_size; i++)
+    {
+        pixels[i] = static_cast<half>(buffer->get_pixels()[i]);
+    }
+
+    std::unique_ptr<ImageOutput> out = ImageOutput::create(filename);
+    if (out == nullptr)
+    {
+        return;
+    }
+
+    const ImageSpec spec(x_res, y_res, 4, pixel_type);
+    out->open(filename, spec);
+    out->write_image(pixel_type, pixels);
+
+    out->close();
+}

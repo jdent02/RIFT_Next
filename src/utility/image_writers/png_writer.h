@@ -22,19 +22,14 @@
 
 #pragma once
 
-#include "core/image_writers/i_out_writer.h"
+#include "i_out_writer.h"
 
-#include <string>
-
-namespace renderer
+class RIFT_DLL PngWriter : public IOutWriter
 {
-    class PngWriter: public IOutWriter
-    {
-    public:
-        void write(
-            const IBuffer* buffer,
-            const char*    filename,
-            int                size_x,
-            int                size_y) const override;
-    };
-}
+  public:
+    static void write(
+        const IBuffer* buffer,
+        const char*    filename,
+        int            x_res,
+        int            y_res);
+};

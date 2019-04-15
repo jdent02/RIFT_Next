@@ -47,8 +47,7 @@ Box::Box(const Vec3& p0, const Vec3& p1, IMaterial* ptr)
   : m_pmin_(p0)
   , m_pmax_(p1)
 {
-
-    auto* list = new std::vector<IHitable*>;
+    auto list = std::make_unique<std::vector<IHitable*>>();
     list->emplace_back(new XYRect(p0.x(), p1.x(), p0.y(), p1.y(), p1.z(), ptr));
     list->emplace_back(new FlipNormals(
         new XYRect(p0.x(), p1.x(), p0.y(), p1.y(), p0.z(), ptr)));
@@ -58,5 +57,5 @@ Box::Box(const Vec3& p0, const Vec3& p1, IMaterial* ptr)
     list->emplace_back(new YZRect(p0.y(), p1.y(), p0.z(), p1.z(), p1.x(), ptr));
     list->emplace_back(new FlipNormals(
         new YZRect(p0.y(), p1.y(), p0.z(), p1.z(), p0.x(), ptr)));
-    m_list_ptr_ = new HitableList(list);
+    m_list_ptr_ = new HitableList(std::move(list));
 }

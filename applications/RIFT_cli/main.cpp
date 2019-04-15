@@ -27,6 +27,8 @@
 #include "utility/containers/render_settings.h"
 #include "utility/containers/scene.h"
 #include "utility/generators/scene_generator.h"
+#include "utility/image_writers/oiio_writer.h"
+#include "utility/image_writers/png_writer.h"
 
 #include <cstdio>
 #include <ctime>
@@ -35,12 +37,23 @@ int main(const int argc, char* argv[])
 {
     const time_t start_time = time(nullptr);
 
-    const RenderSettings settings = CommandLineParser::parse(argc, argv);
+    const std::unique_ptr<RenderSettings> settings =
+        CommandLineParser::parse(argc, argv);
 
-    std::unique_ptr<IRenderController> engine =
-        TestRenderControllerFactory::create();
+    std::unique_ptr<IBuffer> pixel_buffer = RgbaBufferFactory::create();
 
-    engine->add_settings(settings);
+    const std::unique_ptr<IRenderController> engine =
+        TestRenderControllerFactory::create(settings.get(), pixel_buffer.get());
+
+    pixel_buffer->reserve_buffer(settings->m_xres * settings->m_yres * 4);
+
+    engine->render();
+
+    OIIOWriter::write(
+        pixel_buffer.get(),
+        settings->m_output_filepath,
+        settings->m_xres,
+        settings->m_yres);
 
     // generate scene
     // set up render controller

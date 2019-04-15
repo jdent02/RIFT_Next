@@ -60,24 +60,20 @@ set (
     core/lighting_integrators/light_sample_path.h
     core/lighting_integrators/path_tracer.h
     core/lighting_integrators/path_tracer.cpp
+    core/rendering/tile_pool.h
+    core/rendering/tile_pool.cpp
     core/rendering/final_render_controller.h
     core/rendering/final_render_controller.cpp
     core/rendering/test_render_controller.h
     core/rendering/test_render_controller.cpp
     core/rendering/final_render_controller.h
     core/rendering/i_render_controller.h
-    core/image_writers/jpeg_writer.cpp
-    core/image_writers/jpeg_writer.h
-    core/image_writers/i_out_writer.h
-    core/image_writers/png_writer.cpp
-    core/image_writers/png_writer.h
-    core/samplers/i_sampler.h
 )
 
 if(USE_PLUGINS)
     list(APPEND CORE_SOURCES
-        core/image_writers/oiio_writer.h
-        core/image_writers/oiio_writer.cpp
+         utility/image_writers/oiio_writer.h
+         utility/image_writers/oiio_writer.cpp
     )
 endif()
 
@@ -107,6 +103,11 @@ set (
 
 set (
     UTILITY_SOURCES
+    utility/image_writers/jpeg_writer.cpp
+    utility/image_writers/jpeg_writer.h
+    utility/image_writers/i_out_writer.h
+    utility/image_writers/png_writer.cpp
+    utility/image_writers/png_writer.h
     utility/generators/scene_generator.h
     utility/generators/scene_generator.cpp
     utility/math_functions/maths.h
@@ -192,52 +193,52 @@ if(USE_PLUGINS)
     )
     set(
         OPEN_EXR_LIBS
-        ${RIFT_DEPENDENCIES_DIR}/openexr-release/lib/IlmImf-2_2.lib
-        ${RIFT_DEPENDENCIES_DIR}/openexr-release/lib/IlmImfUtil-2_2.lib
-        ${RIFT_DEPENDENCIES_DIR}/ilmbase-release/lib/Half.lib
-        ${RIFT_DEPENDENCIES_DIR}/ilmbase-release/lib/IlmThread-2_2.lib
-        ${RIFT_DEPENDENCIES_DIR}/ilmbase-release/lib/Iex-2_2.lib
-        ${RIFT_DEPENDENCIES_DIR}/ilmbase-release/lib/IexMath-2_2.lib
-        ${RIFT_DEPENDENCIES_DIR}/ilmbase-release/lib/Imath-2_2.lib
-        ${RIFT_DEPENDENCIES_DIR}/openexr-debug/lib/IlmImf-2_2.lib
-        ${RIFT_DEPENDENCIES_DIR}/openexr-debug/lib/IlmImfUtil-2_2.lib
-        ${RIFT_DEPENDENCIES_DIR}/ilmbase-debug/lib/Half.lib
-        ${RIFT_DEPENDENCIES_DIR}/ilmbase-debug/lib/IlmThread-2_2.lib
-        ${RIFT_DEPENDENCIES_DIR}/ilmbase-debug/lib/Iex-2_2.lib
-        ${RIFT_DEPENDENCIES_DIR}/ilmbase-debug/lib/IexMath-2_2.lib
-        ${RIFT_DEPENDENCIES_DIR}/ilmbase-debug/lib/Imath-2_2.lib
+        optimized ${RIFT_DEPENDENCIES_DIR}/openexr-release/lib/IlmImf-2_2.lib
+        optimized ${RIFT_DEPENDENCIES_DIR}/openexr-release/lib/IlmImfUtil-2_2.lib
+        optimized ${RIFT_DEPENDENCIES_DIR}/ilmbase-release/lib/Half.lib
+        optimized ${RIFT_DEPENDENCIES_DIR}/ilmbase-release/lib/IlmThread-2_2.lib
+        optimized ${RIFT_DEPENDENCIES_DIR}/ilmbase-release/lib/Iex-2_2.lib
+        optimized ${RIFT_DEPENDENCIES_DIR}/ilmbase-release/lib/IexMath-2_2.lib
+        optimized ${RIFT_DEPENDENCIES_DIR}/ilmbase-release/lib/Imath-2_2.lib
+        debug ${RIFT_DEPENDENCIES_DIR}/openexr-debug/lib/IlmImf-2_2.lib
+        debug ${RIFT_DEPENDENCIES_DIR}/openexr-debug/lib/IlmImfUtil-2_2.lib
+        debug ${RIFT_DEPENDENCIES_DIR}/ilmbase-debug/lib/Half.lib
+        debug ${RIFT_DEPENDENCIES_DIR}/ilmbase-debug/lib/IlmThread-2_2.lib
+        debug ${RIFT_DEPENDENCIES_DIR}/ilmbase-debug/lib/Iex-2_2.lib
+        debug ${RIFT_DEPENDENCIES_DIR}/ilmbase-debug/lib/IexMath-2_2.lib
+        debug ${RIFT_DEPENDENCIES_DIR}/ilmbase-debug/lib/Imath-2_2.lib
     )
 
     set(
         ZLIB_LIBS
-        ${RIFT_DEPENDENCIES_DIR}/zlib-release/lib/zlibstatic.lib
-        ${RIFT_DEPENDENCIES_DIR}/zlib-debug/lib/zlibstaticd.lib
+        optimized ${RIFT_DEPENDENCIES_DIR}/zlib-release/lib/zlibstatic.lib
+        debug ${RIFT_DEPENDENCIES_DIR}/zlib-debug/lib/zlibstaticd.lib
     )
 
     set(
         OIIO_LIBS
-        ${RIFT_DEPENDENCIES_DIR}/oiio-release/lib/OpenImageIO.lib
-        ${RIFT_DEPENDENCIES_DIR}/oiio-release/lib/OpenImageIO_Util.lib
-        ${RIFT_DEPENDENCIES_DIR}/oiio-debug/lib/OpenImageIO.lib
-        ${RIFT_DEPENDENCIES_DIR}/oiio-debug/lib/OpenImageIO_Util.lib
+        optimized ${RIFT_DEPENDENCIES_DIR}/oiio-release/lib/OpenImageIO.lib
+        optimized ${RIFT_DEPENDENCIES_DIR}/oiio-release/lib/OpenImageIO_Util.lib
+        debug ${RIFT_DEPENDENCIES_DIR}/oiio-debug/lib/OpenImageIO.lib
+        debug ${RIFT_DEPENDENCIES_DIR}/oiio-debug/lib/OpenImageIO_Util.lib
     )
 
     set(
         TIFF_LIB
-        ${RIFT_DEPENDENCIES_DIR}/libtiff-release/lib/libtiff.lib
-        ${RIFT_DEPENDENCIES_DIR}/libtiff-debug/lib/libtiff.lib
+        optimized ${RIFT_DEPENDENCIES_DIR}/libtiff-release/lib/libtiff.lib
+        debug ${RIFT_DEPENDENCIES_DIR}/libtiff-debug/lib/libtiff.lib
         )
 
     set(
         PNG_LIB
-        ${RIFT_DEPENDENCIES_DIR}/libpng-release/lib/libpng16_static.lib
-        ${RIFT_DEPENDENCIES_DIR}/libpng-debug/lib/libpng16_staticd.lib
+        optimized ${RIFT_DEPENDENCIES_DIR}/libpng-release/lib/libpng16_static.lib
+        debug ${RIFT_DEPENDENCIES_DIR}/libpng-debug/lib/libpng16_staticd.lib
     )
 
     set(
         JPEG_LIB
-        ${RIFT_DEPENDENCIES_DIR}/libjpeg-turbo-release/lib/jpeg-static.lib
-        ${RIFT_DEPENDENCIES_DIR}/libjpeg-turbo-debug/lib/jpeg-static.lib
+        optimized ${RIFT_DEPENDENCIES_DIR}/libjpeg-turbo-release/lib/jpeg-static.lib
+        debug ${RIFT_DEPENDENCIES_DIR}/libjpeg-turbo-debug/lib/jpeg-static.lib
     )
 
     target_link_libraries(
@@ -267,6 +268,11 @@ if (MSVC)
         CMAKE_EXE_LINKER_FLAGS_RELEASE
         "/OPT:REF /OPT:ICF /LTCG /INCREMENTAL:NO"
     )
+
+    set(
+        CMAKE_SHARED_LINKER_FLAGS_RELEASE
+        "/OPT:REF /OPT:ICF /LTCG /INCREMENTAL:NO"
+    )
 endif()
 
 add_custom_command (TARGET RIFT POST_BUILD
@@ -281,11 +287,6 @@ add_custom_command (TARGET RIFT POST_BUILD
 source_group(
     "src\\core\\acceleration_structures" REGULAR_EXPRESSION
     core/acceleration_structures/.*
-)
-
-source_group(
-    "src\\core\\image_writers" REGULAR_EXPRESSION
-    core/image_writers/.*
 )
 
 source_group(
@@ -331,6 +332,11 @@ source_group(
 source_group(
     "src\\utility" REGULAR_EXPRESSION
     utility/.*
+)
+
+source_group(
+    "src\\utility\\image_writers" REGULAR_EXPRESSION
+    utility/image_writers/.*
 )
 
 source_group(

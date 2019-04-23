@@ -5,13 +5,13 @@ Eventually decided I wanted a challenge so this is a re-write and re engineering
 
 Name is an acronym for a “Reduction in Free Time".
 
-Currently compiles on Windows only with Visual Studio 2017. Other compilers and operating systems haven’t been tested.
+Currently compiles on Windows with Visual Studio 2017 or 2019. Other compilers and operating systems haven’t been tested.
 
 Includes headers from the STB image library: https://github.com/nothings/stb
 
 The default ‘no frills’ build has PNG and JPEG export.  There’s also an optional OpenImageIO exporter, and it requires the following dependency versions:
 
-* Boost - 1.66
+* Boost - 1.69
 * OpenImageIO - 2.0.6
 * OpenEXR - 2.2.0
 * ILMBase - 2.2.0

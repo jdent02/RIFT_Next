@@ -21,8 +21,30 @@
 // SOFTWARE.
 
 #include "tile_pool.h"
+#include <iostream>
 
-void TilePool::create_pool(const int x_res, const int y_res, const int tile_size) {}
+void TilePool::create_pool(
+    const int x_res,
+    const int y_res,
+    const int tile_size)
+{
+    const int x_tiles = x_res / tile_size;
+    const int y_tiles = y_res / tile_size;
+
+    for (int y = 1; y <= y_tiles; ++y)
+    {
+        const int y_start = y_res - y * tile_size;
+        const int y_end = y_start + tile_size;
+        for (int x = 0; x < x_tiles; ++x)
+        {
+            const int x_start = x * tile_size;
+            const int x_end = x_start + tile_size;
+            // m_tile_pool_.push_back(Tile{x_start, x_end, y_start, y_end});
+            std::cout << x_start << " " << x_end << " " << y_start << " "
+                      << y_end << "\n";
+        }
+    }
+}
 
 Tile& TilePool::get_next_tile()
 {

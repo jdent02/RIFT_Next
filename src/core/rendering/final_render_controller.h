@@ -31,7 +31,7 @@ class Scene;
 class RIFT_DLL FinalRenderController : public IRenderController
 {
   public:
-    FinalRenderController();
+    FinalRenderController(RenderSettings* settings, IBuffer* buffer);
     ~FinalRenderController();
 
     void render() const override;
@@ -45,5 +45,7 @@ class RIFT_DLL FinalRenderController : public IRenderController
 class RIFT_DLL FinalRenderControllerFactory : IControllerFactory
 {
   public:
-    static std::unique_ptr<IRenderController> create();
+    static std::unique_ptr<IRenderController> create(
+        RenderSettings* settings,
+        IBuffer* buffer);
 };

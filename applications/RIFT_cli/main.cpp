@@ -42,18 +42,21 @@ int main(const int argc, char* argv[])
 
     std::unique_ptr<IBuffer> pixel_buffer = RgbaBufferFactory::create();
 
-    const std::unique_ptr<IRenderController> engine =
-        TestRenderControllerFactory::create(settings.get(), pixel_buffer.get());
-
     pixel_buffer->reserve_buffer(settings->m_xres * settings->m_yres * 4);
+
+    const std::unique_ptr<IRenderController> engine =
+        FinalRenderControllerFactory::create(
+            settings.get(), pixel_buffer.get());
 
     engine->render();
 
+    /*
     OIIOWriter::write(
         pixel_buffer.get(),
         settings->m_output_filepath,
         settings->m_xres,
         settings->m_yres);
+    */
 
     // generate scene
     // set up render controller

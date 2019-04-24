@@ -28,15 +28,20 @@
 
 struct FinalRenderController::Impl
 {
-    Scene*         render_scene;
-    RenderSettings settings;
-    RgbaBuffer*    m_buffer;
+    Scene*         m_render_scene;
+    RenderSettings* m_settings;
+    IBuffer*    m_pixel_buffer;
     TilePool       m_tile_pool;
 };
 
-FinalRenderController::FinalRenderController()
+FinalRenderController::FinalRenderController(
+    RenderSettings* settings,
+    IBuffer*        buffer)
   : m_impl_(new Impl)
-{}
+{
+    m_impl_->m_settings = settings;
+    m_impl_->m_pixel_buffer = buffer;
+}
 
 FinalRenderController::~FinalRenderController()
 {
@@ -46,12 +51,12 @@ FinalRenderController::~FinalRenderController()
 void FinalRenderController::render() const
 {
     m_impl_->m_tile_pool.create_pool(
-        m_impl_->settings.m_xres, m_impl_->settings.m_yres, 32);
+        m_impl_->m_settings->m_xres, m_impl_->m_settings->m_yres, 64);
 }
 
 void FinalRenderController::cleanup() {}
 
-std::unique_ptr<IRenderController> FinalRenderControllerFactory::create()
+std::unique_ptr<IRenderController> FinalRenderControllerFactory::create(RenderSettings* settings, IBuffer* buffer)
 {
-    return std::make_unique<FinalRenderController>();
+    return std::make_unique<FinalRenderController>(settings, buffer);
 }

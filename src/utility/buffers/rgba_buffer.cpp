@@ -24,7 +24,7 @@
 
 struct RgbaBuffer::Impl
 {
-    std::unique_ptr<float[]> m_pixels;
+    float* m_pixels;
 };
 
 RgbaBuffer::RgbaBuffer()
@@ -33,22 +33,23 @@ RgbaBuffer::RgbaBuffer()
 
 RgbaBuffer::~RgbaBuffer()
 {
+    delete[] m_impl_->m_pixels;
     delete m_impl_;
 }
 
 void RgbaBuffer::reserve_buffer(const int size)
 {
-    m_impl_->m_pixels = std::make_unique<float[]>(size);
+    m_impl_->m_pixels = new float[size];
 }
 
 void RgbaBuffer::clear_buffer()
 {
-    m_impl_->m_pixels.reset();
+    delete[] m_impl_->m_pixels;
 }
 
 float* RgbaBuffer::get_pixels() const
 {
-    return m_impl_->m_pixels.get();
+    return m_impl_->m_pixels;
 }
 
 std::unique_ptr<IBuffer> RgbaBufferFactory::create()

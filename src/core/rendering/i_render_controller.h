@@ -42,5 +42,5 @@ class RIFT_DLL IControllerFactory
   public:
     virtual ~IControllerFactory() = default;
 
-    virtual std::unique_ptr<IRenderController> create() = 0;
+    virtual std::unique_ptr<IRenderController> create(RenderSettings* settings, IBuffer* buffer) = 0;
 };

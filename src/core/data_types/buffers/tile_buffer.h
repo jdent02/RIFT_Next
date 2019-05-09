@@ -22,21 +22,17 @@
 
 #pragma once
 
-#include "utility/system/_dll/dll_symbol.h"
-#include <memory>
+#include "core/data_types/buffers/tile.h"
 
-class RIFT_DLL IBuffer
+#include <vector>
+
+class TileBuffer
 {
   public:
-    virtual ~IBuffer() = default;
-    virtual void   reserve_buffer(int size) = 0;
-    virtual void   clear_buffer() = 0;
-    virtual float* get_pixels() const = 0;
-};
+    explicit TileBuffer(int num_tiles);
 
-class RIFT_DLL IBufferFactory
-{
-  public:
-    virtual ~IBufferFactory() = default;
-    virtual std::unique_ptr<IBuffer> create() = 0;
+    std::vector<Tile>& get_tiles();
+
+  private:
+    std::vector<Tile> m_tiles_;
 };

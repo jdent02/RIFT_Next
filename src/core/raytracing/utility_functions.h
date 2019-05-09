@@ -94,17 +94,3 @@ inline Vec3 random_in_unit_disk()
 
     return p;
 }
-
-inline int convert_number(const size_t length, const char* number)
-{
-    int m_digit{0};
-
-    for (size_t i = 0; i < length - 1; i++)
-    {
-        m_digit += int((number[i] - '0') * pow(10, length - 1 - i));
-    }
-
-    m_digit += number[length - 1] - '0';
-
-    return m_digit;
-}

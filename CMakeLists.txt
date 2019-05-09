@@ -1,6 +1,6 @@
 # Released under MIT License
 
-# Copyright (c) 2018 Jonathan Dent.
+# Copyright (c) 2019 Jonathan Dent.
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -34,12 +34,12 @@ set (version_patch    0)
 set (version_maturity alpha)
 
 configure_file (
-    ${PROJECT_SOURCE_DIR}/src/utility/system/version.h.in
-    ${PROJECT_SOURCE_DIR}/src/utility/system/version.h
+    ${PROJECT_SOURCE_DIR}/src/utilities/system/version.h.in
+    ${PROJECT_SOURCE_DIR}/src/utilities/system/version.h
 )
 
 # Options
-option(USE_PLUGINS "Enable external plugins" Off)
+option(USE_PLUGINS "Enable external plugins" OFF)
 set(RIFT_DEPENDENCIES_DIR "" CACHE PATH "Path to dependencies dirctory")
 
 if (USE_PLUGINS)

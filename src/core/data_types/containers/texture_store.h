@@ -20,33 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "texture_store.h"
+#pragma once
 
-#include "textures/i_texture.h"
-
-#include <iostream>
+#include "utility/containers/param_array.h"
+#include "utility/system/_dll/dll_symbol.h"
 #include <memory>
-#include <sstream>
-#include <string>
-#include <unordered_map>
 
-struct TextureStore::Impl
+class ITexture;
+
+class RIFT_DLL TextureStore
 {
-    std::unordered_map<const char*, std::unique_ptr<ITexture>> m_textures;
+  public:
+    TextureStore();
+    ~TextureStore();
+
+    void add_texture(const char* key, const char* model, ParamArray& params) const;
+    void add_texture(const char* key, std::unique_ptr<ITexture> texture) const;
+
+  private:
+    struct Impl;
+    Impl* m_impl_;
 };
-
-TextureStore::TextureStore()
-  : m_impl_(new Impl)
-{}
-
-TextureStore::~TextureStore()
-{
-    delete m_impl_;
-}
-
-void TextureStore::add_texture(
-    const char* key,
-    const char* model,
-    ParamArray& params)
-{
-}

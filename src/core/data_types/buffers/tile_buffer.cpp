@@ -20,20 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#pragma once
+#include "tile_buffer.h"
 
-#include "utility/containers/param_array.h"
-#include "utility/system/_dll/dll_symbol.h"
-
-class RIFT_DLL TextureStore
+TileBuffer::TileBuffer(const int num_tiles)
 {
-  public:
-    TextureStore();
-    ~TextureStore();
+    m_tiles_.reserve(num_tiles);
+}
 
-    void add_texture(const char* key, const char* model, ParamArray& params);
-
-  private:
-    struct Impl;
-    Impl* m_impl_;
-};
+std::vector<Tile>& TileBuffer::get_tiles()
+{
+    return m_tiles_;
+}

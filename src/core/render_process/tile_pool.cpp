@@ -20,39 +20,33 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "rgba_buffer.h"
+#include "tile_pool.h"
+#include <iostream>
 
-struct RgbaBuffer::Impl
+void TilePool::create_pool(
+    const int x_res,
+    const int y_res,
+    const int tile_size)
 {
-    float* m_pixels;
-};
+    const int x_tiles = x_res / tile_size;
+    const int y_tiles = y_res / tile_size;
 
-RgbaBuffer::RgbaBuffer()
-  : m_impl_(new Impl)
-{}
-
-RgbaBuffer::~RgbaBuffer()
-{
-    delete[] m_impl_->m_pixels;
-    delete m_impl_;
+    for (int y = 1; y <= y_tiles; ++y)
+    {
+        const int y_start = y_res - y * tile_size;
+        const int y_end = y_start + tile_size;
+        for (int x = 0; x < x_tiles; ++x)
+        {
+            const int x_start = x * tile_size;
+            const int x_end = x_start + tile_size;
+            m_tile_pool_.push_back(TileOutline{x_start, x_end, y_start, y_end});
+            std::cout << x_start << " " << x_end << " " << y_start << " "
+                      << y_end << "\n";
+        }
+    }
 }
 
-void RgbaBuffer::reserve_buffer(const int size)
+TileOutline& TilePool::get_next_tile()
 {
-    m_impl_->m_pixels = new float[size];
-}
-
-void RgbaBuffer::clear_buffer()
-{
-    delete[] m_impl_->m_pixels;
-}
-
-float* RgbaBuffer::get_pixels() const
-{
-    return m_impl_->m_pixels;
-}
-
-std::unique_ptr<IBuffer> RgbaBufferFactory::create()
-{
-    return std::make_unique<RgbaBuffer>();
+    return m_tile_pool_[m_tile_index_++];
 }

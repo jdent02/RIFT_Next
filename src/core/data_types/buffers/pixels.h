@@ -22,15 +22,7 @@
 
 #pragma once
 
-#include "utility/data_types/vec3.h"
-
-struct CameraSettings
+struct RgbaPixel
 {
-    Vec3  m_origin;
-    Vec3  m_lower_left_corner;
-    Vec3  m_horizontal;
-    Vec3  m_vertical;
-    Vec3  m_u, m_v, m_w;
-    float m_lens_radius;
-    float m_time0, m_time1;
+    float r, g, b, a;
 };

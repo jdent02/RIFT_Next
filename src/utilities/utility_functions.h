@@ -22,18 +22,18 @@
 
 #pragma once
 
-#include "core/lighting_integrators/i_light_integrator.h"
-#include "utility/image_writers/i_out_writer.h"
+#include <cmath>
 
-#include <thread>
-
-struct RenderSettings
+inline int convert_number(const size_t length, const char* number)
 {
-    int m_threads{static_cast<int>(std::thread::hardware_concurrency())};
-    int m_xres{1920};
-    int m_yres{1080};
-    int m_samples{100};
-    IntegratorEnum m_light_integrator{PATH_TRACING};
-    OutWriterEnum  m_output_writer{OPENIMAGEIO};
-    const char*    m_output_filepath{"../../../image_vcpp.exr"};
-};
+    int m_digit{0};
+
+    for (size_t i = 0; i < length - 1; i++)
+    {
+        m_digit += int((number[i] - '0') * pow(10, length - 1 - i));
+    }
+
+    m_digit += number[length - 1] - '0';
+
+    return m_digit;
+}

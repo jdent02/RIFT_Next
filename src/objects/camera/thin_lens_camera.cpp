@@ -22,17 +22,7 @@
 
 #include "thin_lens_camera.h"
 
-#include "utility/math_functions/utility_functions.h"
-
-struct ThinLensCamera::Impl
-{
-    CameraSettings settings;
-};
-
-ThinLensCamera::~ThinLensCamera()
-{
-    delete m_impl_;
-}
+#include "core/raytracing/utility_functions.h"
 
 ThinLensCamera::ThinLensCamera(
     const Vec3  lookfrom,
@@ -44,48 +34,31 @@ ThinLensCamera::ThinLensCamera(
     const float focus_dist,
     const float t0,
     const float t1)
-  : m_impl_(new Impl)
+  : m_origin_(lookfrom)
+  , m_w_(unit_vector(lookfrom - lookat))
+  , m_lens_radius_(aperture / 2.f)
+  , m_time0_(t0)
+  , m_time1_(t1)
 {
-    m_impl_->settings.m_origin = lookfrom;
-    m_impl_->settings.m_lens_radius = aperture / 2.f;
-    m_impl_->settings.m_time0 = t0;
-    m_impl_->settings.m_time1 = t1;
     const float theta = vfov * FLOAT_M_PI / 180.f;
     const float half_height = std::tan(theta / 2.f);
     const float half_width = aspect * half_height;
 
-    m_impl_->settings.m_w = unit_vector(lookfrom - lookat);
-    m_impl_->settings.m_u = unit_vector(cross(vup, m_impl_->settings.m_w));
-    m_impl_->settings.m_v = cross(m_impl_->settings.m_w, m_impl_->settings.m_u);
-    m_impl_->settings.m_lower_left_corner =
-        m_impl_->settings.m_origin -
-        half_width * focus_dist * m_impl_->settings.m_u -
-        half_height * focus_dist * m_impl_->settings.m_v -
-        focus_dist * m_impl_->settings.m_w;
-    m_impl_->settings.m_horizontal =
-        2 * half_width * focus_dist * m_impl_->settings.m_u;
-    m_impl_->settings.m_vertical =
-        2 * half_height * focus_dist * m_impl_->settings.m_v;
+    m_u_ = unit_vector(cross(vup, m_w_));
+    m_v_ = cross(m_w_, m_u_);
+    m_lower_left_corner_ = m_origin_ - half_width * focus_dist * m_u_ -
+                           half_height * focus_dist * m_v_ - focus_dist * m_w_;
+    m_horizontal_ = 2 * half_width * focus_dist * m_u_;
+    m_vertical_ = 2 * half_height * focus_dist * m_v_;
 }
 
 Ray ThinLensCamera::get_ray(const float s, const float t) const
 {
-    Vec3       rd = m_impl_->settings.m_lens_radius * random_in_unit_disk();
-    const Vec3 offset =
-        m_impl_->settings.m_u * rd.x() + m_impl_->settings.m_v * rd.y();
-    const float time =
-        m_impl_->settings.m_time0 +
-        rand() * INV_RAND_MAX *
-            (m_impl_->settings.m_time1 - m_impl_->settings.m_time0);
-    return {m_impl_->settings.m_origin + offset,
-            m_impl_->settings.m_lower_left_corner +
-                s * m_impl_->settings.m_horizontal +
-                t * m_impl_->settings.m_vertical - m_impl_->settings.m_origin -
-                offset,
+    Vec3        rd = m_lens_radius_ * random_in_unit_disk();
+    const Vec3  offset = m_u_ * rd.x() + m_v_ * rd.y();
+    const float time = m_time0_ + rand() * INV_RAND_MAX * (m_time1_ - m_time0_);
+    return {m_origin_ + offset,
+            m_lower_left_corner_ + s * m_horizontal_ + t * m_vertical_ -
+                m_origin_ - offset,
             time};
-}
-
-CameraSettings& ThinLensCamera::get_cam_settings() const
-{
-    return m_impl_->settings;
 }

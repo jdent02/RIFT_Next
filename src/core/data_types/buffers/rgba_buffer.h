@@ -22,24 +22,3 @@
 
 #pragma once
 
-#include <vector>
-
-struct Tile
-{
-    const int x_min, x_max, y_min, y_max;
-};
-
-class TilePool
-{
-  public:
-    TilePool() = default;
-    ~TilePool() = default;
-
-    void create_pool(int x_res, int y_res, int tile_size);
-
-    Tile& get_next_tile();
-
-  private:
-    std::vector<Tile> m_tile_pool_;
-    int               m_tile_index_{0};
-};

@@ -20,34 +20,40 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#pragma once
+#include "texture_store.h"
 
-#include "core/data_types/ray.h"
-#include "core/data_types/vec3.h"
-#include "objects/camera/i_camera.h"
+#include "textures/i_texture.h"
 
-class ThinLensCamera : public ICamera
+#include <iostream>
+#include <memory>
+#include <sstream>
+#include <string>
+#include <unordered_map>
+
+struct TextureStore::Impl
 {
-  public:
-    ThinLensCamera(
-        Vec3  lookfrom,
-        Vec3  lookat,
-        Vec3  vup,
-        float vfov,
-        float aspect,
-        float aperture,
-        float focus_dist,
-        float t0,
-        float t1);
-
-    Ray get_ray(float s, float t) const override;
-
-  private:
-    Vec3  m_origin_;
-    Vec3  m_lower_left_corner_;
-    Vec3  m_horizontal_;
-    Vec3  m_vertical_;
-    Vec3  m_u_, m_v_, m_w_;
-    float m_lens_radius_;
-    float m_time0_, m_time1_;
+    std::unordered_map<const char*, std::unique_ptr<ITexture>> m_textures;
 };
+
+TextureStore::TextureStore()
+  : m_impl_(new Impl)
+{}
+
+TextureStore::~TextureStore()
+{
+    delete m_impl_;
+}
+
+void TextureStore::add_texture(
+    const char* key,
+    const char* model,
+    ParamArray& params) const 
+{
+    // TODO
+}
+
+void TextureStore::add_texture(
+    const char* key,
+    std::unique_ptr<ITexture> texture) const {
+    m_impl_->m_textures[key] = std::move(texture);
+}

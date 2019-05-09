@@ -21,14 +21,10 @@
 #SOFTWARE.
 
 set (
-    CAMERA_SOURCES
+    HITABLES_SOURCES
     objects/camera/i_camera.h
     objects/camera/thin_lens_camera.h
     objects/camera/thin_lens_camera.cpp
-)
-
-set (
-    HITABLES_SOURCES
     objects/hitables/constant_medium.h
     objects/hitables/constant_medium.cpp
     objects/hitables/i_hitable.h
@@ -48,11 +44,20 @@ set (
 
 set (
     CORE_SOURCES
-    core/acceleration_structures/bvh_node.h
-    core/acceleration_structures/bvh_node.cpp
-    core/acceleration_structures/aabb.h
-    core/acceleration_structures/aabb.cpp
-    core/acceleration_structures/bvh_utils.h
+    core/data_types/buffers/rgba_buffer.h
+    core/data_types/buffers/rgba_buffer.cpp
+    core/data_types/buffers/pixels.h
+    core/data_types/buffers/tile_buffer.h
+    core/data_types/buffers/tile_buffer.cpp
+    core/data_types/containers/render_settings.h
+    core/data_types/containers/scene.h
+    core/data_types/containers/scene.cpp
+    core/data_types/containers/texture_store.h
+    core/data_types/containers/texture_store.cpp
+    core/data_types/hit_record.h
+    core/data_types/ray.h
+    core/data_types/scatter_record.h
+    core/data_types/vec3.h
     core/lighting_integrators/i_light_integrator.h
     core/lighting_integrators/direct_lighting.h
     core/lighting_integrators/direct_lighting.cpp
@@ -60,22 +65,27 @@ set (
     core/lighting_integrators/light_sample_path.h
     core/lighting_integrators/path_tracer.h
     core/lighting_integrators/path_tracer.cpp
-    core/rendering/tile_pool.h
-    core/rendering/tile_pool.cpp
-    core/rendering/final_render_controller.h
-    core/rendering/final_render_controller.cpp
-    core/rendering/test_render_controller.h
-    core/rendering/test_render_controller.cpp
-    core/rendering/final_render_controller.h
-    core/rendering/i_render_controller.h
+    core/raytracing/pdfs/cosine_pdf.h
+    core/raytracing/pdfs/hitable_pdf.h
+    core/raytracing/pdfs/mixture_pdf.h
+    core/raytracing/pdfs/pdf.h
+    core/raytracing/aabb.h
+    core/raytracing/aabb.cpp
+    core/raytracing/bvh_node.h
+    core/raytracing/bvh_node.cpp
+    core/raytracing/bvh_utils.h
+    core/raytracing/onb.h
+    core/raytracing/scatter_functions.h
+    core/raytracing/utility_functions.h
+    core/render_process/tile_pool.h
+    core/render_process/tile_pool.cpp
+    core/render_process/final_render_controller.h
+    core/render_process/final_render_controller.cpp
+    core/render_process/test_render_controller.h
+    core/render_process/test_render_controller.cpp
+    core/render_process/final_render_controller.h
+    core/render_process/i_render_controller.h
 )
-
-if(USE_PLUGINS)
-    list(APPEND CORE_SOURCES
-         utility/image_writers/oiio_writer.h
-         utility/image_writers/oiio_writer.cpp
-    )
-endif()
 
 set (
     MATERIAL_SOURCES
@@ -103,54 +113,33 @@ set (
 
 set (
     UTILITY_SOURCES
-    utility/image_writers/jpeg_writer.cpp
-    utility/image_writers/jpeg_writer.h
-    utility/image_writers/i_out_writer.h
-    utility/image_writers/png_writer.cpp
-    utility/image_writers/png_writer.h
-    utility/generators/scene_generator.h
-    utility/generators/scene_generator.cpp
-    utility/math_functions/maths.h
-    utility/math_functions/scalars.h
-    utility/noises/perlin.h
-    utility/containers/scene.h
-    utility/containers/scene.cpp
-    utility/containers/param_array.h
-    utility/containers/param_array.cpp
-    utility/containers/render_settings.h
-    utility/containers/camera_settings.h
-    utility/containers/texture_store.h
-    utility/containers/texture_store.cpp
-    utility/system/version.h
-    utility/system/_dll/dll_symbol.h
-    utility/system/_dll/dllmain.cpp
-    utility/system/_dll/header.h
-    utility/system/_dll/targetver.h
-    utility/data_types/ray.h
-    utility/data_types/vec3.h
-    utility/data_types/hit_record.h
-    utility/data_types/scatter_record.h
-    utility/math_functions/pdfs/pdf.h
-    utility/math_functions/utility_functions.h
-    utility/math_functions/pdfs/cosine_pdf.h
-    utility/math_functions/pdfs/hitable_pdf.h
-    utility/math_functions/pdfs/mixture_pdf.h
-    utility/math_functions/onb.h
-    utility/math_functions/color_functions.h
-    utility/math_functions/scatter_functions.h
-    utility/buffers/i_buffer.h
-    utility/buffers/rgba_buffer.h
-    utility/buffers/rgba_buffer.cpp
-    utility/rng/xoroshiro128.h
-    utility/rng/xoroshiro128.cpp
-    utility/rng/i_rand_generator.h
-    utility/rng/drand48.cpp
-    utility/rng/drand48.h
+    utilities/generators/scene_generator.h
+    utilities/generators/scene_generator.cpp
+    utilities/maths/maths.h
+    utilities/maths/scalars.h
+    utilities/noises/perlin.h
+    utilities/rng/drand48.h
+    utilities/rng/drand48.cpp
+    utilities/rng/xoroshiro128.h
+    utilities/rng/xoroshiro128.cpp
+    utilities/system/version.h
+    utilities/system/_dll/dll_symbol.h
+    utilities/system/_dll/dllmain.cpp
+    utilities/system/_dll/header.h
+    utilities/system/_dll/targetver.h
+    utilities/color_utilities.h
+    utilities/utility_functions.h
 )
+
+if(USE_PLUGINS)
+    list(APPEND UTILITY_SOURCES
+        utilities/image_writers/oiio_writer.h
+        utilities/image_writers/oiio_writer.cpp
+    )
+endif()
 
 set (
     CPP_SOURCES
-    ${CAMERA_SOURCES}
     ${CORE_SOURCES}
     ${HITABLES_SOURCES}
     ${MATERIAL_SOURCES}
@@ -275,18 +264,20 @@ if (MSVC)
     )
 endif()
 
-add_custom_command (TARGET RIFT POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/vcpp_build/src/Release/RIFT.dll ${PROJECT_SOURCE_DIR}/vcpp_build/applications/RIFT_cli/Release
-)
-
-# add_custom_command (TARGET RIFT POST_BUILD
-#     COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_SOURCE_DIR}/vcpp_debug_build/src/Debug/RIFT.dll ${PROJECT_SOURCE_DIR}/vcpp_debug_build/applications/RIFT_cli/Debug
-# )
-
 #Visual Studio folder layout
 source_group(
-    "src\\core\\acceleration_structures" REGULAR_EXPRESSION
-    core/acceleration_structures/.*
+    "src\\core\\data_types\\buffers" REGULAR_EXPRESSION
+    core/data_types/buffers/.*
+)
+
+source_group(
+    "src\\core\\data_types\\containers" REGULAR_EXPRESSION
+    core/data_types/containers/.*
+)
+
+source_group(
+    "src\\core\\data_types" REGULAR_EXPRESSION
+    core/data_types/.*
 )
 
 source_group(
@@ -295,13 +286,13 @@ source_group(
 )
 
 source_group(
-    "src\\core\\rendering" REGULAR_EXPRESSION
-    core/rendering/.*
+    "src\\core\\raytracing" REGULAR_EXPRESSION
+    core/raytracing/.*
 )
 
 source_group(
-    "src\\core\\samplers" REGULAR_EXPRESSION
-    core/samplers/.*
+    "src\\core\\render_process" REGULAR_EXPRESSION
+    core/render_process/.*
 )
 
 source_group(
@@ -310,12 +301,12 @@ source_group(
 )
 
 source_group(
-    "src\\object\\cameras" REGULAR_EXPRESSION
+    "src\\objects\\cameras" REGULAR_EXPRESSION
     objects/camera/.*
 )
 
 source_group(
-    "src\\object\\hitables" REGULAR_EXPRESSION
+    "src\\objects\\hitables" REGULAR_EXPRESSION
     objects/hitables/.*
 )
 
@@ -325,72 +316,41 @@ source_group(
 )
 
 source_group(
-    "src\\third_party" REGULAR_EXPRESSION
-    third_party/.*
+    "src\\utilities" REGULAR_EXPRESSION
+    utilities/.*
 )
 
 source_group(
-    "src\\utility" REGULAR_EXPRESSION
-    utility/.*
+    "src\\utilities\\image_writers" REGULAR_EXPRESSION
+    utilities/image_writers/.*
 )
 
 source_group(
-    "src\\utility\\image_writers" REGULAR_EXPRESSION
-    utility/image_writers/.*
+    "src\\utilities\\generators" REGULAR_EXPRESSION
+    utilities/generators/.*
 )
 
 source_group(
-    "src\\utility\\containers" REGULAR_EXPRESSION
-    utility/containers/.*
+    "src\\utilities\\maths" REGULAR_EXPRESSION
+    utilities/maths/.*
 )
 
 source_group(
-    "src\\utility\\buffers" REGULAR_EXPRESSION
-    utility/buffers/.*
+    "src\\utilities\\noises" REGULAR_EXPRESSION
+    utilities/noises/.*
 )
 
 source_group(
-    "src\\utility\\data_types" REGULAR_EXPRESSION
-    utility/data_types/.*
+    "src\\utilities\\rng" REGULAR_EXPRESSION
+    utilities/rng/.*
 )
 
 source_group(
-    "src\\utility\\generators" REGULAR_EXPRESSION
-    utility/generators/.*
+    "src\\utilities\\system" REGULAR_EXPRESSION
+    utilities/system/.*
 )
 
 source_group(
-    "src\\utility\\math_functions" REGULAR_EXPRESSION
-    utility/math_functions/.*
-)
-
-source_group(
-    "src\\utility\\math_functions\\pdf" REGULAR_EXPRESSION
-    utility/math_functions/pdfs.*
-)
-
-source_group(
-    "src\\utility\\noises" REGULAR_EXPRESSION
-    utility/noises/.*
-)
-
-source_group(
-    "src\\utility\\rng" REGULAR_EXPRESSION
-    utility/rng/.*
-)
-
-source_group(
-    "src\\utility\\qmc" REGULAR_EXPRESSION
-    utility/qmc/.*
-)
-
-source_group(
-    "src\\utility\\system" REGULAR_EXPRESSION
-    utility/system/.*
-)
-
-
-source_group(
-    "src\\utility\\system\\_dll" REGULAR_EXPRESSION
-    utility/system/_dll/.*
+    "src\\utilities\\system\\_dll" REGULAR_EXPRESSION
+    utilities/system/_dll/.*
 )

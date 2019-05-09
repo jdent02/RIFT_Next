@@ -20,33 +20,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "tile_pool.h"
-#include <iostream>
+#pragma once
 
-void TilePool::create_pool(
-    const int x_res,
-    const int y_res,
-    const int tile_size)
+#include "core/lighting_integrators/i_light_integrator.h"
+#include "utilities/image_writers/i_out_writer.h"
+
+#include <thread>
+
+struct RenderSettings
 {
-    const int x_tiles = x_res / tile_size;
-    const int y_tiles = y_res / tile_size;
-
-    for (int y = 1; y <= y_tiles; ++y)
-    {
-        const int y_start = y_res - y * tile_size;
-        const int y_end = y_start + tile_size;
-        for (int x = 0; x < x_tiles; ++x)
-        {
-            const int x_start = x * tile_size;
-            const int x_end = x_start + tile_size;
-            // m_tile_pool_.push_back(Tile{x_start, x_end, y_start, y_end});
-            std::cout << x_start << " " << x_end << " " << y_start << " "
-                      << y_end << "\n";
-        }
-    }
-}
-
-Tile& TilePool::get_next_tile()
-{
-    return m_tile_pool_[m_tile_index_++];
-}
+    int m_threads{static_cast<int>(std::thread::hardware_concurrency())};
+    int m_xres{1920};
+    int m_yres{1080};
+    int m_samples{100};
+    IntegratorEnum m_light_integrator{PATH_TRACING};
+    OutWriterEnum  m_output_writer{OPENIMAGEIO};
+    const char*    m_output_filepath{"../../../image_vcpp.exr"};
+};

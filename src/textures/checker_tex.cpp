@@ -22,7 +22,9 @@
 
 #include "checker_tex.h"
 
-#include "utility/data_types/vec3.h"
+#include "core/data_types/vec3.h"
+
+#include <cmath>
 
 Vec3 CheckerTexture::value(const float u, const float v, const Vec3& p) const
 {

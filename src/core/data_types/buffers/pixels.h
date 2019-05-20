@@ -26,3 +26,8 @@ struct RgbaPixel
 {
     float r, g, b, a;
 };
+
+struct Pixel
+{
+    float p;
+};

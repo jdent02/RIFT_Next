@@ -22,16 +22,16 @@
 
 #pragma once
 
-#include "vec3.h"
+#include "core/data_types/vec3.h"
 
 class IMaterial;
 
 struct HitRecord
 {
-    float      m_t{};
-    float      m_u{};
-    float      m_v{};
+    float      m_t;
+    float      m_u;
+    float      m_v;
     Vec3       m_p;
     Vec3       m_normal;
-    IMaterial* m_mat_ptr{};
+    IMaterial* m_mat_ptr;
 };

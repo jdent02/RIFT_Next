@@ -22,7 +22,9 @@
 
 #pragma once
 
-#include "utility/buffers/i_buffer.h"
+#include "utilities/system/_dll/dll_symbol.h"
+
+class IBuffer;
 
 enum OutWriterEnum
 {
@@ -37,7 +39,7 @@ class RIFT_DLL IOutWriter
     virtual ~IOutWriter() = default;
 
     virtual void write(
-        const IBuffer& buffer,
+        const IBuffer* buffer,
         const char*    filename,
         int            x_res,
         int            y_res) = 0;

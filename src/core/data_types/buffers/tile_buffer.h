@@ -22,17 +22,18 @@
 
 #pragma once
 
-#include "core/data_types/buffers/tile.h"
+#include "core/data_types/buffers/image_tile.h"
 
+#include <memory>
 #include <vector>
 
-class TileBuffer
+struct TileBuffer
+{
+    std::vector<ImageTile> m_tiles;
+};
+
+class TileBufferFactory
 {
   public:
-    explicit TileBuffer(int num_tiles);
-
-    std::vector<Tile>& get_tiles();
-
-  private:
-    std::vector<Tile> m_tiles_;
+    static std::unique_ptr<TileBuffer> create();
 };

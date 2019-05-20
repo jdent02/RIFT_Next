@@ -21,3 +21,32 @@
 // SOFTWARE.
 
 #include "rgba_buffer.h"
+
+#include "core/data_types/buffers/pixels.h"
+
+#include <vector>
+
+struct RgbaBuffer::Impl
+{
+    std::vector<RgbaPixel> m_pixels;
+};
+
+RgbaBuffer::RgbaBuffer()
+  : m_impl_(new Impl)
+{}
+
+RgbaBuffer::~RgbaBuffer()
+{
+    delete m_impl_;
+}
+
+void RgbaBuffer::reserve_buffer(const int x_res, const int y_res) const
+{
+    const int pixel_count = x_res * y_res * 4;
+    m_impl_->m_pixels.reserve(pixel_count);
+}
+
+std::unique_ptr<RgbaBuffer> RgbaBufferFactory::create()
+{
+    return std::unique_ptr<RgbaBuffer>();
+}

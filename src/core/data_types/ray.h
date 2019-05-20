@@ -22,7 +22,7 @@
 
 #pragma once
 
-#include "vec3.h"
+#include "core/data_types/vec3.h"
 
 class Ray
 {

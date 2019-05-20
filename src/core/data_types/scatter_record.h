@@ -22,14 +22,14 @@
 
 #pragma once
 
-#include "ray.h"
-#include "utility/math_functions/pdfs/pdf.h"
-#include "vec3.h"
+#include "core/data_types/ray.h"
+#include "core/data_types/vec3.h"
+#include "core/raytracing/pdfs/pdf.h"
 
 struct ScatterRecord
 {
-    Ray                  m_specular_ray;
-    bool                 m_is_specular;
-    Vec3                 m_attenuation;
-    PDF*                 m_pdf_ptr;
+    Ray  m_specular_ray;
+    bool m_is_specular;
+    Vec3 m_attenuation;
+    PDF* m_pdf_ptr;
 };

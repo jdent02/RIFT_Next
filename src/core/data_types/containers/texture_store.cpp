@@ -24,36 +24,24 @@
 
 #include "textures/i_texture.h"
 
-#include <iostream>
 #include <memory>
-#include <sstream>
-#include <string>
 #include <unordered_map>
 
-struct TextureStore::Impl
-{
-    std::unordered_map<const char*, std::unique_ptr<ITexture>> m_textures;
-};
+TextureStore::TextureStore() {}
 
-TextureStore::TextureStore()
-  : m_impl_(new Impl)
-{}
-
-TextureStore::~TextureStore()
-{
-    delete m_impl_;
-}
+TextureStore::~TextureStore() {}
 
 void TextureStore::add_texture(
     const char* key,
     const char* model,
-    ParamArray& params) const 
+    ParamArray& params)
 {
     // TODO
 }
 
 void TextureStore::add_texture(
-    const char* key,
-    std::unique_ptr<ITexture> texture) const {
-    m_impl_->m_textures[key] = std::move(texture);
+    const char*               key,
+    std::unique_ptr<ITexture> texture)
+{
+    // TODO
 }

@@ -22,9 +22,9 @@
 
 #pragma once
 
-#include "utility/math_functions/utility_functions.h"
-#include "utility/math_functions/onb.h"
-#include "utility/math_functions/pdfs/pdf.h"
+#include "core/raytracing/onb.h"
+#include "core/raytracing/pdfs/pdf.h"
+#include "core/raytracing/utility_functions.h"
 
 class CosinePDF final : public PDF
 {

@@ -22,7 +22,8 @@
 
 #pragma once
 
-#include "utility/image_writers/i_out_writer.h"
+#include "utilities/image_writers/i_out_writer.h"
+#include "utilities/system/_dll/dll_symbol.h"
 
 class RIFT_DLL OIIOWriter : public IOutWriter
 {

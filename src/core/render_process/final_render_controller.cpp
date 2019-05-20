@@ -22,25 +22,27 @@
 
 #include "final_render_controller.h"
 
-#include "core/rendering/tile_pool.h"
-#include "utility/buffers/rgba_buffer.h"
-#include "utility/containers/scene.h"
+#include "core/data_types/buffers/rgba_buffer.h"
+#include "core/data_types/buffers/tile_buffer.h"
+#include "core/render_process/tile_pool.h"
 
 struct FinalRenderController::Impl
 {
-    Scene*         m_render_scene;
+    Scene*          m_render_scene;
     RenderSettings* m_settings;
-    IBuffer*    m_pixel_buffer;
-    TilePool       m_tile_pool;
+    TileBuffer*     m_tile_buffer;
+    TilePool        m_tile_pool;
 };
 
 FinalRenderController::FinalRenderController(
+    Scene*          scene,
     RenderSettings* settings,
-    IBuffer*        buffer)
+    TileBuffer*     tile_buffer)
   : m_impl_(new Impl)
 {
+    m_impl_->m_render_scene = scene;
     m_impl_->m_settings = settings;
-    m_impl_->m_pixel_buffer = buffer;
+    m_impl_->m_tile_buffer = tile_buffer;
 }
 
 FinalRenderController::~FinalRenderController()
@@ -52,11 +54,17 @@ void FinalRenderController::render() const
 {
     m_impl_->m_tile_pool.create_pool(
         m_impl_->m_settings->m_xres, m_impl_->m_settings->m_yres, 64);
+    m_impl_->m_tile_buffer->set_number_of_tiles(
+        m_impl_->m_tile_pool.get_pool_size());
 }
 
 void FinalRenderController::cleanup() {}
 
-std::unique_ptr<IRenderController> FinalRenderControllerFactory::create(RenderSettings* settings, IBuffer* buffer)
+std::unique_ptr<IRenderController> FinalRenderControllerFactory::create(
+    Scene*          scene,
+    RenderSettings* settings,
+    TileBuffer*     tile_buffer)
 {
-    return std::make_unique<FinalRenderController>(settings, buffer);
+    return std::make_unique<FinalRenderController>(
+        scene, settings, tile_buffer);
 }

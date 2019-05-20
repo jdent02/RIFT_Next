@@ -22,8 +22,8 @@
 
 #pragma once
 
-#include "utility/containers/render_settings.h"
-#include "utility/system/_dll/dll_symbol.h"
+#include "core/data_types/containers/render_settings.h"
+#include "utilities/system/_dll/dll_symbol.h"
 
 class Scene;
 

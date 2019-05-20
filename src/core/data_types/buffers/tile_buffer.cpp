@@ -22,12 +22,7 @@
 
 #include "tile_buffer.h"
 
-TileBuffer::TileBuffer(const int num_tiles)
+std::unique_ptr<TileBuffer> TileBufferFactory::create()
 {
-    m_tiles_.reserve(num_tiles);
-}
-
-std::vector<Tile>& TileBuffer::get_tiles()
-{
-    return m_tiles_;
+    return std::make_unique<TileBuffer>();
 }

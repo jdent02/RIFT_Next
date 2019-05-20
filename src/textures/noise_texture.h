@@ -22,9 +22,8 @@
 
 #pragma once
 
-#include "core/data_types/Vec3.h"
 #include "textures/i_texture.h"
-#include "utility/noises/perlin.h"
+#include "utilities/noises/perlin.h"
 
 class NoiseTexture : public ITexture
 {

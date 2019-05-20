@@ -22,7 +22,7 @@
 
 #include "oiio_writer.h"
 
-#include "utility/containers/render_settings.h"
+#include "core/data_types/containers/render_settings.h"
 
 #include "OpenEXR/half.h"
 #include "OpenImageIO/imageio.h"

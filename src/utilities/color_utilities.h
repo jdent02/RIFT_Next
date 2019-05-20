@@ -22,7 +22,7 @@
 
 #pragma once
 
-#include "utility/data_types/vec3.h"
+#include "core/data_types/vec3.h"
 
 inline Vec3 de_nan(const Vec3& c)
 {

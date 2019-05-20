@@ -37,6 +37,8 @@ class TilePool
 
     void create_pool(int x_res, int y_res, int tile_size);
 
+    int get_pool_size() const;
+
     TileOutline& get_next_tile();
 
   private:

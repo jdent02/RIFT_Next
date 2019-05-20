@@ -22,15 +22,9 @@
 
 #pragma once
 
-#include "core/data_types/buffers/pixels.h"
+#include "core/data_types/accumulators/i_accumulator.h"
 
-#include <vector>
-
-struct Tile
+class RgbaAccumulator : public IAccumulator
 {
-    const int              x_min;
-    const int              x_max;
-    const int              y_min;
-    const int              y_max;
-    std::vector<RgbaPixel> pixels;
+
 };

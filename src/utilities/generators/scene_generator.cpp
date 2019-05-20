@@ -22,7 +22,10 @@
 
 #include "scene_generator.h"
 
-#include "utility/containers/scene.h"
+#include "core/data_types/containers/scene.h"
+#include "core/data_types/vec3.h"
+
+#include <core/data_types/containers/param_array.h>
 
 void SceneGenerator::make_cornell_box(Scene* scene, RenderSettings& settings)
 {

@@ -22,7 +22,7 @@
 
 #pragma once
 
-#include "utility/system/_dll/dll_symbol.h"
+#include "utilities/system/_dll/dll_symbol.h"
 
 class RIFT_DLL ParamArray
 {

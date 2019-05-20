@@ -44,6 +44,10 @@ set (
 
 set (
     CORE_SOURCES
+    core/data_types/accumulators/i_accumulator.h
+    core/data_types/accumulators/rgba_accumulator.h
+	core/data_types/buffers/i_buffer.h
+    core/data_types/buffers/image_tile.h
     core/data_types/buffers/rgba_buffer.h
     core/data_types/buffers/rgba_buffer.cpp
     core/data_types/buffers/pixels.h
@@ -115,6 +119,7 @@ set (
     UTILITY_SOURCES
     utilities/generators/scene_generator.h
     utilities/generators/scene_generator.cpp
+	utilities/image_writers/i_out_writer.h
     utilities/maths/maths.h
     utilities/maths/scalars.h
     utilities/noises/perlin.h
@@ -265,6 +270,11 @@ if (MSVC)
 endif()
 
 #Visual Studio folder layout
+source_group(
+    "src\\core\\data_types\\accumulators" REGULAR_EXPRESSION
+    core/data_types/accumulators/.*
+)
+
 source_group(
     "src\\core\\data_types\\buffers" REGULAR_EXPRESSION
     core/data_types/buffers/.*

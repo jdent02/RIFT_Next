@@ -22,22 +22,23 @@
 
 #pragma once
 
-#include "utility/containers/param_array.h"
-#include "utility/system/_dll/dll_symbol.h"
+#include "core/data_types/containers/param_array.h"
+
 #include <memory>
+#include <unordered_map>
 
 class ITexture;
 
-class RIFT_DLL TextureStore
+class TextureStore
 {
   public:
     TextureStore();
     ~TextureStore();
 
-    void add_texture(const char* key, const char* model, ParamArray& params) const;
-    void add_texture(const char* key, std::unique_ptr<ITexture> texture) const;
+    void add_texture(const char* key, const char* model, ParamArray& params);
+    void add_texture(const char* key, std::unique_ptr<ITexture> texture);
 
   private:
-    struct Impl;
-    Impl* m_impl_;
+    std::unordered_map<const char*, std::unique_ptr<ITexture>> m_textures_;
 };
+

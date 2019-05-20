@@ -21,17 +21,17 @@
 // SOFTWARE.
 
 #include "command_line_parser.h"
-#include "core/rendering/final_render_controller.h"
-#include "core/rendering/i_render_controller.h"
-#include "core/rendering/test_render_controller.h"
-#include "utility/containers/render_settings.h"
-#include "utility/containers/scene.h"
-#include "utility/generators/scene_generator.h"
-#include "utility/image_writers/oiio_writer.h"
-#include "utility/image_writers/png_writer.h"
+#include "core/data_types/buffers/rgba_buffer.h"
+#include "core/data_types/containers/render_settings.h"
+#include "core/data_types/containers/scene.h"
+#include "core/render_process/final_render_controller.h"
+#include "core/render_process/i_render_controller.h"
+#include "core/render_process/test_render_controller.h"
+#include "utilities/generators/scene_generator.h"
 
 #include <cstdio>
 #include <ctime>
+#include "core/data_types/buffers/tile_buffer.h"
 
 int main(const int argc, char* argv[])
 {
@@ -40,23 +40,15 @@ int main(const int argc, char* argv[])
     const std::unique_ptr<RenderSettings> settings =
         CommandLineParser::parse(argc, argv);
 
-    std::unique_ptr<IBuffer> pixel_buffer = RgbaBufferFactory::create();
+    const std::unique_ptr<Scene> scene;
 
-    pixel_buffer->reserve_buffer(settings->m_xres * settings->m_yres * 4);
+    std::unique_ptr<TileBuffer> tile_buffer = TileBufferFactory::create();
 
     const std::unique_ptr<IRenderController> engine =
         FinalRenderControllerFactory::create(
-            settings.get(), pixel_buffer.get());
+            scene.get(), settings.get(), tile_buffer.get());
 
     engine->render();
-
-    /*
-    OIIOWriter::write(
-        pixel_buffer.get(),
-        settings->m_output_filepath,
-        settings->m_xres,
-        settings->m_yres);
-    */
 
     // generate scene
     // set up render controller

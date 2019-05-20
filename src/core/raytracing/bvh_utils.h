@@ -22,7 +22,8 @@
 
 #pragma once
 
-#include "core/acceleration_structures/aabb.h"
+#include "core/raytracing/aabb.h"
+#include "objects/hitables/i_hitable.h"
 
 inline int box_x_compare(const void* a, const void* b)
 {

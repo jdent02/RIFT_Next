@@ -22,25 +22,9 @@
 
 #pragma once
 
-#include "core/data_types/buffers/i_buffer.h"
 #include "utilities/system/_dll/dll_symbol.h"
 
-#include <memory>
-
-class RIFT_DLL RgbaBuffer : public IBuffer
+class RIFT_DLL IBuffer
 {
-  public:
-    RgbaBuffer();
-    ~RgbaBuffer();
-    void reserve_buffer(int x_res, int y_res) const;
-
-  private:
-    struct Impl;
-    Impl* m_impl_;
-};
-
-class RIFT_DLL RgbaBufferFactory
-{
-  public:
-    static std::unique_ptr<RgbaBuffer> create();
+    
 };

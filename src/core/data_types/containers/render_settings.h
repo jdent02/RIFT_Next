@@ -33,7 +33,6 @@ struct RenderSettings
     int m_xres{1920};
     int m_yres{1080};
     int m_samples{100};
+    OutWriterEnum  m_output_writer{PNG};
     IntegratorEnum m_light_integrator{PATH_TRACING};
-    OutWriterEnum  m_output_writer{OPENIMAGEIO};
-    const char*    m_output_filepath{"../../../image_vcpp.exr"};
 };

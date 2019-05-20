@@ -20,9 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "core/acceleration_structures/aabb.h"
+#include "core/raytracing/aabb.h"
 
-#include "utility/data_types/ray.h"
+#include "core/data_types/ray.h"
 
 bool AABB::hit(const Ray& r, float tmin, float tmax) const
 {

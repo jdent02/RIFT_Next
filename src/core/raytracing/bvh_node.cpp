@@ -22,9 +22,9 @@
 
 #include "bvh_node.h"
 
-#include "core/acceleration_structures/bvh_utils.h"
-#include "utility/math_functions/utility_functions.h"
-#include "utility/data_types/hit_record.h"
+#include "core/data_types/hit_record.h"
+#include "core/raytracing/bvh_utils.h"
+#include "core/raytracing/utility_functions.h"
 
 bool BVHNode::bounding_box(float t0, float t1, AABB& b) const
 {

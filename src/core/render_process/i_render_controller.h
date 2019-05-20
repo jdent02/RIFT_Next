@@ -22,10 +22,13 @@
 
 #pragma once
 
-#include "utility/buffers/rgba_buffer.h"
-#include "utility/containers/render_settings.h"
-#include "utility/system/_dll/dll_symbol.h"
+#include "utilities/system/_dll/dll_symbol.h"
 
+#include <memory>
+
+class TileBuffer;
+class IBuffer;
+struct RenderSettings;
 class Scene;
 
 class RIFT_DLL IRenderController
@@ -37,10 +40,13 @@ class RIFT_DLL IRenderController
     virtual void cleanup() = 0;
 };
 
-class RIFT_DLL IControllerFactory
+class RIFT_DLL IRenderControllerFactory
 {
   public:
-    virtual ~IControllerFactory() = default;
+    virtual ~IRenderControllerFactory() = default;
 
-    virtual std::unique_ptr<IRenderController> create(RenderSettings* settings, IBuffer* buffer) = 0;
+    virtual std::unique_ptr<IRenderController> create(
+        Scene*          scene,
+        RenderSettings* settings,
+        TileBuffer*     tile_buffer) = 0;
 };

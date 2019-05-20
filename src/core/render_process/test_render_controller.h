@@ -22,13 +22,18 @@
 
 #pragma once
 
-#include "core/rendering/i_render_controller.h"
-#include "utility/system/_dll/dll_symbol.h"
+#include "core/render_process/i_render_controller.h"
+#include "utilities/system/_dll/dll_symbol.h"
+
+class TileBuffer;
 
 class RIFT_DLL TestRenderController : public IRenderController
 {
   public:
-    TestRenderController(RenderSettings* settings, IBuffer* pixel_buffer);
+    TestRenderController(
+        Scene*          scene,
+        RenderSettings* settings,
+        TileBuffer*     tile_buffer);
     ~TestRenderController() override;
 
     void render() const override;
@@ -39,8 +44,11 @@ class RIFT_DLL TestRenderController : public IRenderController
     Impl* m_impl_;
 };
 
-class RIFT_DLL TestRenderControllerFactory : IControllerFactory
+class RIFT_DLL TestRenderControllerFactory : IRenderControllerFactory
 {
   public:
-    static std::unique_ptr<IRenderController> create(RenderSettings* settings, IBuffer* pixel_buffer);
+    static std::unique_ptr<IRenderController> create(
+        Scene*          scene,
+        RenderSettings* settings,
+        TileBuffer*     tile_buffer);
 };

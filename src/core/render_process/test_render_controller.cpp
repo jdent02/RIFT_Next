@@ -23,18 +23,23 @@
 #include "test_render_controller.h"
 
 #include <cstdio>
+#include "core/data_types/containers/render_settings.h"
+#include "core/data_types/buffers/tile_buffer.h"
 
 struct TestRenderController::Impl
 {
     RenderSettings* m_settings;
-    IBuffer* m_pixel_buffer;
+    TileBuffer*     tile_buffer;
 };
 
-TestRenderController::TestRenderController(RenderSettings* settings, IBuffer* pixel_buffer)
+TestRenderController::TestRenderController(
+    Scene*          scene,
+    RenderSettings* settings,
+    TileBuffer*     tile_buffer)
   : m_impl_(new Impl)
 {
     m_impl_->m_settings = settings;
-    m_impl_->m_pixel_buffer = pixel_buffer;
+    m_impl_->tile_buffer = tile_buffer;
 }
 
 TestRenderController::~TestRenderController()
@@ -44,19 +49,19 @@ TestRenderController::~TestRenderController()
 
 void TestRenderController::render() const
 {
+    m_impl_->tile_buffer->m_tiles.reserve(1);
+
     const int x_dim = m_impl_->m_settings->m_xres;
     const int y_dim = m_impl_->m_settings->m_yres;
-
-    int buffer_pos = 0;
 
     for (int j = y_dim - 1; j >= 0; j--)
     {
         for (int i = 0; i <x_dim; i++)
         {
-            m_impl_->m_pixel_buffer->get_pixels()[buffer_pos++] = float(i) / float(x_dim);
-            m_impl_->m_pixel_buffer->get_pixels()[buffer_pos++] = float(j) / float(y_dim);
-            m_impl_->m_pixel_buffer->get_pixels()[buffer_pos++] = 0.2;
-            m_impl_->m_pixel_buffer->get_pixels()[buffer_pos++] = 1.f;
+            float(i) / float(x_dim);
+            float(j) / float(y_dim);
+            0.2;
+            1.f;
         }
     }
 }
@@ -66,7 +71,10 @@ void TestRenderController::cleanup()
     printf("Render cleanup\n");
 }
 
-std::unique_ptr<IRenderController> TestRenderControllerFactory::create(RenderSettings* settings, IBuffer* pixel_buffer)
+std::unique_ptr<IRenderController> TestRenderControllerFactory::create(
+    Scene*          scene,
+    RenderSettings* settings,
+    TileBuffer*     tile_buffer)
 {
-    return std::make_unique<TestRenderController>(settings, pixel_buffer);
+    return std::make_unique<TestRenderController>(scene, settings, tile_buffer);
 }

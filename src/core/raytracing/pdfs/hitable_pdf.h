@@ -22,7 +22,8 @@
 
 #pragma once
 
-#include "pdf.h"
+#include "core/raytracing/pdfs/pdf.h"
+#include "objects/hitables/i_hitable.h"
 
 class HitablePDF : public PDF
 {

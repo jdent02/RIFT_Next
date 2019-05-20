@@ -23,24 +23,15 @@
 #pragma once
 
 #include "core/data_types/buffers/i_buffer.h"
-#include "utilities/system/_dll/dll_symbol.h"
 
-#include <memory>
+#include <unordered_map>
+#include <vector>
 
-class RIFT_DLL RgbaBuffer : public IBuffer
+struct ImageTile
 {
-  public:
-    RgbaBuffer();
-    ~RgbaBuffer();
-    void reserve_buffer(int x_res, int y_res) const;
-
-  private:
-    struct Impl;
-    Impl* m_impl_;
-};
-
-class RIFT_DLL RgbaBufferFactory
-{
-  public:
-    static std::unique_ptr<RgbaBuffer> create();
+    const int                                             x_min;
+    const int                                             x_max;
+    const int                                             y_min;
+    const int                                             y_max;
+    std::unordered_map<std::string, std::vector<IBuffer>> layers;
 };

@@ -24,7 +24,7 @@
 
 #include "objects/camera/i_camera.h"
 #include "objects/hitables/i_hitable.h"
-#include "utility/system/_dll/dll_symbol.h"
+#include "utilities/system/_dll/dll_symbol.h"
 
 #include <memory>
 #include "texture_store.h"

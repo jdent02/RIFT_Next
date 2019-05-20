@@ -22,7 +22,10 @@
 
 #pragma once
 
-#include "pdf.h"
+#include "core/data_types/vec3.h"
+#include "core/raytracing/pdfs/pdf.h"
+
+#include <cstdlib>
 
 class MixturePDF : public PDF
 {

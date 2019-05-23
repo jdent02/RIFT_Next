@@ -22,10 +22,10 @@
 
 #pragma once
 
-#include "core/data_types/buffers/i_buffer.h"
 #include "utilities/system/_dll/dll_symbol.h"
 
 #include <memory>
+#include "core/data_types/buffers/result_buffer.h"
 
 class RIFT_DLL ImageTile
 {
@@ -34,7 +34,8 @@ class RIFT_DLL ImageTile
     ImageTile(int x_min, int y_min, int x_max, int y_max);
     ~ImageTile();
 
-    void add_layer(const char* layer_name, std::unique_ptr<IBuffer> buffer) const;
+    void add_layer(const char* layer_name, std::unique_ptr<ResultBuffer> buffer)
+        const;
 
   private:
     const int m_x_min_{};

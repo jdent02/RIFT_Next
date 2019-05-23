@@ -22,8 +22,6 @@
 
 #include "rgba_accumulator.h"
 
-#include "core/data_types/buffers/rgba_buffer.h"
-
 #include <memory>
 
 void RgbaAccumulator::add_sample(
@@ -33,9 +31,9 @@ void RgbaAccumulator::add_sample(
     Ray&           scattered)
 {}
 
-std::unique_ptr<IBuffer> RgbaAccumulator::export_to_buffer()
+std::unique_ptr<ResultBuffer> RgbaAccumulator::export_to_buffer()
 {
-    std::unique_ptr<RgbaBuffer> buffer = std::make_unique<RgbaBuffer>();
+    std::unique_ptr<ResultBuffer> buffer = std::make_unique<ResultBuffer>();
 
     const float inv_sample_count{1.f / m_samples_[0].size()};
 

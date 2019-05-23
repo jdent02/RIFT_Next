@@ -37,7 +37,7 @@ class RgbaAccumulator : public IAccumulator
         Ray&           r,
         Ray&           scattered) override;
 
-    std::unique_ptr<IBuffer> export_to_buffer() override;
+    std::unique_ptr<ResultBuffer> export_to_buffer() override;
 
   private:
     std::vector<std::vector<RGBColor>> m_samples_;

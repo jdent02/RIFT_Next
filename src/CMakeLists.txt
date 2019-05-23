@@ -86,6 +86,8 @@ set (
     core/render_process/tile_pool.cpp
     core/render_process/final_render_controller.h
     core/render_process/final_render_controller.cpp
+    core/render_process/render_thread.h
+    core/render_process/render_thread.cpp
     core/render_process/test_render_controller.h
     core/render_process/test_render_controller.cpp
     core/render_process/final_render_controller.h

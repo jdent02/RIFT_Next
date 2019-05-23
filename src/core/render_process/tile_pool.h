@@ -22,7 +22,8 @@
 
 #pragma once
 
-#include <vector>
+#include <deque>
+#include <queue>
 
 struct TileOutline
 {
@@ -39,9 +40,8 @@ class TilePool
 
     int get_pool_size() const;
 
-    TileOutline& get_next_tile();
+    TileOutline get_next_tile();
 
   private:
-    std::vector<TileOutline> m_tile_pool_;
-    int                      m_tile_index_{0};
+    std::queue<TileOutline, std::deque<TileOutline>> m_tile_pool_;
 };

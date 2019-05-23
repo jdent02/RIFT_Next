@@ -26,7 +26,7 @@
 
 struct ImageTile::Impl
 {
-    std::unordered_map<std::string, std::unique_ptr<IBuffer>> m_layers;
+    std::unordered_map<std::string, std::unique_ptr<ResultBuffer>> m_layers;
 };
 
 ImageTile::ImageTile()
@@ -52,7 +52,7 @@ ImageTile::~ImageTile()
 
 void ImageTile::add_layer(
     const char*              layer_name,
-    std::unique_ptr<IBuffer> buffer) const
+    std::unique_ptr<ResultBuffer> buffer) const
 {
     m_impl_->m_layers[layer_name] = std::move(buffer);
 }

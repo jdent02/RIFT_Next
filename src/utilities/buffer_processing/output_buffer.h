@@ -21,6 +21,7 @@
 // SOFTWARE.
 
 #pragma once
+
 #include <vector>
 
 class TileBuffer;

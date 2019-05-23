@@ -52,5 +52,5 @@ class Pixel
     std::vector<float>& get_channels() { return m_pixel_data_; }
 
   private:
-    std::vector<float> m_pixel_data_;
+    std::vector<float> m_pixel_data_{};
 };

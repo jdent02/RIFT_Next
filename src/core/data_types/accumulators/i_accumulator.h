@@ -21,9 +21,9 @@
 // SOFTWARE.
 
 #pragma once
-#include "core/data_types/buffers/i_buffer.h"
 
 #include <memory>
+#include "core/data_types/buffers/result_buffer.h"
 
 class Ray;
 struct ScatterRecord;
@@ -41,5 +41,5 @@ class IAccumulator
         Ray&           r,
         Ray&           scattered) = 0;
 
-    virtual std::unique_ptr<IBuffer> export_to_buffer() = 0;
+    virtual std::unique_ptr<ResultBuffer> export_to_buffer() = 0;
 };

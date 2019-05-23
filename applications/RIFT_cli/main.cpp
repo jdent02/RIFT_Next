@@ -21,7 +21,6 @@
 // SOFTWARE.
 
 #include "command_line_parser.h"
-#include "core/data_types/buffers/rgba_buffer.h"
 #include "core/data_types/containers/render_settings.h"
 #include "core/data_types/containers/scene.h"
 #include "core/render_process/final_render_controller.h"

@@ -39,7 +39,7 @@ void TilePool::create_pool(
         {
             const int x_start = x * tile_size;
             const int x_end = x_start + tile_size;
-            m_tile_pool_.push_back(TileOutline{x_start, x_end, y_start, y_end});
+            m_tile_pool_.push(TileOutline{x_start, x_end, y_start, y_end});
             std::cout << x_start << " " << x_end << " " << y_start << " "
                       << y_end << "\n";
         }
@@ -51,7 +51,11 @@ int TilePool::get_pool_size() const
     return m_tile_pool_.size();
 }
 
-TileOutline& TilePool::get_next_tile()
+TileOutline TilePool::get_next_tile()
 {
-    return m_tile_pool_[m_tile_index_++];
+    TileOutline tile{m_tile_pool_.front()};
+
+    m_tile_pool_.pop();
+
+    return tile;
 }

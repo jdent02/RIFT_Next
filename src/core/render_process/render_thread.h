@@ -20,39 +20,4 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-
-#include "core/data_types/pixel_types/pixel.h"
-#include "core/data_types/vec3.h"
-
-#include <vector>
-#include "result_buffer.h"
-
-struct ResultBuffer::Impl
-{
-    std::vector<Pixel> m_pixels;
-};
-
-ResultBuffer::ResultBuffer()
-  : m_impl_(new Impl)
-{}
-
-ResultBuffer::~ResultBuffer()
-{
-    delete m_impl_;
-}
-
-void ResultBuffer::reserve_buffer(const int x_res, const int y_res) const
-{
-    const int pixel_count = x_res * y_res;
-    m_impl_->m_pixels.reserve(pixel_count);
-}
-
-std::vector<Pixel>& ResultBuffer::get_pixels() const
-{
-    return m_impl_->m_pixels;
-}
-
-std::unique_ptr<ResultBuffer> RgbaBufferFactory::create()
-{
-    return std::unique_ptr<ResultBuffer>();
-}
+#pragma once

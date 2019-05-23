@@ -28,11 +28,11 @@
 #include <vector>
 #include "core/data_types/pixel_types/pixel.h"
 
-class RIFT_DLL RgbaBuffer
+class RIFT_DLL ResultBuffer
 {
   public:
-    RgbaBuffer();
-    ~RgbaBuffer();
+    ResultBuffer();
+    ~ResultBuffer();
 
     void reserve_buffer(int x_res, int y_res) const;
 
@@ -46,5 +46,5 @@ class RIFT_DLL RgbaBuffer
 class RIFT_DLL RgbaBufferFactory
 {
   public:
-    static std::unique_ptr<RgbaBuffer> create();
+    static std::unique_ptr<ResultBuffer> create();
 };

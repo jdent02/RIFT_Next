@@ -21,10 +21,10 @@
 // SOFTWARE.
 
 #include "moving_sphere.h"
+#include "core/raytracing/aabb.h"
+#include "core/data_types/ray.h"
+#include "core/data_types/records/hit_record.h"
 
-#include "core/acceleration_structures/aabb.h"
-#include "utility/data_types/hit_record.h"
-#include "utility/data_types/ray.h"
 
 MovingSphere::MovingSphere(
     Vec3       cen0,

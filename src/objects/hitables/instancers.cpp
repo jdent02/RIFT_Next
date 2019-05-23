@@ -22,12 +22,13 @@
 
 #include "instancers.h"
 
-#include "utility/math_functions/utility_functions.h"
-#include "utility/data_types/hit_record.h"
-#include "utility/data_types/ray.h"
+
 
 #include <cfloat>
 #include <cmath>
+#include "core/data_types/ray.h"
+#include "core/raytracing/utility_functions.h"
+#include "core/data_types/records/hit_record.h"
 
 Translate::Translate(IHitable* p, const Vec3& displacement)
   : m_ptr_(p)

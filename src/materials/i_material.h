@@ -22,9 +22,9 @@
 
 #pragma once
 
-#include "utility/data_types/hit_record.h"
-#include "utility/data_types/ray.h"
-#include "utility/data_types/scatter_record.h"
+#include "core/data_types/ray.h"
+#include "core/data_types/records/hit_record.h"
+#include "core/data_types/records/scatter_record.h"
 
 class IMaterial
 {

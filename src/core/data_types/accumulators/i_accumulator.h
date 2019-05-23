@@ -21,8 +21,25 @@
 // SOFTWARE.
 
 #pragma once
+#include "core/data_types/buffers/i_buffer.h"
+
+#include <memory>
+
+class Ray;
+struct ScatterRecord;
+struct HitRecord;
 
 class IAccumulator
 {
-    
+  public:
+    IAccumulator() = default;
+    virtual ~IAccumulator() = default;
+
+    virtual void add_sample(
+        HitRecord&     hrec,
+        ScatterRecord& srec,
+        Ray&           r,
+        Ray&           scattered) = 0;
+
+    virtual std::unique_ptr<IBuffer> export_to_buffer() = 0;
 };

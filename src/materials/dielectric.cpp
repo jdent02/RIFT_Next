@@ -21,10 +21,9 @@
 // SOFTWARE.
 
 #include "dielectric.h"
+#include "core/raytracing/scatter_functions.h"
+#include "core/raytracing/utility_functions.h"
 
-#include "utility/data_types/ray.h"
-#include "utility/math_functions/scatter_functions.h"
-#include "utility/math_functions/utility_functions.h"
 
 bool Dielectric::scatter(
     const Ray&       r_in,

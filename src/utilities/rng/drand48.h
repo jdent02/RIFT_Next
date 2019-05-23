@@ -22,9 +22,8 @@
 
 #pragma once
 
-#include "utility/rng/i_rand_generator.h"
-
 #include <cstdint>
+#include "utilities/rng/i_rand_generator.h"
 
 #define RAND48_SEED_0 0x330e
 #define RAND48_SEED_1 0xabcd

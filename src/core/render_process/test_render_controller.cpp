@@ -24,7 +24,7 @@
 
 #include <cstdio>
 #include "core/data_types/containers/render_settings.h"
-#include "core/data_types/buffers/tile_buffer.h"
+#include "core/data_types/tiles/tile_buffer.h"
 
 struct TestRenderController::Impl
 {
@@ -49,7 +49,6 @@ TestRenderController::~TestRenderController()
 
 void TestRenderController::render() const
 {
-    m_impl_->tile_buffer->m_tiles.reserve(1);
 
     const int x_dim = m_impl_->m_settings->m_xres;
     const int y_dim = m_impl_->m_settings->m_yres;
@@ -58,10 +57,10 @@ void TestRenderController::render() const
     {
         for (int i = 0; i <x_dim; i++)
         {
-            float(i) / float(x_dim);
-            float(j) / float(y_dim);
-            0.2;
-            1.f;
+            // float(i) / float(x_dim);
+            // float(j) / float(y_dim);
+            // 0.2;
+            // 1.f;
         }
     }
 }

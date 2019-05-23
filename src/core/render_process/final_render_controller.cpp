@@ -23,8 +23,8 @@
 #include "final_render_controller.h"
 
 #include "core/data_types/buffers/rgba_buffer.h"
-#include "core/data_types/buffers/tile_buffer.h"
 #include "core/render_process/tile_pool.h"
+#include "core/data_types/tiles/tile_buffer.h"
 
 struct FinalRenderController::Impl
 {

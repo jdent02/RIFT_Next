@@ -46,21 +46,22 @@ set (
     CORE_SOURCES
     core/data_types/accumulators/i_accumulator.h
     core/data_types/accumulators/rgba_accumulator.h
-	core/data_types/buffers/i_buffer.h
-    core/data_types/buffers/image_tile.h
-    core/data_types/buffers/rgba_buffer.h
-    core/data_types/buffers/rgba_buffer.cpp
-    core/data_types/buffers/pixels.h
-    core/data_types/buffers/tile_buffer.h
-    core/data_types/buffers/tile_buffer.cpp
+    core/data_types/accumulators/rgba_accumulator.cpp
+    core/data_types/buffers/result_buffer.h
+    core/data_types/buffers/result_buffer.cpp
     core/data_types/containers/render_settings.h
     core/data_types/containers/scene.h
     core/data_types/containers/scene.cpp
     core/data_types/containers/texture_store.h
     core/data_types/containers/texture_store.cpp
-    core/data_types/hit_record.h
+    core/data_types/pixel_types/pixel.h
+    core/data_types/tiles/image_tile.h
+    core/data_types/tiles/image_tile.cpp
+    core/data_types/tiles/tile_buffer.h
+    core/data_types/tiles/tile_buffer.cpp
+    core/data_types/records/hit_record.h
+    core/data_types/records/scatter_record.h
     core/data_types/ray.h
-    core/data_types/scatter_record.h
     core/data_types/vec3.h
     core/lighting_integrators/i_light_integrator.h
     core/lighting_integrators/direct_lighting.h
@@ -117,14 +118,19 @@ set (
 
 set (
     UTILITY_SOURCES
+    utilities/buffer_processing/buffer_utilities.h
+    utilities/buffer_processing/buffer_utilities.cpp
+    utilities/buffer_processing/output_buffer.h
+    utilities/buffer_processing/output_buffer.cpp
     utilities/generators/scene_generator.h
     utilities/generators/scene_generator.cpp
-	utilities/image_writers/i_out_writer.h
+    utilities/image_writers/i_out_writer.h
     utilities/maths/maths.h
     utilities/maths/scalars.h
     utilities/noises/perlin.h
     utilities/rng/drand48.h
     utilities/rng/drand48.cpp
+    utilities/rng/i_rand_generator.h
     utilities/rng/xoroshiro128.h
     utilities/rng/xoroshiro128.cpp
     utilities/system/version.h
@@ -135,13 +141,6 @@ set (
     utilities/color_utilities.h
     utilities/utility_functions.h
 )
-
-if(USE_PLUGINS)
-    list(APPEND UTILITY_SOURCES
-        utilities/image_writers/oiio_writer.h
-        utilities/image_writers/oiio_writer.cpp
-    )
-endif()
 
 set (
     CPP_SOURCES
@@ -159,6 +158,10 @@ add_library(
     ${CPP_SOURCES}
 )
 
+set_property (TARGET RIFT APPEND PROPERTY
+    COMPILE_DEFINITIONS_RELEASE "_NDEBUG"
+)
+
 target_include_directories(
     RIFT
     PUBLIC
@@ -166,108 +169,71 @@ target_include_directories(
     .
 )
 
-if (MSVC)
-    target_compile_definitions(
-        RIFT
-        PUBLIC
-         _USE_MATH_DEFINES
-    )
-endif()
+target_compile_definitions(
+    RIFT
+    PUBLIC
+        _USE_MATH_DEFINES
+)
 
-#Optional libraries for OpenImageIO
-if(USE_PLUGINS)
-    target_include_directories(
-        RIFT
-        PUBLIC
-        ${RIFT_DEPENDENCIES_DIR}/oiio-release/include
-        ${RIFT_DEPENDENCIES_DIR}/ilmbase-release/include
-        ${RIFT_DEPENDENCIES_DIR}/ilmbase-release/include/OpenEXR
-        ${RIFT_DEPENDENCIES_DIR}/openexr-release/include
-        ${Boost_INCLUDE_DIRS}
-    )
-    set(
-        OPEN_EXR_LIBS
-        optimized ${RIFT_DEPENDENCIES_DIR}/openexr-release/lib/IlmImf-2_2.lib
-        optimized ${RIFT_DEPENDENCIES_DIR}/openexr-release/lib/IlmImfUtil-2_2.lib
-        optimized ${RIFT_DEPENDENCIES_DIR}/ilmbase-release/lib/Half.lib
-        optimized ${RIFT_DEPENDENCIES_DIR}/ilmbase-release/lib/IlmThread-2_2.lib
-        optimized ${RIFT_DEPENDENCIES_DIR}/ilmbase-release/lib/Iex-2_2.lib
-        optimized ${RIFT_DEPENDENCIES_DIR}/ilmbase-release/lib/IexMath-2_2.lib
-        optimized ${RIFT_DEPENDENCIES_DIR}/ilmbase-release/lib/Imath-2_2.lib
-        debug ${RIFT_DEPENDENCIES_DIR}/openexr-debug/lib/IlmImf-2_2.lib
-        debug ${RIFT_DEPENDENCIES_DIR}/openexr-debug/lib/IlmImfUtil-2_2.lib
-        debug ${RIFT_DEPENDENCIES_DIR}/ilmbase-debug/lib/Half.lib
-        debug ${RIFT_DEPENDENCIES_DIR}/ilmbase-debug/lib/IlmThread-2_2.lib
-        debug ${RIFT_DEPENDENCIES_DIR}/ilmbase-debug/lib/Iex-2_2.lib
-        debug ${RIFT_DEPENDENCIES_DIR}/ilmbase-debug/lib/IexMath-2_2.lib
-        debug ${RIFT_DEPENDENCIES_DIR}/ilmbase-debug/lib/Imath-2_2.lib
-    )
+#Libraries for OpenEXR
+target_include_directories(
+    RIFT
+    PUBLIC
+    ${RIFT_DEPENDENCIES_DIR}/release/open_exr/include
+)
 
-    set(
-        ZLIB_LIBS
-        optimized ${RIFT_DEPENDENCIES_DIR}/zlib-release/lib/zlibstatic.lib
-        debug ${RIFT_DEPENDENCIES_DIR}/zlib-debug/lib/zlibstaticd.lib
-    )
+set(
+    OPEN_EXR_LIBS
+    optimized ${RIFT_DEPENDENCIES_DIR}/release/open_exr/lib/IlmImf-2_3_s.lib
+    optimized ${RIFT_DEPENDENCIES_DIR}/release/open_exr/lib/IlmImfUtil-2_3_s.lib
+    optimized ${RIFT_DEPENDENCIES_DIR}/release/open_exr/lib/Half-2_3_s.lib
+    optimized ${RIFT_DEPENDENCIES_DIR}/release/open_exr/lib/IlmThread-2_3_s.lib
+    optimized ${RIFT_DEPENDENCIES_DIR}/release/open_exr/lib/Iex-2_3_s.lib
+    optimized ${RIFT_DEPENDENCIES_DIR}/release/open_exr/lib/IexMath-2_3_s.lib
+    optimized ${RIFT_DEPENDENCIES_DIR}/release/open_exr/lib/Imath-2_3_s.lib
+    debug ${RIFT_DEPENDENCIES_DIR}/debug/open_exr/lib/IlmImf-2_3_s_d.lib
+    debug ${RIFT_DEPENDENCIES_DIR}/debug/open_exr/lib/IlmImfUtil-2_3_s_d.lib
+    debug ${RIFT_DEPENDENCIES_DIR}/debug/open_exr/lib/Half-2_3_s_d.lib
+    debug ${RIFT_DEPENDENCIES_DIR}/debug/open_exr/lib/IlmThread-2_3_s_d.lib
+    debug ${RIFT_DEPENDENCIES_DIR}/debug/open_exr/lib/Iex-2_3_s_d.lib
+    debug ${RIFT_DEPENDENCIES_DIR}/debug/open_exr/lib/IexMath-2_3_s_d.lib
+    debug ${RIFT_DEPENDENCIES_DIR}/debug/open_exr/lib/Imath-2_3_s_d.lib
+)
 
-    set(
-        OIIO_LIBS
-        optimized ${RIFT_DEPENDENCIES_DIR}/oiio-release/lib/OpenImageIO.lib
-        optimized ${RIFT_DEPENDENCIES_DIR}/oiio-release/lib/OpenImageIO_Util.lib
-        debug ${RIFT_DEPENDENCIES_DIR}/oiio-debug/lib/OpenImageIO.lib
-        debug ${RIFT_DEPENDENCIES_DIR}/oiio-debug/lib/OpenImageIO_Util.lib
-    )
+set(
+    ZLIB_LIBS
+    optimized ${RIFT_DEPENDENCIES_DIR}/release/zlib/lib/zlibstatic.lib
+    debug ${RIFT_DEPENDENCIES_DIR}/debug/zlib/lib/zlibstaticd.lib
+)
 
-    set(
-        TIFF_LIB
-        optimized ${RIFT_DEPENDENCIES_DIR}/libtiff-release/lib/libtiff.lib
-        debug ${RIFT_DEPENDENCIES_DIR}/libtiff-debug/lib/libtiff.lib
-        )
+target_link_libraries(
+    RIFT
+    ${OPEN_EXR_LIBS}
+    ${ZLIB_LIBS}
+)
 
-    set(
-        PNG_LIB
-        optimized ${RIFT_DEPENDENCIES_DIR}/libpng-release/lib/libpng16_static.lib
-        debug ${RIFT_DEPENDENCIES_DIR}/libpng-debug/lib/libpng16_staticd.lib
-    )
+set(
+    CMAKE_C_FLAGS_RELEASE
+    "/Zi /O2 /Ob2 /Oi /Ot /Oy /MD /GS- /GL"
+)
 
-    set(
-        JPEG_LIB
-        optimized ${RIFT_DEPENDENCIES_DIR}/libjpeg-turbo-release/lib/jpeg-static.lib
-        debug ${RIFT_DEPENDENCIES_DIR}/libjpeg-turbo-debug/lib/jpeg-static.lib
-    )
+set(
+    CMAKE_CXX_FLAGS_RELEASE
+    "/Zi /O2 /Ob2 /Oi /Ot /Oy /MD /GS- /GL"
+)
 
-    target_link_libraries(
-        RIFT
-        ${OPEN_EXR_LIBS}
-        ${ZLIB_LIBS}
-        ${TIFF_LIB}
-        ${Boost_LIBRARIES}
-        ${OIIO_LIBS}
-        ${PNG_LIB}
-        ${JPEG_LIB}
-    )
-endif()
+set(
+    CMAKE_EXE_LINKER_FLAGS_RELEASE
+    "/OPT:REF /OPT:ICF /LTCG /INCREMENTAL:NO"
+)
 
-if (MSVC)
-    set(
-        CMAKE_C_FLAGS_RELEASE
-        "/Zi /O2 /Ob2 /Oi /Ot /Oy /MD /GS- /GL"
-    )
+set(
+    CMAKE_SHARED_LINKER_FLAGS_RELEASE
+    "/OPT:REF /OPT:ICF /LTCG /INCREMENTAL:NO"
+)
 
-    set(
-        CMAKE_CXX_FLAGS_RELEASE
-        "/Zi /O2 /Ob2 /Oi /Ot /Oy /MD /GS- /GL"
-    )
-
-    set(
-        CMAKE_EXE_LINKER_FLAGS_RELEASE
-        "/OPT:REF /OPT:ICF /LTCG /INCREMENTAL:NO"
-    )
-
-    set(
-        CMAKE_SHARED_LINKER_FLAGS_RELEASE
-        "/OPT:REF /OPT:ICF /LTCG /INCREMENTAL:NO"
-    )
-endif()
+#Post build
+add_copy_target_to_sandbox_command (RIFT)
 
 #Visual Studio folder layout
 source_group(
@@ -283,6 +249,21 @@ source_group(
 source_group(
     "src\\core\\data_types\\containers" REGULAR_EXPRESSION
     core/data_types/containers/.*
+)
+
+source_group(
+    "src\\core\\data_types\\pixel_types" REGULAR_EXPRESSION
+    core/data_types/pixel_types/.*
+)
+
+source_group(
+    "src\\core\\data_types\\records" REGULAR_EXPRESSION
+    core/data_types/records/.*
+)
+
+source_group(
+    "src\\core\\data_types\\tiles" REGULAR_EXPRESSION
+    core/data_types/tiles/.*
 )
 
 source_group(
@@ -331,13 +312,18 @@ source_group(
 )
 
 source_group(
-    "src\\utilities\\image_writers" REGULAR_EXPRESSION
-    utilities/image_writers/.*
+    "src\\utilities\\buffer_processing" REGULAR_EXPRESSION
+    utilities/buffer_processing/.*
 )
 
 source_group(
     "src\\utilities\\generators" REGULAR_EXPRESSION
     utilities/generators/.*
+)
+
+source_group(
+    "src\\utilities\\image_writers" REGULAR_EXPRESSION
+    utilities/image_writers/.*
 )
 
 source_group(
@@ -363,4 +349,9 @@ source_group(
 source_group(
     "src\\utilities\\system\\_dll" REGULAR_EXPRESSION
     utilities/system/_dll/.*
+)
+
+source_group(
+    "src\\utilities\\system\\third_party" REGULAR_EXPRESSION
+    utilities/system/third_party/.*
 )

@@ -32,6 +32,10 @@ add_executable(
     ${CLI_SOURCES}
 )
 
+set_property (TARGET RIFT.cli APPEND PROPERTY
+    COMPILE_DEFINITIONS_RELEASE "_NDEBUG"
+)
+
 target_include_directories(
     RIFT.cli
     PUBLIC
@@ -39,27 +43,28 @@ target_include_directories(
     ..
 )
 
-if (MSVC)
-    set(
-        CMAKE_C_FLAGS_RELEASE
-        "/Zi /O2 /Ob2 /Oi /Ot /Oy /MD /GS- /GL"
-    )
+set(
+    CMAKE_C_FLAGS_RELEASE
+    "/Zi /O2 /Ob2 /Oi /Ot /Oy /MD /GS- /GL"
+)
 
-    set(
-        CMAKE_CXX_FLAGS_RELEASE
-        "/Zi /O2 /Ob2 /Oi /Ot /Oy /MD /GS- /GL"
-    )
+set(
+    CMAKE_CXX_FLAGS_RELEASE
+    "/Zi /O2 /Ob2 /Oi /Ot /Oy /MD /GS- /GL"
+)
 
-    set(
-        CMAKE_EXE_LINKER_FLAGS_RELEASE
-        "/OPT:REF /OPT:ICF /LTCG /INCREMENTAL:NO"
-    )
-endif()
+set(
+    CMAKE_EXE_LINKER_FLAGS_RELEASE
+    "/OPT:REF /OPT:ICF /LTCG /INCREMENTAL:NO"
+)
 
 target_link_libraries(
     RIFT.cli
     RIFT
 )
+
+#Post build
+add_copy_target_to_sandbox_command (RIFT.cli)
 
 source_group(
     "" FILES

@@ -22,8 +22,9 @@
 
 #pragma once
 
-#include "utility/math_functions/utility_functions.h"
-#include "i_hitable.h"
+#include "objects/hitables/i_hitable.h"
+
+#include "core/raytracing/utility_functions.h"
 
 // Forward declarations
 class IMaterial;

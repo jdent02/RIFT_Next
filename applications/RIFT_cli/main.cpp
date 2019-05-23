@@ -31,7 +31,7 @@
 
 #include <cstdio>
 #include <ctime>
-#include "core/data_types/buffers/tile_buffer.h"
+#include "core/data_types/tiles/tile_buffer.h"
 
 int main(const int argc, char* argv[])
 {

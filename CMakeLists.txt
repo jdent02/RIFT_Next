@@ -22,11 +22,13 @@
 
 cmake_minimum_required(VERSION 3.0.0)
 
-set (CMAKE_CONFIGURATION_TYPES "Debug;Release;Profile;Ship" CACHE STRING "" FORCE)
+set (CMAKE_CONFIGURATION_TYPES "Debug;Release" CACHE STRING "" FORCE)
 
 project(RIFT_renderer VERSION 0.1.0)
 
 set(CMAKE_CXX_STANDARD 14)
+
+set(RIFT_DEPENDENCIES_DIR ${PROJECT_SOURCE_DIR}/dependencies)
 
 set (version_major    0)
 set (version_minor    1)
@@ -38,20 +40,25 @@ configure_file (
     ${PROJECT_SOURCE_DIR}/src/utilities/system/version.h
 )
 
-# Options
-option(USE_PLUGINS "Enable external plugins" OFF)
-set(RIFT_DEPENDENCIES_DIR "" CACHE PATH "Path to dependencies dirctory")
+macro (slashes_to_backslashes output input)
+    string (REGEX REPLACE "/" "\\\\" ${output} ${input})
+endmacro ()
 
-if (USE_PLUGINS)
-    add_definitions(-DRIFT_USE_PLUGINS)
-    add_definitions(-DOIIO_STATIC_BUILD)
-    set (Boost_USE_STATIC_LIBS TRUE)
-    find_package (Boost 1.66 REQUIRED COMPONENTS chrono date_time filesystem regex system thread)
-endif()
+macro (get_sandbox_bin_path path)
+    slashes_to_backslashes (${path} ${PROJECT_SOURCE_DIR})
+    set (${path} ${${path}}\\stage\\vc$(PlatformToolsetVersion)\\$(ConfigurationName))
+endmacro ()
 
-if (CMAKE_BUILD_TYPE MATCHES RELEASE)
-  add_definitions(-DNDEBUG)
-endif()
+macro (add_copy_target_to_sandbox_command target)
+    get_sandbox_bin_path (bin_path)
+
+    # Copy the .exe and the PDB file (except in Ship configuration).
+    add_custom_command (TARGET ${target} POST_BUILD
+        COMMAND if not exist "${bin_path}" mkdir "${bin_path}"
+        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${target}> "${bin_path}"
+        COMMAND if $<CONFIG> == "Debug" ${CMAKE_COMMAND} -E copy "$<TARGET_PDB_FILE:${target}>" "${bin_path}"
+    )
+endmacro ()
 
 add_subdirectory(
     applications/RIFT_cli
@@ -60,4 +67,3 @@ add_subdirectory(
 add_subdirectory(
     src
 )
-

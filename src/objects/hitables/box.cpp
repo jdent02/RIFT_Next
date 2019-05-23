@@ -22,7 +22,7 @@
 
 #include "box.h"
 
-#include "core/acceleration_structures/aabb.h"
+#include "core/raytracing/aabb.h"
 #include "objects/hitables/hitable_list.h"
 #include "objects/hitables/rect.h"
 

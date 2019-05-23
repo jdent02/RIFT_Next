@@ -23,10 +23,10 @@
 #pragma once
 
 // Local libraries
-#include "utility/rng/i_rand_generator.h"
 
 // Standard libraries
 #include <cstdint>
+#include "utilities/rng/i_rand_generator.h"
 
 constexpr float inv_uint64 = 1.f / UINT64_MAX;
 

@@ -25,15 +25,8 @@
 #include "core/data_types/containers/scene.h"
 #include "core/data_types/vec3.h"
 
-#include <core/data_types/containers/param_array.h>
-
 void SceneGenerator::make_cornell_box(Scene* scene, RenderSettings& settings)
 {
-    scene->get_texture_store().add_texture(
-        "red_tex",
-        "constant_texture",
-        ParamArray().add_entry("albedo", "0.78 0.78 0.78"));
-
     // Camera
     const Vec3  lookfrom(278.f, 278.f, -800.f);
     const Vec3  lookat(278.f, 278.f, 0.f);

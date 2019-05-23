@@ -22,7 +22,6 @@
 
 #pragma once
 
-#include "utility/data_types/hit_record.h"
 #include "materials/i_material.h"
 #include "textures/i_texture.h"
 

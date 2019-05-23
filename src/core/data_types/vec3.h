@@ -25,6 +25,11 @@
 #include <cmath>
 #include <iostream>
 
+class Vec3;
+
+// Convenience typedef
+typedef Vec3 RGBColor;
+
 class Vec3
 {
   public:
@@ -50,9 +55,9 @@ class Vec3
 
     Vec3 operator-() const { return {-m_e[0], -m_e[1], -m_e[2]}; }
 
-    float operator[](int i) const { return m_e[i]; }
+    float operator[](const int i) const { return m_e[i]; }
 
-    float& operator[](int i) { return m_e[i]; }
+    float& operator[](const int i) { return m_e[i]; }
 
     Vec3& operator+=(const Vec3& v2);
 
@@ -75,53 +80,6 @@ class Vec3
 
     float m_e[3]{};
 };
-
-inline std::istream& operator>>(std::istream& is, Vec3& t)
-{
-    is >> t.m_e[0] >> t.m_e[1] >> t.m_e[2];
-    return is;
-}
-
-inline std::ostream& operator<<(std::ostream& os, const Vec3& t)
-{
-    os << t.m_e[0] << " " << t.m_e[1] << " " << t.m_e[2];
-    return os;
-}
-
-inline Vec3 operator+(const Vec3& v1, const Vec3& v2)
-{
-    return Vec3{v1.m_e[0] + v2.m_e[0], v1.m_e[1] + v2.m_e[1], v1.m_e[2] + v2.m_e[2]};
-}
-
-inline Vec3 operator-(const Vec3& v1, const Vec3& v2)
-{
-    return Vec3{v1.m_e[0] - v2.m_e[0], v1.m_e[1] - v2.m_e[1], v1.m_e[2] - v2.m_e[2]};
-}
-
-inline Vec3 operator*(const Vec3& v1, const Vec3& v2)
-{
-    return Vec3{v1.m_e[0] * v2.m_e[0], v1.m_e[1] * v2.m_e[1], v1.m_e[2] * v2.m_e[2]};
-}
-
-inline Vec3 operator/(const Vec3& v1, const Vec3& v2)
-{
-    return Vec3{v1.m_e[0] / v2.m_e[0], v1.m_e[1] / v2.m_e[1], v1.m_e[2] / v2.m_e[2]};
-}
-
-inline Vec3 operator*(const float t, const Vec3& v)
-{
-    return Vec3{t * v.m_e[0], t * v.m_e[1], t * v.m_e[2]};
-}
-
-inline Vec3 operator/(const Vec3& v, float const t)
-{
-    return Vec3{v.m_e[0] / t, v.m_e[1] / t, v.m_e[2] / t};
-}
-
-inline Vec3 operator*(const Vec3& v, const float t)
-{
-    return Vec3{v.m_e[0] * t, v.m_e[1] * t, v.m_e[2] * t};
-}
 
 inline Vec3& Vec3::operator+=(const Vec3& v2)
 {
@@ -190,10 +148,63 @@ inline float Vec3::squared_length() const
 
 inline void Vec3::make_unit_vector()
 {
-    const float k = 1.0f / std::sqrt(m_e[0] * m_e[0] + m_e[1] * m_e[1] + m_e[2] * m_e[2]);
+    const float k =
+        1.0f / std::sqrt(m_e[0] * m_e[0] + m_e[1] * m_e[1] + m_e[2] * m_e[2]);
     m_e[0] *= k;
     m_e[1] *= k;
     m_e[2] *= k;
+}
+
+// Non method operator overloads
+inline std::istream& operator>>(std::istream& is, Vec3& t)
+{
+    is >> t.m_e[0] >> t.m_e[1] >> t.m_e[2];
+    return is;
+}
+
+inline std::ostream& operator<<(std::ostream& os, const Vec3& t)
+{
+    os << t.m_e[0] << " " << t.m_e[1] << " " << t.m_e[2];
+    return os;
+}
+
+inline Vec3 operator+(const Vec3& v1, const Vec3& v2)
+{
+    return Vec3{
+        v1.m_e[0] + v2.m_e[0], v1.m_e[1] + v2.m_e[1], v1.m_e[2] + v2.m_e[2]};
+}
+
+inline Vec3 operator-(const Vec3& v1, const Vec3& v2)
+{
+    return Vec3{
+        v1.m_e[0] - v2.m_e[0], v1.m_e[1] - v2.m_e[1], v1.m_e[2] - v2.m_e[2]};
+}
+
+inline Vec3 operator*(const Vec3& v1, const Vec3& v2)
+{
+    return Vec3{
+        v1.m_e[0] * v2.m_e[0], v1.m_e[1] * v2.m_e[1], v1.m_e[2] * v2.m_e[2]};
+}
+
+inline Vec3 operator/(const Vec3& v1, const Vec3& v2)
+{
+    return Vec3{
+        v1.m_e[0] / v2.m_e[0], v1.m_e[1] / v2.m_e[1], v1.m_e[2] / v2.m_e[2]};
+}
+
+inline Vec3 operator*(const float t, const Vec3& v)
+{
+    return Vec3{t * v.m_e[0], t * v.m_e[1], t * v.m_e[2]};
+}
+
+inline Vec3 operator/(const Vec3& v, float const t)
+{
+    return Vec3{v.m_e[0] / t, v.m_e[1] / t, v.m_e[2] / t};
+}
+
+inline Vec3 operator*(const Vec3& v, const float t)
+{
+    return Vec3{v.m_e[0] * t, v.m_e[1] * t, v.m_e[2] * t};
 }
 
 inline Vec3 unit_vector(Vec3 v)
@@ -210,5 +221,6 @@ inline Vec3 cross(const Vec3& v1, const Vec3& v2)
 
 inline float dot(const Vec3& v1, const Vec3& v2)
 {
-    return v1.m_e[0] * v2.m_e[0] + v1.m_e[1] * v2.m_e[1] + v1.m_e[2] * v2.m_e[2];
+    return v1.m_e[0] * v2.m_e[0] + v1.m_e[1] * v2.m_e[1] +
+           v1.m_e[2] * v2.m_e[2];
 }

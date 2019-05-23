@@ -22,10 +22,10 @@
 
 #include "light_sample_path.h"
 
+#include "core/raytracing/pdfs/hitable_pdf.h"
+#include "core/raytracing/pdfs/mixture_pdf.h"
 #include "materials/i_material.h"
 #include "objects/hitables/i_hitable.h"
-#include "utility/math_functions/pdfs/hitable_pdf.h"
-#include "utility/math_functions/pdfs/mixture_pdf.h"
 
 #include <cfloat>
 

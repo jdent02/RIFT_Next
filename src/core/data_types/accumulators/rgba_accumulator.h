@@ -23,8 +23,22 @@
 #pragma once
 
 #include "core/data_types/accumulators/i_accumulator.h"
+#include "utilities/color_utilities.h"
 
 class RgbaAccumulator : public IAccumulator
 {
+  public:
+    RgbaAccumulator() = default;
+    virtual ~RgbaAccumulator() = default;
 
+    void add_sample(
+        HitRecord&     hrec,
+        ScatterRecord& srec,
+        Ray&           r,
+        Ray&           scattered) override;
+
+    std::unique_ptr<IBuffer> export_to_buffer() override;
+
+  private:
+    std::vector<std::vector<RGBColor>> m_samples_;
 };

@@ -24,13 +24,15 @@
 
 #include "utilities/system/_dll/dll_symbol.h"
 
-class IBuffer;
+#include <string>
+
+class TileBuffer;
 
 enum OutWriterEnum
 {
     JPEG,
     PNG,
-    OPENIMAGEIO
+    OPENEXR
 };
 
 class RIFT_DLL IOutWriter
@@ -39,8 +41,8 @@ class RIFT_DLL IOutWriter
     virtual ~IOutWriter() = default;
 
     virtual void write(
-        const IBuffer* buffer,
-        const char*    filename,
-        int            x_res,
-        int            y_res) = 0;
+        const TileBuffer& buffer,
+        std::string&      filename,
+        int               x_res,
+        int               y_res) = 0;
 };

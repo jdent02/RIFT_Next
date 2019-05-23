@@ -22,10 +22,10 @@
 
 #include "constant_medium.h"
 
-#include "utility/math_functions/utility_functions.h"
 // #include "materials/isotropic.h"
 
 #include <cfloat>
+#include "core/raytracing/utility_functions.h"
 
 ConstantMedium::ConstantMedium(IHitable* b, float d, ITexture* a)
   : m_boundary_(b)
@@ -56,9 +56,9 @@ bool ConstantMedium::hit(const Ray& r, float t_min, float t_max, HitRecord& rec)
             if (rec1.m_t < 0)
                 rec1.m_t = 0;
 
-            float distance_inside_boundary =
+            const float distance_inside_boundary =
                 (rec2.m_t = rec1.m_t) * r.direction().length();
-            float hit_distance = -(1 / m_density_) * std::log(rand() * INV_RAND_MAX);
+            const float hit_distance = -(1 / m_density_) * std::log(rand() * INV_RAND_MAX);
             if (hit_distance < distance_inside_boundary)
             {
                 if (db)

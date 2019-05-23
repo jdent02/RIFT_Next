@@ -22,8 +22,7 @@
 
 #include "lambertian.h"
 
-#include "utility/math_functions/utility_functions.h"
-#include "utility/math_functions/pdfs/cosine_pdf.h"
+#include "core/raytracing/pdfs/cosine_pdf.h"
 
 bool Lambertian::scatter(
     const Ray&       r_in,

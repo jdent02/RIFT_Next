@@ -1,0 +1,40 @@
+// Released under MIT License
+
+// Copyright (c) 2018 Jonathan Dent.
+
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
+#include "output_buffer.h"
+
+#include "core/data_types/pixel_types/pixel.h"
+
+OutBuffer::OutBuffer(int& x_res, int& y_res, rift::BufferFormat& format)
+{
+    const int pixel_count{x_res * y_res * format};
+    m_pixels_.reserve(pixel_count);
+}
+
+void OutBuffer::build_buffer(TileBuffer& input_buffer)
+{
+}
+
+void OutBuffer::clear_buffer()
+{
+    m_pixels_.clear();
+}

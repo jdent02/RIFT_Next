@@ -42,3 +42,4 @@ packages/
 *version.h
 *.exr
 *CMakeSettings.json
+/stage/*

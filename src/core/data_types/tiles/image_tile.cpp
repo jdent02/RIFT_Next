@@ -26,7 +26,7 @@
 
 struct ImageTile::Impl
 {
-    std::unordered_map<std::string, std::unique_ptr<ResultBuffer>> m_layers;
+    std::vector<std::unique_ptr<View>> m_layers;
 };
 
 ImageTile::ImageTile()
@@ -50,9 +50,8 @@ ImageTile::~ImageTile()
     delete m_impl_;
 }
 
-void ImageTile::add_layer(
-    const char*              layer_name,
-    std::unique_ptr<ResultBuffer> buffer) const
+void ImageTile::add_layer(std::unique_ptr<View> buffer)
+    const
 {
-    m_impl_->m_layers[layer_name] = std::move(buffer);
+    m_impl_->m_layers.push_back(std::move(buffer));
 }

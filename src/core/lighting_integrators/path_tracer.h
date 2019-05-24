@@ -31,3 +31,11 @@ class PathTracer : public ILightIntegrator
     Vec3 trace(const Ray& r, IHitable* world, IHitable* light_shape, int depth)
         const override;
 };
+
+class PathTracerFactory : public ILightIntegratorFactory
+{
+public:
+    PathTracerFactory() = default;
+
+    std::unique_ptr<ILightIntegrator> create() override;
+};

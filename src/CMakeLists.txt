@@ -45,10 +45,12 @@ set (
 set (
     CORE_SOURCES
     core/data_types/accumulators/i_accumulator.h
-    core/data_types/accumulators/rgba_accumulator.h
-    core/data_types/accumulators/rgba_accumulator.cpp
-    core/data_types/buffers/result_buffer.h
-    core/data_types/buffers/result_buffer.cpp
+    core/data_types/accumulators/alpha_accumulator.h
+    core/data_types/accumulators/alpha_accumulator.cpp
+    core/data_types/accumulators/rgb_accumulator.h
+    core/data_types/accumulators/rgb_accumulator.cpp
+    core/data_types/buffers/view.h
+    core/data_types/buffers/view.cpp
     core/data_types/containers/render_settings.h
     core/data_types/containers/scene.h
     core/data_types/containers/scene.cpp
@@ -64,6 +66,8 @@ set (
     core/data_types/ray.h
     core/data_types/vec3.h
     core/lighting_integrators/i_light_integrator.h
+    core/lighting_integrators/i_light_integrator_list.h
+    core/lighting_integrators/i_light_integrator_list.cpp
     core/lighting_integrators/direct_lighting.h
     core/lighting_integrators/direct_lighting.cpp
     core/lighting_integrators/light_sample_path.cpp
@@ -122,8 +126,8 @@ set (
     UTILITY_SOURCES
     utilities/buffer_processing/buffer_utilities.h
     utilities/buffer_processing/buffer_utilities.cpp
-    utilities/buffer_processing/output_buffer.h
-    utilities/buffer_processing/output_buffer.cpp
+    utilities/buffer_processing/image_buffer.h
+    utilities/buffer_processing/image_buffer.cpp
     utilities/generators/scene_generator.h
     utilities/generators/scene_generator.cpp
     utilities/image_writers/i_out_writer.h
@@ -181,7 +185,7 @@ target_compile_definitions(
 target_include_directories(
     RIFT
     PUBLIC
-    ${RIFT_DEPENDENCIES_DIR}/release/open_exr/include
+    ${RIFT_DEPENDENCIES_DIR}/include
 )
 
 set(

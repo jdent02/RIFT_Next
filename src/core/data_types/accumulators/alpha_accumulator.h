@@ -22,19 +22,22 @@
 
 #pragma once
 
-#include "core/lighting_integrators/i_light_integrator.h"
+#include "core/data_types/accumulators/i_accumulator.h"
 
-class LightSamplePath : public ILightIntegrator
+class AlphaAccumulator : public IAccumulator
 {
   public:
-    LightSamplePath() = default;
+    AlphaAccumulator() = default;
+    ~AlphaAccumulator() override;
 
-    Vec3 trace(const Ray& r, IHitable* world, IHitable* light_shape, int depth)
-        const override;
-};
+    void add_sample(
+        HitRecord&     hrec,
+        ScatterRecord& srec,
+        Ray&           r,
+        Ray&           scattered) override;
 
-class LightSamplePathFactory : public ILightIntegratorFactory
-{
-public:
-    std::unique_ptr<ILightIntegrator> create() override;
+    std::unique_ptr<View> export_to_view() override;
+
+  private:
+    std::vector<std::vector<float>> m_samples_;
 };

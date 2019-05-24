@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include "core/render_process/tile_pool.h"
 #include "utilities/system/_dll/dll_symbol.h"
 
 #include <memory>
@@ -30,6 +31,12 @@ class TileBuffer;
 class IBuffer;
 struct RenderSettings;
 class Scene;
+
+struct TileOutlinePackage
+{
+    TileOutline m_tile_outline;
+    uint64_t    m_rng_seed;
+};
 
 class RIFT_DLL IRenderController
 {

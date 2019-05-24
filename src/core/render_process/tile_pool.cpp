@@ -48,7 +48,7 @@ void TilePool::create_pool(
 
 int TilePool::get_pool_size() const
 {
-    return m_tile_pool_.size();
+    return static_cast<int>(m_tile_pool_.size());
 }
 
 TileOutline TilePool::get_next_tile()

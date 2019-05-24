@@ -65,3 +65,8 @@ Vec3 DirectLighting::trace(
     }
     return Vec3(0.f, 0.f, 0.f);
 }
+
+std::unique_ptr<ILightIntegrator> DirectLightingFactory::create()
+{
+    return std::make_unique<DirectLighting>();
+}

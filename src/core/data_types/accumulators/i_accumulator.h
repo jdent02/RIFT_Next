@@ -23,7 +23,7 @@
 #pragma once
 
 #include <memory>
-#include "core/data_types/buffers/result_buffer.h"
+#include "core/data_types/buffers/view.h"
 
 class Ray;
 struct ScatterRecord;
@@ -41,5 +41,5 @@ class IAccumulator
         Ray&           r,
         Ray&           scattered) = 0;
 
-    virtual std::unique_ptr<ResultBuffer> export_to_buffer() = 0;
+    virtual std::unique_ptr<View> export_to_view() = 0;
 };

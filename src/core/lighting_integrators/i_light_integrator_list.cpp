@@ -20,21 +20,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#pragma once
+#include "i_light_integrator_list.h"
 
-#include "core/lighting_integrators/i_light_integrator.h"
+#include "core/lighting_integrators/direct_lighting.h"
+#include "core/lighting_integrators/light_sample_path.h"
+#include "core/lighting_integrators/path_tracer.h"
 
-class LightSamplePath : public ILightIntegrator
+#include <memory>
+
+ILightIntegratorList::ILightIntegratorList()
 {
-  public:
-    LightSamplePath() = default;
+    m_integrator_list_[DIRECT_LIGHTING] =
+        std::make_unique<DirectLightingFactory>();
+    m_integrator_list_[PATH_TRACING] = std::make_unique<PathTracerFactory>();
+    m_integrator_list_[LIGHT_SAMPLE_PATH_TRACING] =
+        std::make_unique<LightSamplePathFactory>();
+}
 
-    Vec3 trace(const Ray& r, IHitable* world, IHitable* light_shape, int depth)
-        const override;
-};
-
-class LightSamplePathFactory : public ILightIntegratorFactory
+std::unique_ptr<ILightIntegratorFactory> ILightIntegratorList::get_integrator(
+    const char* integrator_model) const
 {
-public:
-    std::unique_ptr<ILightIntegrator> create() override;
-};
+    return std::make_unique<DirectLightingFactory>();
+}

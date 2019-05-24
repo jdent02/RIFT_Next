@@ -27,7 +27,7 @@
 #include "utilities/system/_dll/dll_symbol.h"
 
 class TileBuffer;
-class ResultBuffer;
+class View;
 class Scene;
 
 class RIFT_DLL FinalRenderController : public IRenderController

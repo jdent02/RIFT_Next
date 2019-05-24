@@ -22,19 +22,22 @@
 
 #pragma once
 
-#include "core/lighting_integrators/i_light_integrator.h"
+#include "core/data_types/pixel_types/pixel.h"
+#include "utilities/system/_dll/dll_symbol.h"
 
-class LightSamplePath : public ILightIntegrator
+#include <vector>
+
+class RIFT_DLL View
 {
   public:
-    LightSamplePath() = default;
+    View();
+    ~View();
 
-    Vec3 trace(const Ray& r, IHitable* world, IHitable* light_shape, int depth)
-        const override;
-};
+    void reserve_buffer(int x_res, int y_res) const;
 
-class LightSamplePathFactory : public ILightIntegratorFactory
-{
-public:
-    std::unique_ptr<ILightIntegrator> create() override;
+    std::vector<Pixel>& get_pixels() const;
+
+  private:
+    struct Impl;
+    Impl* m_impl_;
 };

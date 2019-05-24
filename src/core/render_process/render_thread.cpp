@@ -19,3 +19,18 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
+
+#include "render_thread.h"
+
+RenderThread::RenderThread(
+    Scene*          scene,
+    RenderSettings* render_settings,
+    TilePool*       tile_pool,
+    TileBuffer*     tile_buffer)
+  : m_scene_(scene)
+  , m_render_settings_(render_settings)
+  , m_tile_pool_(tile_pool)
+  , m_tile_buffer_(tile_buffer)
+{
+    
+}

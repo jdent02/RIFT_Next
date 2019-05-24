@@ -21,20 +21,20 @@
 // SOFTWARE.
 
 #pragma once
-
 #include "core/lighting_integrators/i_light_integrator.h"
+#include <string>
+#include <memory>
+#include <unordered_map>
 
-class LightSamplePath : public ILightIntegrator
+class ILightIntegratorList
 {
   public:
-    LightSamplePath() = default;
+    ILightIntegratorList();
 
-    Vec3 trace(const Ray& r, IHitable* world, IHitable* light_shape, int depth)
-        const override;
-};
+    std::unique_ptr<ILightIntegratorFactory> get_integrator(
+        const char* integrator_model) const;
 
-class LightSamplePathFactory : public ILightIntegratorFactory
-{
-public:
-    std::unique_ptr<ILightIntegrator> create() override;
+private:
+    std::unordered_map<IntegratorEnum, std::unique_ptr<ILightIntegratorFactory>>
+        m_integrator_list_;
 };

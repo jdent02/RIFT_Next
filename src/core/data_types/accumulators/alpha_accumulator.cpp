@@ -20,21 +20,4 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#pragma once
-
-#include "core/lighting_integrators/i_light_integrator.h"
-
-class LightSamplePath : public ILightIntegrator
-{
-  public:
-    LightSamplePath() = default;
-
-    Vec3 trace(const Ray& r, IHitable* world, IHitable* light_shape, int depth)
-        const override;
-};
-
-class LightSamplePathFactory : public ILightIntegratorFactory
-{
-public:
-    std::unique_ptr<ILightIntegrator> create() override;
-};
+#include "alpha_accumulator.h"

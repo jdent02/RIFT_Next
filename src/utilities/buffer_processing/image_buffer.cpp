@@ -20,21 +20,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#pragma once
+#include "image_buffer.h"
 
-#include "core/lighting_integrators/i_light_integrator.h"
-
-class LightSamplePath : public ILightIntegrator
+ImageBuffer::ImageBuffer(int& x_res, int& y_res, rift::BufferFormat& format)
 {
-  public:
-    LightSamplePath() = default;
+    const int pixel_count{x_res * y_res * format};
+    m_pixels_.reserve(pixel_count);
+}
 
-    Vec3 trace(const Ray& r, IHitable* world, IHitable* light_shape, int depth)
-        const override;
-};
+void ImageBuffer::build_buffer(TileBuffer& input_buffer) {}
 
-class LightSamplePathFactory : public ILightIntegratorFactory
+void ImageBuffer::clear_buffer()
 {
-public:
-    std::unique_ptr<ILightIntegrator> create() override;
-};
+    m_pixels_.clear();
+}

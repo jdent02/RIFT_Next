@@ -28,8 +28,8 @@
 
 struct ScatterRecord
 {
-    Ray  m_specular_ray;
-    bool m_is_specular;
-    Vec3 m_attenuation;
+    Ray                  m_specular_ray;
+    bool                 m_is_specular;
+    Vec3                 m_attenuation;
     std::unique_ptr<PDF> m_pdf_ptr;
 };

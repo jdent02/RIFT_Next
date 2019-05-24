@@ -20,21 +20,34 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#pragma once
+#include "view.h"
 
-#include "core/lighting_integrators/i_light_integrator.h"
+#include "core/data_types/pixel_types/pixel.h"
+#include "core/data_types/vec3.h"
 
-class LightSamplePath : public ILightIntegrator
+#include <vector>
+
+struct View::Impl
 {
-  public:
-    LightSamplePath() = default;
-
-    Vec3 trace(const Ray& r, IHitable* world, IHitable* light_shape, int depth)
-        const override;
+    std::vector<Pixel> m_pixels;
 };
 
-class LightSamplePathFactory : public ILightIntegratorFactory
+View::View()
+  : m_impl_(new Impl)
+{}
+
+View::~View()
 {
-public:
-    std::unique_ptr<ILightIntegrator> create() override;
-};
+    delete m_impl_;
+}
+
+void View::reserve_buffer(const int x_res, const int y_res) const
+{
+    const int pixel_count = x_res * y_res;
+    m_impl_->m_pixels.reserve(pixel_count);
+}
+
+std::vector<Pixel>& View::get_pixels() const
+{
+    return m_impl_->m_pixels;
+}

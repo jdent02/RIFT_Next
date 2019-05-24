@@ -61,3 +61,8 @@ Vec3 PathTracer::trace(
     }
     return Vec3(0.f, 0.f, 0.f);
 }
+
+std::unique_ptr<ILightIntegrator> PathTracerFactory::create()
+{
+    return std::make_unique<PathTracer>();
+}

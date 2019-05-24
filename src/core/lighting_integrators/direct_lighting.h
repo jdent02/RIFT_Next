@@ -28,6 +28,15 @@ class DirectLighting : public ILightIntegrator
 {
   public:
     DirectLighting() = default;
+
     Vec3 trace(const Ray& r, IHitable* world, IHitable* light_shape, int depth)
         const override;
+};
+
+class DirectLightingFactory : public ILightIntegratorFactory
+{
+  public:
+    DirectLightingFactory() = default;
+    std::unique_ptr<ILightIntegrator> create() override;
+    ~DirectLightingFactory() override = default;
 };

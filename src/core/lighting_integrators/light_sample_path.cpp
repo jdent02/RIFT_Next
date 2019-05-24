@@ -65,3 +65,8 @@ Vec3 LightSamplePath::trace(
     }
     return Vec3(0.f, 0.f, 0.f);
 }
+
+std::unique_ptr<ILightIntegrator> LightSamplePathFactory::create()
+{
+    return std::make_unique<LightSamplePath>();
+}

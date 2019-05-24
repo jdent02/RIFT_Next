@@ -21,6 +21,7 @@
 // SOFTWARE.
 
 #pragma once
+#include <memory>
 
 class IHitable;
 class Ray;
@@ -37,9 +38,20 @@ class ILightIntegrator
 {
   public:
     virtual ~ILightIntegrator() = default;
+
     virtual Vec3 trace(
         const Ray& r,
         IHitable*  world,
         IHitable*  light_shape,
         int        depth) const = 0;
+};
+
+class ILightIntegratorFactory
+{
+  public:
+    ILightIntegratorFactory() = default;
+
+    virtual ~ILightIntegratorFactory() = default;
+
+    virtual std::unique_ptr<ILightIntegrator> create() = 0;
 };

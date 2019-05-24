@@ -22,8 +22,11 @@
 
 #include "final_render_controller.h"
 
-#include "core/render_process/tile_pool.h"
 #include "core/data_types/tiles/tile_buffer.h"
+#include "core/render_process/render_thread.h"
+#include "core/render_process/tile_pool.h"
+
+#include <thread>
 
 struct FinalRenderController::Impl
 {
@@ -53,8 +56,13 @@ void FinalRenderController::render() const
 {
     m_impl_->m_tile_pool.create_pool(
         m_impl_->m_settings->m_xres, m_impl_->m_settings->m_yres, 64);
+
     m_impl_->m_tile_buffer->set_number_of_tiles(
         m_impl_->m_tile_pool.get_pool_size());
+
+    std::vector<std::thread> thread_pool;
+
+    RenderThread thread;
 }
 
 void FinalRenderController::cleanup() {}

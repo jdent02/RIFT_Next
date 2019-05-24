@@ -22,19 +22,29 @@
 
 #pragma once
 
-#include "core/lighting_integrators/i_light_integrator.h"
+#include <vector>
 
-class LightSamplePath : public ILightIntegrator
+class TileBuffer;
+
+namespace rift
+{
+enum BufferFormat
+{
+    SINGLE = 1,
+    RGB = 3,
+    RGBA = 4
+};
+}
+
+class ImageBuffer
 {
   public:
-    LightSamplePath() = default;
+    ImageBuffer(int& x_res, int& y_res, rift::BufferFormat& format);
 
-    Vec3 trace(const Ray& r, IHitable* world, IHitable* light_shape, int depth)
-        const override;
-};
+    void build_buffer(TileBuffer& input_buffer);
 
-class LightSamplePathFactory : public ILightIntegratorFactory
-{
-public:
-    std::unique_ptr<ILightIntegrator> create() override;
+    void clear_buffer();
+
+  private:
+    std::vector<float> m_pixels_;
 };

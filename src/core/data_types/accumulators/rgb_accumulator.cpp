@@ -20,21 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#pragma once
+#include "rgb_accumulator.h"
 
-#include "core/lighting_integrators/i_light_integrator.h"
+#include <memory>
+#include "core/data_types/buffers/view.h"
 
-class LightSamplePath : public ILightIntegrator
+void RgbAccumulator::add_sample(
+    HitRecord&     hrec,
+    ScatterRecord& srec,
+    Ray&           r,
+    Ray&           scattered)
+{}
+
+std::unique_ptr<View> RgbAccumulator::export_to_view()
 {
-  public:
-    LightSamplePath() = default;
-
-    Vec3 trace(const Ray& r, IHitable* world, IHitable* light_shape, int depth)
-        const override;
-};
-
-class LightSamplePathFactory : public ILightIntegratorFactory
-{
-public:
-    std::unique_ptr<ILightIntegrator> create() override;
-};
+    return std::make_unique<View>();
+}

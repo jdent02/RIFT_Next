@@ -131,12 +131,18 @@ set (
     utilities/generators/scene_generator.h
     utilities/generators/scene_generator.cpp
     utilities/image_writers/i_out_writer.h
+    utilities/image_writers/jpeg_writer.h
+    utilities/image_writers/jpeg_writer.cpp
+    utilities/image_writers/png_writer.h
+    utilities/image_writers/png_writer.cpp
     utilities/maths/maths.h
     utilities/maths/scalars.h
     utilities/noises/perlin.h
     utilities/rng/drand48.h
     utilities/rng/drand48.cpp
     utilities/rng/i_rand_generator.h
+    utilities/rng/i_rand_generator_list.h
+    utilities/rng/i_rand_generator_list.cpp
     utilities/rng/xoroshiro128.h
     utilities/rng/xoroshiro128.cpp
     utilities/system/version.h

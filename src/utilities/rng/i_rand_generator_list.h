@@ -22,22 +22,17 @@
 
 #pragma once
 
-#include "core/data_types/accumulators/i_accumulator.h"
-#include "utilities/system/_dll/dll_symbol.h"
+#include "i_rand_generator.h"
 
-class AlphaAccumulator : public IAccumulator
+#include <unordered_map>
+
+class IRandGeneratorList
 {
   public:
-    AlphaAccumulator() = default;
+    IRandGeneratorList();
 
-    void add_sample(
-        HitRecord&     hrec,
-        ScatterRecord& srec,
-        Ray&           r,
-        Ray&           scattered) override;
-
-    std::unique_ptr<View> export_to_view() override;
+    IRandGenFactory* get_integrator(RngEnum& model);
 
   private:
-    std::vector<std::vector<float>> m_samples_;
+    std::unordered_map<RngEnum, std::unique_ptr<IRandGenFactory>> m_integrator_list_;
 };

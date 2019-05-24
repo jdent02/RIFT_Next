@@ -21,7 +21,13 @@
 // SOFTWARE.
 
 #include "tile_pool.h"
+
+#include "utilities/rng/drand48.h"
+
+#include <chrono>
 #include <iostream>
+
+TilePool::TilePool() = default;
 
 void TilePool::create_pool(
     const int x_res,
@@ -30,7 +36,10 @@ void TilePool::create_pool(
 {
     const int x_tiles = x_res / tile_size;
     const int y_tiles = y_res / tile_size;
+    const bool do_extra_x = x_res - x_tiles * tile_size != 0;
+    const bool do_extra_y = y_res - y_tiles * tile_size != 0;
 
+    // Full sized tiles.
     for (int y = 1; y <= y_tiles; ++y)
     {
         const int y_start = y_res - y * tile_size;
@@ -40,10 +49,36 @@ void TilePool::create_pool(
             const int x_start = x * tile_size;
             const int x_end = x_start + tile_size;
             m_tile_pool_.push(TileOutline{x_start, x_end, y_start, y_end});
-            std::cout << x_start << " " << x_end << " " << y_start << " "
-                      << y_end << "\n";
         }
     }
+
+    if (do_extra_y)
+    {
+        const int y_start = 0;
+        const int y_end = y_res - tile_size * y_tiles;
+        for (int x = 0; x < x_tiles; ++x)
+        {
+            const int x_start = x * tile_size;
+            const int x_end = x_start + tile_size;
+            m_tile_pool_.push(TileOutline{x_start, x_end, y_start, y_end});
+        }
+    }
+
+    if (do_extra_x)
+    {
+        const int x_start = tile_size * x_tiles;
+        for (int y = 1; y <= y_tiles; ++y)
+        {
+            const int y_start = y_res - y * tile_size;
+            const int y_end = y_start + tile_size;
+            m_tile_pool_.push(TileOutline{x_start, x_res, y_start, y_end});
+        }
+    }
+
+    // Final corner tile.
+    const int x_start = x_tiles * tile_size;
+    const int y_end = y_res - y_tiles * tile_size;
+    m_tile_pool_.push(TileOutline{x_start, x_res, 0, y_end});
 }
 
 int TilePool::get_pool_size() const
@@ -51,11 +86,13 @@ int TilePool::get_pool_size() const
     return static_cast<int>(m_tile_pool_.size());
 }
 
-TileOutline TilePool::get_next_tile()
+TileOutlinePackage TilePool::get_next_tile()
 {
-    TileOutline tile{m_tile_pool_.front()};
+    const TileOutline tile{m_tile_pool_.front()};
 
     m_tile_pool_.pop();
 
-    return tile;
+    const auto seed = static_cast<uint64_t>(rand());
+
+    return TileOutlinePackage{tile, seed};
 }

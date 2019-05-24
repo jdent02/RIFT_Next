@@ -24,15 +24,19 @@
 
 #include "core/lighting_integrators/i_light_integrator.h"
 #include "utilities/image_writers/i_out_writer.h"
+#include "utilities/rng/i_rand_generator.h"
 
+#include <string>
 #include <thread>
 
 struct RenderSettings
 {
-    int m_threads{static_cast<int>(std::thread::hardware_concurrency())};
-    int m_xres{1920};
-    int m_yres{1080};
-    int m_samples{100};
+    int            m_threads{static_cast<int>(std::thread::hardware_concurrency())};
+    int            m_xres{1280};
+    int            m_yres{720};
+    int            m_samples{100};
+    std::string    m_output_path{"../../out.png"};
     OutWriterEnum  m_output_writer{PNG};
+    RngEnum        m_rng{RAND_48};
     IntegratorEnum m_light_integrator{PATH_TRACING};
 };

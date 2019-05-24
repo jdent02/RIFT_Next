@@ -39,6 +39,8 @@ class RIFT_DLL TileBuffer
 
     void set_number_of_tiles(int num_tiles) const;
 
+    std::vector<std::unique_ptr<ImageTile>>& get_tiles() const;
+
   private:
     struct Impl;
     Impl* m_impl_;

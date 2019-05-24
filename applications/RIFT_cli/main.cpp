@@ -23,6 +23,7 @@
 #include "command_line_parser.h"
 #include "core/data_types/containers/render_settings.h"
 #include "core/data_types/containers/scene.h"
+#include "core/data_types/tiles/tile_buffer.h"
 #include "core/render_process/final_render_controller.h"
 #include "core/render_process/i_render_controller.h"
 #include "core/render_process/test_render_controller.h"
@@ -30,24 +31,24 @@
 
 #include <cstdio>
 #include <ctime>
-#include "core/data_types/tiles/tile_buffer.h"
+#include "utilities/image_writers/png_writer.h"
 
 int main(const int argc, char* argv[])
 {
     const time_t start_time = time(nullptr);
 
-    const std::unique_ptr<RenderSettings> settings =
-        CommandLineParser::parse(argc, argv);
+    const std::unique_ptr<RenderSettings> settings = CommandLineParser::parse(argc, argv);
 
     const std::unique_ptr<Scene> scene;
 
-    std::unique_ptr<TileBuffer> tile_buffer = TileBufferFactory::create();
+    const std::unique_ptr<TileBuffer> tile_buffer = TileBufferFactory::create();
 
     const std::unique_ptr<IRenderController> engine =
-        FinalRenderControllerFactory::create(
-            scene.get(), settings.get(), tile_buffer.get());
+        TestRenderControllerFactory::create(scene.get(), settings.get(), tile_buffer.get());
 
     engine->render();
+
+    PngWriter::write(tile_buffer.get(), settings.get());
 
     // generate scene
     // set up render controller
@@ -58,9 +59,7 @@ int main(const int argc, char* argv[])
 
     const time_t end_time = time(nullptr);
 
-    printf(
-        "Render Finished; Total Time: %f\n",
-        static_cast<double>(end_time - start_time));
+    printf("Render Finished; Total Time: %f\n", static_cast<double>(end_time - start_time));
 
     return 0;
 }

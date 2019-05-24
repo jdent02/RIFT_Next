@@ -24,23 +24,31 @@
 
 #include <deque>
 #include <queue>
+#include <memory>
+#include "utilities/rng/i_rand_generator.h"
 
 struct TileOutline
 {
     const int x_min, x_max, y_min, y_max;
 };
 
+struct TileOutlinePackage
+{
+    const TileOutline m_tile_outline;
+    const uint64_t    m_rng_seed;
+};
+
 class TilePool
 {
   public:
-    TilePool() = default;
+    TilePool();
     ~TilePool() = default;
 
     void create_pool(int x_res, int y_res, int tile_size);
 
     int get_pool_size() const;
 
-    TileOutline get_next_tile();
+    TileOutlinePackage get_next_tile();
 
   private:
     std::queue<TileOutline, std::deque<TileOutline>> m_tile_pool_;

@@ -24,34 +24,20 @@
 
 #include <unordered_map>
 
-struct ImageTile::Impl
-{
-    std::vector<std::unique_ptr<View>> m_layers;
-};
 
-ImageTile::ImageTile()
-  : m_impl_(new Impl)
+ImageTile::ImageTile(const int x_min, const int y_min, const int x_max, const int y_max)
+  : m_x_min(x_min)
+  , m_x_max(x_max)
+  , m_y_min(y_min)
+  , m_y_max(y_max)
 {}
-
-ImageTile::ImageTile(
-    const int x_min,
-    const int y_min,
-    const int x_max,
-    const int y_max)
-  : m_x_min_(x_min)
-  , m_x_max_(x_max)
-  , m_y_min_(y_min)
-  , m_y_max_(y_max)
-  , m_impl_(new Impl)
-{}
-
-ImageTile::~ImageTile()
-{
-    delete m_impl_;
-}
 
 void ImageTile::add_layer(std::unique_ptr<View> buffer)
-    const
 {
-    m_impl_->m_layers.push_back(std::move(buffer));
+    m_layers_.emplace_back(std::move(buffer));
+}
+
+std::vector<std::unique_ptr<View>>& ImageTile::get_layers()
+{
+    return m_layers_;
 }

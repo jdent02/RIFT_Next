@@ -23,21 +23,21 @@
 #pragma once
 
 #include "core/data_types/pixel_types/pixel.h"
-#include "utilities/system/_dll/dll_symbol.h"
 
 #include <vector>
 
-class RIFT_DLL View
+class View
 {
   public:
-    View();
-    ~View();
+    View() = default;
+    ~View() = default;
 
-    void reserve_buffer(int x_res, int y_res) const;
+    void reserve_buffer(int x_res, int y_res);
 
-    std::vector<Pixel>& get_pixels() const;
+    void push_pixel(const Pixel& pixel);
+
+    std::vector<Pixel>& get_pixels();
 
   private:
-    struct Impl;
-    Impl* m_impl_;
+    std::vector<Pixel> m_pixels_;
 };

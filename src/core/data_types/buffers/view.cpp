@@ -27,27 +27,18 @@
 
 #include <vector>
 
-struct View::Impl
-{
-    std::vector<Pixel> m_pixels;
-};
-
-View::View()
-  : m_impl_(new Impl)
-{}
-
-View::~View()
-{
-    delete m_impl_;
-}
-
-void View::reserve_buffer(const int x_res, const int y_res) const
+void View::reserve_buffer(const int x_res, const int y_res)
 {
     const int pixel_count = x_res * y_res;
-    m_impl_->m_pixels.reserve(pixel_count);
+    m_pixels_.reserve(pixel_count);
 }
 
-std::vector<Pixel>& View::get_pixels() const
+void View::push_pixel(const Pixel& pixel)
 {
-    return m_impl_->m_pixels;
+    m_pixels_.emplace_back(pixel);
+}
+
+std::vector<Pixel>& View::get_pixels()
+{
+    return m_pixels_;
 }

@@ -21,3 +21,10 @@
 // SOFTWARE.
 
 #include "alpha_accumulator.h"
+
+void AlphaAccumulator::add_sample(HitRecord& hrec, ScatterRecord& srec, Ray& r, Ray& scattered) {}
+
+std::unique_ptr<View> AlphaAccumulator::export_to_view()
+{
+    return std::make_unique<View>();
+}

@@ -20,24 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#pragma once
+#include "i_rand_generator_list.h"
+#include "drand48.h"
+#include "xoroshiro128.h"
 
-#include "core/data_types/accumulators/i_accumulator.h"
-#include "utilities/system/_dll/dll_symbol.h"
-
-class AlphaAccumulator : public IAccumulator
+IRandGeneratorList::IRandGeneratorList()
 {
-  public:
-    AlphaAccumulator() = default;
+    m_integrator_list_[RAND_48] = std::make_unique<DRand48Factory>();
+    m_integrator_list_[XORO_128] = std::make_unique<Xoro128Factory>();
 
-    void add_sample(
-        HitRecord&     hrec,
-        ScatterRecord& srec,
-        Ray&           r,
-        Ray&           scattered) override;
+}
 
-    std::unique_ptr<View> export_to_view() override;
-
-  private:
-    std::vector<std::vector<float>> m_samples_;
-};
+IRandGenFactory* IRandGeneratorList::get_integrator(RngEnum& model)
+{
+    return m_integrator_list_[model].get();
+}

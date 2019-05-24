@@ -64,3 +64,8 @@ void DRand48::dorand48(unsigned short* xseed)
     xseed[1] = temp[1];
     xseed[2] = static_cast<unsigned short>(accu);
 }
+
+std::unique_ptr<IRandGenerator> DRand48Factory::create()
+{
+    return std::make_unique<DRand48>();
+}

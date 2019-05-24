@@ -22,29 +22,31 @@
 
 #pragma once
 
+#include "core/data_types/tiles/tile_buffer.h"
+
 #include <vector>
 
-class TileBuffer;
-
-namespace rift
-{
-enum BufferFormat
+enum OutBufferFormat
 {
     SINGLE = 1,
     RGB = 3,
     RGBA = 4
 };
-}
 
 class ImageBuffer
 {
   public:
-    ImageBuffer(int& x_res, int& y_res, rift::BufferFormat& format);
+    ImageBuffer(int& x_res, int& y_res, const OutBufferFormat& format);
 
-    void build_buffer(TileBuffer& input_buffer);
+    void build_buffer(const TileBuffer* input_buffer);
+
+    std::vector<float>& get_pixels();
 
     void clear_buffer();
 
   private:
+    const int          m_x_res_;
+    const int          m_y_res_;
+    OutBufferFormat    m_format_;
     std::vector<float> m_pixels_;
 };

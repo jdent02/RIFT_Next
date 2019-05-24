@@ -21,39 +21,23 @@
 // SOFTWARE.
 
 #pragma once
-#include "core/data_types/accumulators/i_accumulator.h"
+
 #include "core/data_types/containers/render_settings.h"
 #include "core/data_types/containers/scene.h"
-#include "core/data_types/tiles/tile_buffer.h"
-#include "core/render_process/i_render_controller.h"
+#include "core/lighting_integrators/i_light_integrator_list.h"
 #include "core/render_process/tile_pool.h"
-#include "utilities/rng/i_rand_generator.h"
 
-class RenderThread
-{
-  public:
-    RenderThread() = default;
+#include <mutex>
+#include "utilities/rng/i_rand_generator_list.h"
 
-    RenderThread(
-        Scene*          scene,
-        RenderSettings* render_settings,
-        TilePool*       tile_pool,
-        TileBuffer*     tile_buffer);
+bool query_tile_pool(TilePool* tile_pool, std::mutex& mutex);
 
-    void operator()();
-
-    void render_tile(TileOutline& tile_outline);
-
-    bool query_tile_pool();
-
-    TileOutlinePackage get_tile();
-
-  private:
-    Scene*                                     m_scene_;
-    RenderSettings*                            m_render_settings_;
-    TilePool*                                  m_tile_pool_;
-    TileBuffer*                                m_tile_buffer_;
-    std::unique_ptr<IRandGenerator>            m_rng_;
-    std::unique_ptr<ILightIntegrator>          m_lighting_integrator_;
-    std::vector<std::unique_ptr<IAccumulator>> m_accumulators_;
-};
+void run_renderer(
+    std::mutex&           mutex,
+    uint64_t              seed,
+    Scene*                scene,
+    RenderSettings*       render_settings,
+    TilePool*             tile_pool,
+    TileBuffer*           tile_buffer,
+    ILightIntegratorList& integrator_list,
+    IRandGeneratorList&   rng_list);

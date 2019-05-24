@@ -27,9 +27,5 @@
 class RIFT_DLL PngWriter : public IOutWriter
 {
   public:
-    static void write(
-        const IBuffer* buffer,
-        const char*    filename,
-        int            x_res,
-        int            y_res);
+    static void write(const TileBuffer* buffer, RenderSettings* render_settings);
 };

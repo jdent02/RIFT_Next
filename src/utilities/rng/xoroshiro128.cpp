@@ -40,3 +40,8 @@ void Xoro128::seed_gen(const uint64_t seed)
     s[0] = seed;
     s[1] = seed << 16;
 }
+
+std::unique_ptr<IRandGenerator> Xoro128Factory::create()
+{
+    return std::make_unique<Xoro128>();
+}

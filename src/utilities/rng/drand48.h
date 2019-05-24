@@ -22,8 +22,10 @@
 
 #pragma once
 
-#include <cstdint>
 #include "utilities/rng/i_rand_generator.h"
+
+#include <cstdint>
+#include <iostream>
 
 #define RAND48_SEED_0 0x330e
 #define RAND48_SEED_1 0xabcd
@@ -42,6 +44,8 @@ class DRand48 : public IRandGenerator
 
     float get_1_d() override
     {
+        float seed_val = static_cast<float>(erand48(rand48_seed));
+        std::cout << seed_val << "\n";
         return static_cast<float>(erand48(rand48_seed));
     }
 
@@ -61,4 +65,11 @@ class DRand48 : public IRandGenerator
                                      RAND48_MULT_1,
                                      RAND48_MULT_2};
     unsigned short rand48_add = RAND48_ADD;
+};
+
+class DRand48Factory : public IRandGenFactory
+{
+public:
+    DRand48Factory() = default;
+    std::unique_ptr<IRandGenerator> create() override;
 };

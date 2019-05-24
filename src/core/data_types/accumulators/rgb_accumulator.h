@@ -26,12 +26,12 @@
 #include "utilities/color_utilities.h"
 #include <vector>
 #include "core/data_types/buffers/view.h"
+#include "utilities/system/_dll/dll_symbol.h"
 
 class RgbAccumulator : public IAccumulator
 {
   public:
     RgbAccumulator() = default;
-    virtual ~RgbAccumulator() = default;
 
     void add_sample(
         HitRecord&     hrec,

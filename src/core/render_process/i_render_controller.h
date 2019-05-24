@@ -32,12 +32,6 @@ class IBuffer;
 struct RenderSettings;
 class Scene;
 
-struct TileOutlinePackage
-{
-    TileOutline m_tile_outline;
-    uint64_t    m_rng_seed;
-};
-
 class RIFT_DLL IRenderController
 {
   public:

@@ -48,6 +48,11 @@ void TileBuffer::set_number_of_tiles(const int num_tiles) const
     m_impl_->m_tiles.reserve(num_tiles);
 }
 
+std::vector<std::unique_ptr<ImageTile>>& TileBuffer::get_tiles() const
+{
+    return m_impl_->m_tiles;
+}
+
 std::unique_ptr<TileBuffer> TileBufferFactory::create()
 {
     return std::make_unique<TileBuffer>();

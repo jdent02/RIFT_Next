@@ -25,8 +25,9 @@
 // Local libraries
 
 // Standard libraries
-#include <cstdint>
 #include "utilities/rng/i_rand_generator.h"
+
+#include <cstdint>
 
 constexpr float inv_uint64 = 1.f / UINT64_MAX;
 
@@ -55,4 +56,10 @@ class Xoro128 : public IRandGenerator
 
   private:
     uint64_t s[2]{0x46961B5E381BCE6EULL, 0x55897310023CAE21ULL};
+};
+
+class Xoro128Factory : public IRandGenFactory
+{
+public:
+    std::unique_ptr<IRandGenerator> create() override;
 };

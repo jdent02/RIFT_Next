@@ -37,6 +37,7 @@ class RIFT_DLL FinalRenderController : public IRenderController
         Scene*          scene,
         RenderSettings* settings,
         TileBuffer*     tile_buffer);
+
     ~FinalRenderController();
 
     void render() const override;

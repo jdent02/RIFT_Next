@@ -21,8 +21,9 @@
 // SOFTWARE.
 
 #pragma once
+
 #include "core/lighting_integrators/i_light_integrator.h"
-#include <string>
+
 #include <memory>
 #include <unordered_map>
 
@@ -31,10 +32,9 @@ class ILightIntegratorList
   public:
     ILightIntegratorList();
 
-    std::unique_ptr<ILightIntegratorFactory> get_integrator(
-        const char* integrator_model) const;
+    ILightIntegratorFactory* get_integrator(IntegratorEnum& model);
 
-private:
+  private:
     std::unordered_map<IntegratorEnum, std::unique_ptr<ILightIntegratorFactory>>
         m_integrator_list_;
 };

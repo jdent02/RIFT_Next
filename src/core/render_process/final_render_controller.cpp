@@ -23,25 +23,27 @@
 #include "final_render_controller.h"
 
 #include "core/data_types/tiles/tile_buffer.h"
+#include "core/lighting_integrators/i_light_integrator_list.h"
 #include "core/render_process/render_thread.h"
 #include "core/render_process/tile_pool.h"
 
+#include <ctime>
 #include <thread>
 
 struct FinalRenderController::Impl
 {
-    Scene*          m_render_scene;
-    RenderSettings* m_settings;
-    TileBuffer*     m_tile_buffer;
-    TilePool        m_tile_pool;
+    Scene*                    m_render_scene;
+    RenderSettings*           m_settings;
+    TileBuffer*               m_tile_buffer;
+    std::unique_ptr<TilePool> m_tile_pool;
+    ILightIntegratorList      m_light_integrator_list{};
+    IRandGeneratorList        m_rng_list{};
 };
 
-FinalRenderController::FinalRenderController(
-    Scene*          scene,
-    RenderSettings* settings,
-    TileBuffer*     tile_buffer)
+FinalRenderController::FinalRenderController(Scene* scene, RenderSettings* settings, TileBuffer* tile_buffer)
   : m_impl_(new Impl)
 {
+    m_impl_->m_tile_pool = std::make_unique<TilePool>();
     m_impl_->m_render_scene = scene;
     m_impl_->m_settings = settings;
     m_impl_->m_tile_buffer = tile_buffer;
@@ -54,15 +56,30 @@ FinalRenderController::~FinalRenderController()
 
 void FinalRenderController::render() const
 {
-    m_impl_->m_tile_pool.create_pool(
-        m_impl_->m_settings->m_xres, m_impl_->m_settings->m_yres, 64);
+    std::mutex mutex;
 
-    m_impl_->m_tile_buffer->set_number_of_tiles(
-        m_impl_->m_tile_pool.get_pool_size());
+    srand(static_cast<unsigned int>(time(nullptr)));
 
-    std::vector<std::thread> thread_pool;
+    m_impl_->m_tile_pool->create_pool(m_impl_->m_settings->m_xres, m_impl_->m_settings->m_yres, 64);
 
-    RenderThread thread;
+    m_impl_->m_tile_buffer->set_number_of_tiles(m_impl_->m_tile_pool->get_pool_size());
+
+    std::vector<std::thread> worker_threads;
+
+    for (int i = 0; i < m_impl_->m_settings->m_threads; ++i)
+        worker_threads.emplace_back(std::thread(
+            run_renderer,
+            std::ref(mutex),
+            rand(),
+            m_impl_->m_render_scene,
+            m_impl_->m_settings,
+            m_impl_->m_tile_pool.get(),
+            m_impl_->m_tile_buffer,
+            std::ref(m_impl_->m_light_integrator_list),
+            std::ref(m_impl_->m_rng_list)));
+
+    for (auto& thread : worker_threads)
+        thread.join();
 }
 
 void FinalRenderController::cleanup() {}
@@ -72,6 +89,5 @@ std::unique_ptr<IRenderController> FinalRenderControllerFactory::create(
     RenderSettings* settings,
     TileBuffer*     tile_buffer)
 {
-    return std::make_unique<FinalRenderController>(
-        scene, settings, tile_buffer);
+    return std::make_unique<FinalRenderController>(scene, settings, tile_buffer);
 }

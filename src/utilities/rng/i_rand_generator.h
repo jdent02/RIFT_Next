@@ -23,8 +23,9 @@
 #pragma once
 
 #include <cstdint>
+#include <memory>
 
-enum samplers
+enum RngEnum
 {
     XORO_128,
     RAND_48
@@ -42,4 +43,12 @@ class IRandGenerator
     virtual float get_2d() = 0;
 
     virtual void seed_gen(uint64_t seed) = 0;
+};
+
+class IRandGenFactory
+{
+  public:
+    virtual ~IRandGenFactory() = default;
+
+    virtual std::unique_ptr<IRandGenerator> create() = 0;
 };

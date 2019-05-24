@@ -23,25 +23,24 @@
 #pragma once
 
 #include "core/data_types/buffers/view.h"
-#include "utilities/system/_dll/dll_symbol.h"
 
 #include <memory>
 
-class RIFT_DLL ImageTile
+class ImageTile
 {
   public:
-    ImageTile();
     ImageTile(int x_min, int y_min, int x_max, int y_max);
-    ~ImageTile();
+    ~ImageTile() = default;
 
-    void add_layer(std::unique_ptr<View> buffer) const;
+    void add_layer(std::unique_ptr<View> buffer);
+
+    std::vector<std::unique_ptr<View>>& get_layers();
+
+    const int m_x_min{};
+    const int m_x_max{};
+    const int m_y_min{};
+    const int m_y_max{};
 
   private:
-    const int m_x_min_{};
-    const int m_x_max_{};
-    const int m_y_min_{};
-    const int m_y_max_{};
-
-    struct Impl;
-    Impl* m_impl_;
+    std::vector<std::unique_ptr<View>> m_layers_;
 };

@@ -22,17 +22,10 @@
 
 #pragma once
 
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-#define STBI_MSC_SECURE_CRT
-
 #include "i_out_writer.h"
 
 class RIFT_DLL JpegWriter : public IOutWriter
 {
   public:
-    static void write(
-        const IBuffer* buffer,
-        const char*    filename,
-        int            x_res,
-        int            y_res);
+    static void write(const TileBuffer* buffer, RenderSettings* render_settings);
 };

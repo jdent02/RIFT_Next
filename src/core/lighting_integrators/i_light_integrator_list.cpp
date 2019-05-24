@@ -37,8 +37,8 @@ ILightIntegratorList::ILightIntegratorList()
         std::make_unique<LightSamplePathFactory>();
 }
 
-std::unique_ptr<ILightIntegratorFactory> ILightIntegratorList::get_integrator(
-    const char* integrator_model) const
+ILightIntegratorFactory* ILightIntegratorList::get_integrator(
+    IntegratorEnum& model)
 {
-    return std::make_unique<DirectLightingFactory>();
+    return m_integrator_list_[model].get();
 }

@@ -23,8 +23,7 @@
 #include "png_writer.h"
 
 #include "core/data_types/containers/render_settings.h"
-#include "utilities/buffer_processing/image_buffer.h"
-
+#include "utilities/buffer_processing/unsigned_char_buffer.h"
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #define STBI_MSC_SECURE_CRT
@@ -33,15 +32,15 @@
 
 void PngWriter::write(const TileBuffer* buffer, RenderSettings* render_settings)
 {
-    ImageBuffer out_buffer(render_settings->m_xres, render_settings->m_yres, RGB);
+    UnsignedCharBuffer pixel_buffer(render_settings->m_xres, render_settings->m_yres, RGBA, render_settings);
 
-    out_buffer.build_buffer(buffer);
+    pixel_buffer.build_buffer(buffer);
 
     stbi_write_png(
         render_settings->m_output_path.c_str(),
         render_settings->m_xres,
         render_settings->m_yres,
-        3,
-        out_buffer.get_pixels().data(),
-        render_settings->m_xres * 3);
+        4,
+        pixel_buffer.get_pixels().data(),
+        render_settings->m_xres * 4);
 }

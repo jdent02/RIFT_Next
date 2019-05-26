@@ -32,11 +32,11 @@
 struct RenderSettings
 {
     int            m_threads{static_cast<int>(std::thread::hardware_concurrency())};
-    int            m_xres{1280};
-    int            m_yres{720};
+    int            m_xres{400};
+    int            m_yres{400};
     int            m_samples{100};
-    std::string    m_output_path{"../../out.png"};
-    OutWriterEnum  m_output_writer{PNG};
+    std::string    m_output_path{"../out.jpg"};
+    OutWriterEnum  m_output_writer{JPEG};
     RngEnum        m_rng{RAND_48};
     IntegratorEnum m_light_integrator{PATH_TRACING};
 };

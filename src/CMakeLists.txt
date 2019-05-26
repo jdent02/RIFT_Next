@@ -126,13 +126,15 @@ set (
     UTILITY_SOURCES
     utilities/buffer_processing/buffer_utilities.h
     utilities/buffer_processing/buffer_utilities.cpp
-    utilities/buffer_processing/image_buffer.h
-    utilities/buffer_processing/image_buffer.cpp
+    utilities/buffer_processing/unsigned_char_buffer.h
+    utilities/buffer_processing/unsigned_char_buffer.cpp
     utilities/generators/scene_generator.h
     utilities/generators/scene_generator.cpp
     utilities/image_writers/i_out_writer.h
     utilities/image_writers/jpeg_writer.h
     utilities/image_writers/jpeg_writer.cpp
+    # utilities/image_writers/pgm_writer.h
+    # utilities/image_writers/pgm_writer.cpp
     utilities/image_writers/png_writer.h
     utilities/image_writers/png_writer.cpp
     utilities/maths/maths.h

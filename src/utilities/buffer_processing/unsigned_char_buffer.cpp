@@ -20,20 +20,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "image_buffer.h"
+#include "unsigned_char_buffer.h"
 
-ImageBuffer::ImageBuffer(int& x_res, int& y_res, const OutBufferFormat& format)
-  : m_x_res_(x_res)
-  , m_y_res_(y_res)
+#include "core/data_types/containers/render_settings.h"
+
+UnsignedCharBuffer::UnsignedCharBuffer(
+    int&                   x_res,
+    int&                   y_res,
+    const OutBufferFormat& format,
+    RenderSettings*        render_settings)
+  : m_render_settings_(render_settings)
   , m_format_(format)
 {
     const int pixel_count{x_res * y_res * format};
     m_pixels_.reserve(pixel_count);
     for (int x = 0; x < pixel_count; ++x)
-        m_pixels_.emplace_back(0.f);
+        m_pixels_.emplace_back(static_cast<unsigned char>(0.f));
 }
 
-void ImageBuffer::build_buffer(const TileBuffer* input_buffer)
+void UnsignedCharBuffer::build_buffer(const TileBuffer* input_buffer)
 {
     for (auto& tile : input_buffer->get_tiles())
     {
@@ -42,28 +47,31 @@ void ImageBuffer::build_buffer(const TileBuffer* input_buffer)
         const int y_min = tile->m_y_min;
         const int y_max = tile->m_y_max;
 
-        int pixel_index{0};
+        auto pixel_iterator = tile->get_layers().at(0)->get_pixels().begin();
 
         for (int y = y_max - 1; y >= y_min; y--)
         {
-            int buffer_start{m_x_res_ * m_format_ * y + x_min * m_format_};
+            int buffer_index =
+                (m_render_settings_->m_yres - 1 - y) * (m_render_settings_->m_xres * m_format_) + x_min * m_format_;
+
             for (int x = x_min; x < x_max; x++)
             {
-                Pixel& pixel = tile->get_layers().at(0)->get_pixels().at(pixel_index++);
-                m_pixels_[buffer_start++] = pixel.get_channels()[0];
-                m_pixels_[buffer_start++] = pixel.get_channels()[1];
-                m_pixels_[buffer_start++] = pixel.get_channels()[2];
+                Pixel& pixel = *pixel_iterator++;
+                for (int i = 0; i < m_format_; ++i)
+                {
+                    m_pixels_[buffer_index++] = static_cast<unsigned char>(pixel.get_channels().at(i) * 254);
+                }
             }
         }
     }
 }
 
-std::vector<float>& ImageBuffer::get_pixels()
+std::vector<unsigned char>& UnsignedCharBuffer::get_pixels()
 {
     return m_pixels_;
 }
 
-void ImageBuffer::clear_buffer()
+void UnsignedCharBuffer::clear_buffer()
 {
     m_pixels_.clear();
 }

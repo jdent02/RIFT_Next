@@ -20,33 +20,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#pragma once
+#include "pgm_writer.h"
 
-#include "core/data_types/tiles/tile_buffer.h"
+#include "core/data_types/buffers/view.h"
+#include "core/data_types/containers/render_settings.h"
+#include "utilities/buffer_processing/unsigned_char_buffer.h"
 
-#include <vector>
+#include <cstdio>
 
-enum OutBufferFormat
+void PgmWriter::write(UnsignedCharBuffer& buffer, RenderSettings* render_settings)
 {
-    SINGLE = 1,
-    RGB = 3,
-    RGBA = 4
-};
+    FILE* out_file = fopen("../output.pgm", "w");
 
-class ImageBuffer
-{
-  public:
-    ImageBuffer(int& x_res, int& y_res, const OutBufferFormat& format);
+    fprintf(out_file, "P3\n%i %i\n255\n", render_settings->m_xres, render_settings->m_yres);
 
-    void build_buffer(const TileBuffer* input_buffer);
+    int pixel_index = 0;
 
-    std::vector<float>& get_pixels();
+    for (int i = 0; i < render_settings->m_xres * render_settings->m_yres; i++)
+    {
+        const int r = int(buffer.get_pixels().at(pixel_index++) * 254);
+        const int g = int(buffer.get_pixels().at(pixel_index++) * 254);
+        const int b = int(buffer.get_pixels().at(pixel_index++) * 254);
 
-    void clear_buffer();
+        fprintf(out_file, "%i %i %i\n", r, g, b);
+    }
 
-  private:
-    const int          m_x_res_;
-    const int          m_y_res_;
-    OutBufferFormat    m_format_;
-    std::vector<float> m_pixels_;
-};
+    fclose(out_file);
+}

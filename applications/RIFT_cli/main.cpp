@@ -28,10 +28,11 @@
 #include "core/render_process/i_render_controller.h"
 #include "core/render_process/test_render_controller.h"
 #include "utilities/generators/scene_generator.h"
+#include "utilities/image_writers/jpeg_writer.h"
+#include "utilities/image_writers/png_writer.h"
 
 #include <cstdio>
 #include <ctime>
-#include "utilities/image_writers/png_writer.h"
 
 int main(const int argc, char* argv[])
 {
@@ -48,7 +49,7 @@ int main(const int argc, char* argv[])
 
     engine->render();
 
-    PngWriter::write(tile_buffer.get(), settings.get());
+    JpegWriter::write(tile_buffer.get(), settings.get());
 
     // generate scene
     // set up render controller

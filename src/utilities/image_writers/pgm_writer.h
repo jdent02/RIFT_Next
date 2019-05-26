@@ -20,23 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "jpeg_writer.h"
+#pragma once
 
-#include "stb_image_write.h"
-#include "utilities/buffer_processing/unsigned_char_buffer.h"
-#include "core/data_types/containers/render_settings.h"
+class UnsignedCharBuffer;
+class View;
+struct RenderSettings;
 
-void JpegWriter::write(const TileBuffer* buffer, RenderSettings* render_settings)
+class PgmWriter
 {
-    UnsignedCharBuffer pixel_buffer(render_settings->m_xres, render_settings->m_yres, RGB, render_settings);
-
-    pixel_buffer.build_buffer(buffer);
-
-    stbi_write_jpg(
-        render_settings->m_output_path.c_str(),
-        render_settings->m_xres,
-        render_settings->m_yres,
-        3,
-        pixel_buffer.get_pixels().data(),
-        75);
-}
+  public:
+    static void write(UnsignedCharBuffer& buffer, RenderSettings* render_settings);
+};

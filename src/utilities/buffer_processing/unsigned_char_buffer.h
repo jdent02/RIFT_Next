@@ -20,23 +20,34 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "jpeg_writer.h"
+#pragma once
 
-#include "stb_image_write.h"
-#include "utilities/buffer_processing/unsigned_char_buffer.h"
-#include "core/data_types/containers/render_settings.h"
+#include "core/data_types/tiles/tile_buffer.h"
 
-void JpegWriter::write(const TileBuffer* buffer, RenderSettings* render_settings)
+#include <vector>
+
+struct RenderSettings;
+
+enum OutBufferFormat
 {
-    UnsignedCharBuffer pixel_buffer(render_settings->m_xres, render_settings->m_yres, RGB, render_settings);
+    SINGLE = 1,
+    RGB = 3,
+    RGBA = 4
+};
 
-    pixel_buffer.build_buffer(buffer);
+class UnsignedCharBuffer
+{
+  public:
+    UnsignedCharBuffer(int& x_res, int& y_res, const OutBufferFormat& format, RenderSettings* render_settings);
 
-    stbi_write_jpg(
-        render_settings->m_output_path.c_str(),
-        render_settings->m_xres,
-        render_settings->m_yres,
-        3,
-        pixel_buffer.get_pixels().data(),
-        75);
-}
+    void build_buffer(const TileBuffer* input_buffer);
+
+    std::vector<unsigned char>& get_pixels();
+
+    void clear_buffer();
+
+  private:
+    RenderSettings*            m_render_settings_;
+    OutBufferFormat            m_format_;
+    std::vector<unsigned char> m_pixels_;
+};

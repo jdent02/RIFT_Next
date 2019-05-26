@@ -26,6 +26,8 @@
 #include "core/data_types/containers/render_settings.h"
 #include "core/data_types/tiles/tile_buffer.h"
 
+#include "utilities/image_writers/pgm_writer.h"
+
 #include <cstdio>
 
 struct TestRenderController::Impl

@@ -86,13 +86,11 @@ int TilePool::get_pool_size() const
     return static_cast<int>(m_tile_pool_.size());
 }
 
-TileOutlinePackage TilePool::get_next_tile()
+TileOutline TilePool::get_next_tile()
 {
     const TileOutline tile{m_tile_pool_.front()};
 
     m_tile_pool_.pop();
 
-    const auto seed = static_cast<uint64_t>(rand());
-
-    return TileOutlinePackage{tile, seed};
+    return tile;
 }

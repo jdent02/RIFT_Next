@@ -26,18 +26,32 @@
 #include "core/data_types/containers/scene.h"
 #include "core/lighting_integrators/i_light_integrator_list.h"
 #include "core/render_process/tile_pool.h"
-
-#include <mutex>
 #include "utilities/rng/i_rand_generator_list.h"
 
-bool query_tile_pool(TilePool* tile_pool, std::mutex& mutex);
+#include <mutex>
 
-void run_renderer(
-    std::mutex&           mutex,
-    uint64_t              seed,
-    Scene*                scene,
-    RenderSettings*       render_settings,
-    TilePool*             tile_pool,
-    TileBuffer*           tile_buffer,
-    ILightIntegratorList& integrator_list,
-    IRandGeneratorList&   rng_list);
+class RenderWorker
+{
+  public:
+    RenderWorker(
+        std::mutex&           mutex,
+        Scene*                scene,
+        RenderSettings*       render_settings,
+        TilePool*             tile_pool,
+        TileBuffer*           tile_buffer,
+        ILightIntegratorList& integrator_list,
+        IRandGeneratorList&   rng_list);
+
+    void execute(uint64_t seed);
+
+    bool query_tile_pool() const;
+
+  private:
+    std::mutex&           m_mutex_;
+    Scene*                m_scene_;
+    RenderSettings*       m_render_settings_;
+    TilePool*             m_tile_pool_;
+    TileBuffer*           m_tile_buffer_;
+    ILightIntegratorList& m_integrator_list_;
+    IRandGeneratorList&   m_rng_list_;
+};

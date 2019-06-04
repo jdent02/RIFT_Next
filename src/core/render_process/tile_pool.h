@@ -48,7 +48,7 @@ class TilePool
 
     int get_pool_size() const;
 
-    TileOutlinePackage get_next_tile();
+    TileOutline get_next_tile();
 
   private:
     std::queue<TileOutline, std::deque<TileOutline>> m_tile_pool_;

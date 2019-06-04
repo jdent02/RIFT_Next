@@ -45,11 +45,11 @@ int main(const int argc, char* argv[])
     const std::unique_ptr<TileBuffer> tile_buffer = TileBufferFactory::create();
 
     const std::unique_ptr<IRenderController> engine =
-        TestRenderControllerFactory::create(scene.get(), settings.get(), tile_buffer.get());
+        FinalRenderControllerFactory::create(scene.get(), settings.get(), tile_buffer.get());
 
     engine->render();
 
-    JpegWriter::write(tile_buffer.get(), settings.get());
+    // JpegWriter::write(tile_buffer.get(), settings.get());
 
     // generate scene
     // set up render controller

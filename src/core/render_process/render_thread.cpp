@@ -29,42 +29,49 @@
 
 #include <mutex>
 
-bool query_tile_pool(TilePool* tile_pool, std::mutex& mutex)
-{
-    std::lock_guard<std::mutex> lock(mutex);
-
-    return tile_pool->get_pool_size() > 0;
-}
-
-void run_renderer(
+RenderWorker::RenderWorker(
     std::mutex&           mutex,
-    const uint64_t        seed,
     Scene*                scene,
     RenderSettings*       render_settings,
     TilePool*             tile_pool,
     TileBuffer*           tile_buffer,
     ILightIntegratorList& integrator_list,
     IRandGeneratorList&   rng_list)
+  : m_mutex_(mutex)
+  , m_scene_(scene)
+  , m_render_settings_(render_settings)
+  , m_tile_pool_(tile_pool)
+  , m_tile_buffer_(tile_buffer)
+  , m_integrator_list_(integrator_list)
+  , m_rng_list_(rng_list)
+{}
+
+void RenderWorker::execute(const uint64_t seed)
 {
-    std::unique_ptr<IRandGenerator> rng = rng_list.get_integrator(render_settings->m_rng)->create();
+    std::unique_ptr<IRandGenerator> rng = m_rng_list_.get_integrator(m_render_settings_->m_rng)->create();
 
     std::vector<std::unique_ptr<IAccumulator>> accumulators;
-    
+
     accumulators.emplace_back(std::make_unique<RgbAccumulator>());
     accumulators.emplace_back(std::make_unique<AlphaAccumulator>());
 
     std::unique_ptr<ILightIntegrator> lighting_integrator =
-        integrator_list.get_integrator(render_settings->m_light_integrator)->create();
+        m_integrator_list_.get_integrator(m_render_settings_->m_light_integrator)->create();
 
     rng->seed_gen(seed);
 
-    if (query_tile_pool(tile_pool, mutex))
+    if (query_tile_pool())
     {
-        std::lock_guard<std::mutex> lock(mutex);
+        std::lock_guard<std::mutex> guard(m_mutex_);
 
-        const TileOutlinePackage package = tile_pool->get_next_tile();
+        const TileOutline tile = m_tile_pool_->get_next_tile();
 
-        std::cout << "\nX = " << package.m_tile_outline.x_min << " " << package.m_tile_outline.x_max << "\n"
-                  << "X = " << package.m_tile_outline.y_min << " " << package.m_tile_outline.y_max << "\n";
     }
+}
+
+bool RenderWorker::query_tile_pool() const
+{
+    std::lock_guard<std::mutex> lock(m_mutex_);
+
+    return m_tile_pool_->get_pool_size() > 0;
 }

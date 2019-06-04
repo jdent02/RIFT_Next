@@ -66,17 +66,16 @@ void FinalRenderController::render() const
 
     std::vector<std::thread> worker_threads;
 
+    RenderWorker worker_template{mutex,
+                                 m_impl_->m_render_scene,
+                                 m_impl_->m_settings,
+                                 m_impl_->m_tile_pool.get(),
+                                 m_impl_->m_tile_buffer,
+                                 m_impl_->m_light_integrator_list,
+                                 m_impl_->m_rng_list};
+
     for (int i = 0; i < m_impl_->m_settings->m_threads; ++i)
-        worker_threads.emplace_back(std::thread(
-            run_renderer,
-            std::ref(mutex),
-            rand(),
-            m_impl_->m_render_scene,
-            m_impl_->m_settings,
-            m_impl_->m_tile_pool.get(),
-            m_impl_->m_tile_buffer,
-            std::ref(m_impl_->m_light_integrator_list),
-            std::ref(m_impl_->m_rng_list)));
+        worker_threads.emplace_back(std::thread(&RenderWorker::execute, &worker_template, static_cast<uint64_t>(rand())));
 
     for (auto& thread : worker_threads)
         thread.join();

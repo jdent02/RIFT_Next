@@ -11,18 +11,7 @@ Currently compiles on Windows with Visual Studio 2017 or 2019. Other compilers a
 
 Includes headers from the STB image library: https://github.com/nothings/stb
 
-The default ‘no frills’ build has PNG and JPEG export.  There’s also an optional OpenImageIO exporter, for which I use the following dependencies:
-
-* Boost - 1.69
-* OpenImageIO - 2.0.6
-* OpenEXR - 2.2.0
-* ILMBase - 2.2.0
-* LibPNG - 1.6.12
-* LibJPEG-Turbo - 1.3.1
-* LibTIFF - 4.0.3
-* ZLib - 1.2.8
-
-Other versions may work, I honestly have no idea since I haven't tried
+Also includes a VS2019 build of OpenEXR: https://www.openexr.com/
 
 # Here's where I say 'thanks'
 Special thanks goes to the teams behind the appleseed renderer: https://github.com/appleseedhq/appleseed and PBRT: https://github.com/mmp/pbrt-v3.  Both renders have provided a lot of inspiration for the ultimate design of RIFT Next.

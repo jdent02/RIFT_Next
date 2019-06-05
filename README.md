@@ -3,7 +3,7 @@ Welcome to my personal path tracer sandbox.  Originally it started as an impleme
 
 Eventually I decided that Shirley's raytracer, while completely useable, wasn't very modular or easily modifiable, so I decided to borrow some of his techniques and incorporate them into a new renderer that was both modular and easily upgradable.
 
-Code style follows C++11 with a few C++14 features (mostly std::make_unique).
+Code style is based around C++14.
 
 The name is an acronym for a “Reduction in Free Time".
 

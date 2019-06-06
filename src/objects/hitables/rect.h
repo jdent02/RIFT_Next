@@ -34,22 +34,15 @@ class XYRect final : public IHitable
   public:
     XYRect() = default;
 
-    XYRect(
-        float      _x0,
-        float      _x1,
-        float      _y0,
-        float      _y1,
-        float      _k,
-        IMaterial* mat);
+    XYRect(float _x0, float _x1, float _y0, float _y1, float _k, std::shared_ptr<IMaterial> mat);
 
-    bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec)
-        const override;
+    bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const override;
 
     bool bounding_box(float t0, float t1, AABB& box) const override;
 
   private:
-    IMaterial* m_mp_;
-    float      m_x0_, m_x1_, m_y0_, m_y1_, m_k_;
+    std::shared_ptr<IMaterial> m_mp_;
+    float                      m_x0_, m_x1_, m_y0_, m_y1_, m_k_;
 };
 
 class XZRect final : public IHitable
@@ -57,13 +50,7 @@ class XZRect final : public IHitable
   public:
     XZRect() = default;
 
-    XZRect(
-        float      _x0,
-        float      _x1,
-        float      _z0,
-        float      _z1,
-        float      _k,
-        IMaterial* mat);
+    XZRect(float _x0, float _x1, float _z0, float _z1, float _k, std::shared_ptr<IMaterial> mat);
 
     bool hit(const Ray& r, float t0, float t1, HitRecord& rec) const override;
 
@@ -74,8 +61,8 @@ class XZRect final : public IHitable
     Vec3 random(const Vec3& o) const override;
 
   private:
-    IMaterial* m_mp_;
-    float      m_x0_, m_x1_, m_z0_, m_z1_, m_k_;
+    std::shared_ptr<IMaterial> m_mp_;
+    float                      m_x0_, m_x1_, m_z0_, m_z1_, m_k_;
 };
 
 class YZRect final : public IHitable
@@ -83,35 +70,28 @@ class YZRect final : public IHitable
   public:
     YZRect() = default;
 
-    YZRect(
-        float      _y0,
-        float      _y1,
-        float      _z0,
-        float      _z1,
-        float      _k,
-        IMaterial* mat);
+    YZRect(float _y0, float _y1, float _z0, float _z1, float _k, std::shared_ptr<IMaterial> mat);
 
     bool hit(const Ray& r, float t0, float t1, HitRecord& rec) const override;
 
     bool bounding_box(float t0, float t1, AABB& box) const override;
 
   private:
-    IMaterial* m_mp_;
-    float      m_y0_, m_y1_, m_z0_, m_z1_, m_k_;
+    std::shared_ptr<IMaterial> m_mp_;
+    float                      m_y0_, m_y1_, m_z0_, m_z1_, m_k_;
 };
 
 class FlipNormals final : public IHitable
 {
   public:
-    explicit FlipNormals(IHitable* p)
-      : m_ptr_(p)
+    explicit FlipNormals(std::unique_ptr<IHitable> p)
+      : m_ptr_(std::move(p))
     {}
 
-    bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec)
-        const override;
+    bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const override;
 
     bool bounding_box(float t0, float t1, AABB& box) const override;
 
   private:
-    IHitable* m_ptr_;
+    std::unique_ptr<IHitable> m_ptr_;
 };

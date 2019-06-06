@@ -28,7 +28,7 @@ class PathTracer : public ILightIntegrator
 {
   public:
     PathTracer() = default;
-    Vec3 trace(const Ray& r, IHitable* world, IHitable* light_shape, int depth)
+    RGBColor trace(const Ray& r, IHitable* world, IHitable* light_shape, int depth)
         const override;
 };
 

@@ -24,8 +24,11 @@
 
 #include "core/data_types/tiles/image_tile.h"
 
+#include <mutex>
+
 struct TileBuffer::Impl
 {
+    std::mutex                              m_write_guard;
     std::vector<std::unique_ptr<ImageTile>> m_tiles;
 };
 
@@ -40,6 +43,8 @@ TileBuffer::~TileBuffer()
 
 void TileBuffer::add_tile(std::unique_ptr<ImageTile> tile) const
 {
+    std::lock_guard<std::mutex> lock(m_impl_->m_write_guard);
+
     m_impl_->m_tiles.emplace_back(std::move(tile));
 }
 

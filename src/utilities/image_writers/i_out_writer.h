@@ -24,6 +24,8 @@
 
 #include "utilities/system/_dll/dll_symbol.h"
 
+#include <memory>
+
 
 struct RenderSettings;
 class TileBuffer;
@@ -40,5 +42,5 @@ class RIFT_DLL IOutWriter
   public:
     virtual ~IOutWriter() = default;
 
-    virtual void write(const TileBuffer* buffer, RenderSettings* render_settings) = 0;
+    static void write(std::unique_ptr<TileBuffer>& buffer, const std::unique_ptr<RenderSettings>& render_settings) {};
 };

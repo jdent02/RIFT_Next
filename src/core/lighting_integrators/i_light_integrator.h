@@ -22,6 +22,7 @@
 
 #pragma once
 #include <memory>
+#include "core/data_types/rgb_color.h"
 
 class IHitable;
 class Ray;
@@ -39,7 +40,7 @@ class ILightIntegrator
   public:
     virtual ~ILightIntegrator() = default;
 
-    virtual Vec3 trace(
+    virtual RGBColor trace(
         const Ray& r,
         IHitable*  world,
         IHitable*  light_shape,

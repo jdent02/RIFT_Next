@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include <utility>
 #include "materials/i_material.h"
 #include "textures/i_texture.h"
 
@@ -30,8 +31,8 @@ struct ScatterRecord;
 class Lambertian : public IMaterial
 {
   public:
-    explicit Lambertian(ITexture* a)
-      : m_albedo_(a){};
+    explicit Lambertian(std::shared_ptr<ITexture> a)
+      : m_albedo_(std::move(a)){};
 
     ~Lambertian() = default;
 
@@ -46,5 +47,5 @@ class Lambertian : public IMaterial
         const Ray&       scattered) const override;
 
   private:
-    ITexture* m_albedo_;
+    std::shared_ptr<ITexture> m_albedo_;
 };

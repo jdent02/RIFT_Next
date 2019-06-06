@@ -23,13 +23,13 @@
 #pragma once
 
 #include "core/data_types/ray.h"
-#include "core/data_types/vec3.h"
+#include "core/data_types/rgb_color.h"
 #include "core/raytracing/pdfs/pdf.h"
 
 struct ScatterRecord
 {
     Ray                  m_specular_ray;
     bool                 m_is_specular;
-    Vec3                 m_attenuation;
+    RGBColor             m_attenuation;
     std::unique_ptr<PDF> m_pdf_ptr;
 };

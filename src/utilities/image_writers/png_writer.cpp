@@ -30,7 +30,7 @@
 #include "stb_image_write.h"
 
 
-void PngWriter::write(const TileBuffer* buffer, RenderSettings* render_settings)
+void PngWriter::write(std::unique_ptr<TileBuffer>& buffer, const std::unique_ptr<RenderSettings>& render_settings)
 {
     UnsignedCharBuffer pixel_buffer(render_settings->m_xres, render_settings->m_yres, RGBA, render_settings);
 

@@ -22,20 +22,10 @@
 
 #include "tile_pool.h"
 
-#include "utilities/rng/drand48.h"
-
-#include <chrono>
-#include <iostream>
-
-TilePool::TilePool() = default;
-
-void TilePool::create_pool(
-    const int x_res,
-    const int y_res,
-    const int tile_size)
+void TilePool::create_pool(const int x_res, const int y_res, const int tile_size)
 {
-    const int x_tiles = x_res / tile_size;
-    const int y_tiles = y_res / tile_size;
+    const int  x_tiles = x_res / tile_size;
+    const int  y_tiles = y_res / tile_size;
     const bool do_extra_x = x_res - x_tiles * tile_size != 0;
     const bool do_extra_y = y_res - y_tiles * tile_size != 0;
 
@@ -81,13 +71,19 @@ void TilePool::create_pool(
     m_tile_pool_.push(TileOutline{x_start, x_res, 0, y_end});
 }
 
-int TilePool::get_pool_size() const
+int TilePool::get_pool_size()
 {
-    return static_cast<int>(m_tile_pool_.size());
+    std::lock_guard<std::mutex> lock(m_read_lock_);
+
+    const int pool_size = static_cast<int>(m_tile_pool_.size());
+
+    return pool_size;
 }
 
 TileOutline TilePool::get_next_tile()
 {
+    std::lock_guard<std::mutex> lock(m_write_lock_);
+
     const TileOutline tile{m_tile_pool_.front()};
 
     m_tile_pool_.pop();

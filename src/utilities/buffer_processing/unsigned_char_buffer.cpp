@@ -25,20 +25,18 @@
 #include "core/data_types/containers/render_settings.h"
 
 UnsignedCharBuffer::UnsignedCharBuffer(
-    int&                   x_res,
-    int&                   y_res,
-    const OutBufferFormat& format,
-    RenderSettings*        render_settings)
+    int&                             x_res,
+    int&                             y_res,
+    const OutBufferFormat&           format,
+    const std::unique_ptr<RenderSettings>& render_settings)
   : m_render_settings_(render_settings)
   , m_format_(format)
 {
-    const int pixel_count{x_res * y_res * format};
-    m_pixels_.reserve(pixel_count);
-    for (int x = 0; x < pixel_count; ++x)
-        m_pixels_.emplace_back(static_cast<unsigned char>(0.f));
+    const int pixel_count = x_res * y_res * format;
+    m_pixels_ = std::vector<unsigned char>(pixel_count, 0);
 }
 
-void UnsignedCharBuffer::build_buffer(const TileBuffer* input_buffer)
+void UnsignedCharBuffer::build_buffer(std::unique_ptr<TileBuffer>& input_buffer)
 {
     for (auto& tile : input_buffer->get_tiles())
     {

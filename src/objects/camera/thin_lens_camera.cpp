@@ -46,19 +46,16 @@ ThinLensCamera::ThinLensCamera(
 
     m_u_ = unit_vector(cross(vup, m_w_));
     m_v_ = cross(m_w_, m_u_);
-    m_lower_left_corner_ = m_origin_ - half_width * focus_dist * m_u_ -
-                           half_height * focus_dist * m_v_ - focus_dist * m_w_;
+    m_lower_left_corner_ =
+        m_origin_ - half_width * focus_dist * m_u_ - half_height * focus_dist * m_v_ - focus_dist * m_w_;
     m_horizontal_ = 2 * half_width * focus_dist * m_u_;
     m_vertical_ = 2 * half_height * focus_dist * m_v_;
 }
 
 Ray ThinLensCamera::get_ray(const float s, const float t) const
 {
-    Vec3        rd = m_lens_radius_ * random_in_unit_disk();
+    const Vec3  rd = m_lens_radius_ * random_in_unit_disk();
     const Vec3  offset = m_u_ * rd.x() + m_v_ * rd.y();
     const float time = m_time0_ + rand() * INV_RAND_MAX * (m_time1_ - m_time0_);
-    return {m_origin_ + offset,
-            m_lower_left_corner_ + s * m_horizontal_ + t * m_vertical_ -
-                m_origin_ - offset,
-            time};
+    return {m_origin_ + offset, m_lower_left_corner_ + s * m_horizontal_ + t * m_vertical_ - m_origin_ - offset, time};
 }

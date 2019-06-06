@@ -22,9 +22,6 @@
 
 #include "image_tile.h"
 
-#include <unordered_map>
-
-
 ImageTile::ImageTile(const int x_min, const int y_min, const int x_max, const int y_max)
   : m_x_min(x_min)
   , m_x_max(x_max)

@@ -39,7 +39,6 @@ set (
     objects/hitables/box.h
     objects/hitables/instancers.cpp
     objects/hitables/instancers.h
-    objects/hitables/sky_sphere.h
 )
 
 set (
@@ -54,8 +53,6 @@ set (
     core/data_types/containers/render_settings.h
     core/data_types/containers/scene.h
     core/data_types/containers/scene.cpp
-    core/data_types/containers/texture_store.h
-    core/data_types/containers/texture_store.cpp
     core/data_types/pixel_types/pixel.h
     core/data_types/tiles/image_tile.h
     core/data_types/tiles/image_tile.cpp
@@ -64,6 +61,7 @@ set (
     core/data_types/records/hit_record.h
     core/data_types/records/scatter_record.h
     core/data_types/ray.h
+    core/data_types/rgb_color.h
     core/data_types/vec3.h
     core/lighting_integrators/i_light_integrator.h
     core/lighting_integrators/i_light_integrator_list.h
@@ -186,7 +184,7 @@ target_include_directories(
 target_compile_definitions(
     RIFT
     PUBLIC
-        _USE_MATH_DEFINES
+    _USE_MATH_DEFINES
 )
 
 #Libraries for OpenEXR

@@ -36,8 +36,7 @@ class MovingSphere : public IHitable
         Vec3       cen1,
         float      t0,
         float      t1,
-        float      r,
-        IMaterial* m);
+        float      r, std::shared_ptr<IMaterial> m);
 
     bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec)
         const override;
@@ -49,5 +48,5 @@ class MovingSphere : public IHitable
     Vec3       m_center0, m_center1;
     float      m_time0{}, m_time1{};
     float      m_radius{};
-    IMaterial* m_mat_ptr{};
+    std::shared_ptr<IMaterial> m_mat_ptr{};
 };

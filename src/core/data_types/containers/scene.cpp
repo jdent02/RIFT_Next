@@ -22,20 +22,21 @@
 
 #include "scene.h"
 
+#include "materials/i_material.h"
 #include "objects/camera/i_camera.h"
-#include "objects/camera/thin_lens_camera.h"
 #include "objects/hitables/i_hitable.h"
-#include "texture_store.h"
 
 #include <memory>
 #include <unordered_map>
+#include "textures/i_texture.h"
 
 struct Scene::Impl
 {
-    std::unique_ptr<ICamera>  m_cam;
-    std::unique_ptr<IHitable> m_world;
-    std::unique_ptr<IHitable> m_lights{nullptr};
-    TextureStore              m_textures;
+    std::unique_ptr<ICamera>                m_cam;
+    std::unique_ptr<IHitable>               m_world;
+    std::unique_ptr<IHitable>               m_lights{nullptr};
+    std::vector<std::shared_ptr<ITexture>>  m_textures;
+    std::vector<std::shared_ptr<IMaterial>> m_materials;
 };
 
 Scene::Scene()
@@ -45,44 +46,6 @@ Scene::Scene()
 Scene::~Scene()
 {
     delete m_impl_;
-}
-
-ICamera* Scene::create_cam(
-    const char* model,
-    const Vec3  lookfrom,
-    const Vec3  lookat,
-    const Vec3  vup,
-    const float vfov,
-    const float aspect,
-    const float t0,
-    const float t1,
-    const float aperture,
-    const float focus_dist) const
-{
-    if (strcmp(model, "thin_lens") != 0)
-    {
-        m_impl_->m_cam = std::make_unique<ThinLensCamera>(
-            lookfrom, lookat, vup, vfov, aspect, aperture, focus_dist, t0, t1);
-    }
-
-    return m_impl_->m_cam.get();
-}
-
-ICamera* Scene::get_cam() const
-{
-    return m_impl_->m_cam.get();
-}
-
-void Scene::set_world() const {}
-
-IHitable* Scene::get_world() const
-{
-    return m_impl_->m_world.get();
-}
-
-TextureStore& Scene::get_texture_store() const
-{
-    return m_impl_->m_textures;
 }
 
 // Scene factory

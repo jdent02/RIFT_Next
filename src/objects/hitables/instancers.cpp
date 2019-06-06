@@ -22,24 +22,19 @@
 
 #include "instancers.h"
 
-
+#include "core/data_types/ray.h"
+#include "core/data_types/records/hit_record.h"
+#include "core/raytracing/utility_functions.h"
 
 #include <cfloat>
 #include <cmath>
-#include "core/data_types/ray.h"
-#include "core/raytracing/utility_functions.h"
-#include "core/data_types/records/hit_record.h"
 
-Translate::Translate(IHitable* p, const Vec3& displacement)
-  : m_ptr_(p)
+Translate::Translate(std::unique_ptr<IHitable> p, const Vec3& displacement)
+  : m_ptr_(std::move(p))
   , m_offset_(displacement)
 {}
 
-bool Translate::hit(
-    const Ray&  r,
-    const float t_min,
-    const float t_max,
-    HitRecord&  rec) const
+bool Translate::hit(const Ray& r, const float t_min, const float t_max, HitRecord& rec) const
 {
     const Ray moved_r(r.origin() - m_offset_, r.direction(), r.time());
     if (m_ptr_->hit(moved_r, t_min, t_max, rec))
@@ -60,8 +55,8 @@ bool Translate::bounding_box(const float t0, const float t1, AABB& box) const
     return false;
 }
 
-RotateY::RotateY(IHitable* p, const float angle)
-  : m_ptr_(p)
+RotateY::RotateY(std::unique_ptr<IHitable> p, const float angle)
+  : m_ptr_(std::move(p))
 {
     const float radians = FLOAT_M_PI / 180 * angle;
     m_sin_theta_ = std::sin(radians);
@@ -75,12 +70,9 @@ RotateY::RotateY(IHitable* p, const float angle)
         {
             for (int k = 0; k < 2; k++)
             {
-                const float x =
-                    i * m_bbox_.max().x() + (1 - i) * m_bbox_.min().x();
-                const float y =
-                    j * m_bbox_.max().y() + (1 - j) * m_bbox_.min().y();
-                const float z =
-                    k * m_bbox_.max().z() + (1 - k) * m_bbox_.min().z();
+                const float x = i * m_bbox_.max().x() + (1 - i) * m_bbox_.min().x();
+                const float y = j * m_bbox_.max().y() + (1 - j) * m_bbox_.min().y();
+                const float z = k * m_bbox_.max().z() + (1 - k) * m_bbox_.min().z();
                 const float newx = m_cos_theta_ * x + m_sin_theta_ * z;
                 const float newz = -m_sin_theta_ * x + m_cos_theta_ * z;
                 Vec3        tester(newx, y, newz);
@@ -101,20 +93,14 @@ RotateY::RotateY(IHitable* p, const float angle)
     m_bbox_ = AABB(min, max);
 }
 
-bool RotateY::hit(
-    const Ray&  r,
-    const float t_min,
-    const float t_max,
-    HitRecord&  rec) const
+bool RotateY::hit(const Ray& r, const float t_min, const float t_max, HitRecord& rec) const
 {
     Vec3 origin = r.origin();
     Vec3 direction = r.direction();
     origin[0] = m_cos_theta_ * r.origin()[0] - m_sin_theta_ * r.origin()[2];
     origin[2] = m_sin_theta_ * r.origin()[0] + m_cos_theta_ * r.origin()[2];
-    direction[0] =
-        m_cos_theta_ * r.direction()[0] - m_sin_theta_ * r.direction()[2];
-    direction[2] =
-        m_sin_theta_ * r.direction()[0] + m_cos_theta_ * r.direction()[2];
+    direction[0] = m_cos_theta_ * r.direction()[0] - m_sin_theta_ * r.direction()[2];
+    direction[2] = m_sin_theta_ * r.direction()[0] + m_cos_theta_ * r.direction()[2];
     const Ray rotated_r(origin, direction, r.time());
     if (m_ptr_->hit(rotated_r, t_min, t_max, rec))
     {
@@ -122,10 +108,8 @@ bool RotateY::hit(
         Vec3 normal = rec.m_normal;
         p[0] = m_cos_theta_ * rec.m_p[0] + m_sin_theta_ * rec.m_p[2];
         p[2] = -m_sin_theta_ * rec.m_p[0] + m_cos_theta_ * rec.m_p[2];
-        normal[0] =
-            m_cos_theta_ * rec.m_normal[0] + m_sin_theta_ * rec.m_normal[2];
-        normal[2] =
-            -m_sin_theta_ * rec.m_normal[0] + m_cos_theta_ * rec.m_normal[2];
+        normal[0] = m_cos_theta_ * rec.m_normal[0] + m_sin_theta_ * rec.m_normal[2];
+        normal[2] = -m_sin_theta_ * rec.m_normal[0] + m_cos_theta_ * rec.m_normal[2];
         rec.m_p = p;
         rec.m_normal = normal;
         return true;

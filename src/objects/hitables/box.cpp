@@ -26,15 +26,9 @@
 #include "objects/hitables/hitable_list.h"
 #include "objects/hitables/rect.h"
 
-#include <vector>
-
-bool Box::hit(
-    const Ray&  r,
-    const float t_min,
-    const float t_max,
-    HitRecord&  rec) const
+bool Box::hit(const Ray& r, const float t_min, const float t_max, HitRecord& rec) const
 {
-    return m_list_ptr_->hit(r, t_min, t_max, rec);
+    return m_list_.hit(r, t_min, t_max, rec);
 }
 
 bool Box::bounding_box(float t0, float t1, AABB& box) const
@@ -43,19 +37,14 @@ bool Box::bounding_box(float t0, float t1, AABB& box) const
     return true;
 }
 
-Box::Box(const Vec3& p0, const Vec3& p1, IMaterial* ptr)
+Box::Box(const Vec3& p0, const Vec3& p1, const std::shared_ptr<IMaterial>& ptr)
   : m_pmin_(p0)
   , m_pmax_(p1)
 {
-    auto list = std::make_unique<std::vector<IHitable*>>();
-    list->emplace_back(new XYRect(p0.x(), p1.x(), p0.y(), p1.y(), p1.z(), ptr));
-    list->emplace_back(new FlipNormals(
-        new XYRect(p0.x(), p1.x(), p0.y(), p1.y(), p0.z(), ptr)));
-    list->emplace_back(new XZRect(p0.x(), p1.x(), p0.z(), p1.z(), p1.y(), ptr));
-    list->emplace_back(new FlipNormals(
-        new XZRect(p0.x(), p1.x(), p0.z(), p1.z(), p0.y(), ptr)));
-    list->emplace_back(new YZRect(p0.y(), p1.y(), p0.z(), p1.z(), p1.x(), ptr));
-    list->emplace_back(new FlipNormals(
-        new YZRect(p0.y(), p1.y(), p0.z(), p1.z(), p0.x(), ptr)));
-    m_list_ptr_ = new HitableList(std::move(list));
+    m_list_.add_hitable(std::make_unique<XYRect>(p0.x(), p1.x(), p0.y(), p1.y(), p1.z(), ptr));
+    m_list_.add_hitable(std::make_unique<FlipNormals>(std::make_unique<XYRect>(p0.x(), p1.x(), p0.y(), p1.y(), p0.z(), ptr)));
+    m_list_.add_hitable(std::make_unique<XZRect>(p0.x(), p1.x(), p0.z(), p1.z(), p1.y(), ptr));
+    m_list_.add_hitable(std::make_unique<FlipNormals>(std::make_unique<XZRect>(p0.x(), p1.x(), p0.z(), p1.z(), p0.y(), ptr)));
+    m_list_.add_hitable(std::make_unique<YZRect>(p0.y(), p1.y(), p0.z(), p1.z(), p1.x(), ptr));
+    m_list_.add_hitable(std::make_unique<FlipNormals>(std::make_unique<YZRect>(p0.y(), p1.y(), p0.z(), p1.z(), p0.x(), ptr)));
 }

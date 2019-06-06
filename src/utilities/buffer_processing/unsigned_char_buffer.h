@@ -38,16 +38,20 @@ enum OutBufferFormat
 class UnsignedCharBuffer
 {
   public:
-    UnsignedCharBuffer(int& x_res, int& y_res, const OutBufferFormat& format, RenderSettings* render_settings);
+    UnsignedCharBuffer(
+        int&                             x_res,
+        int&                             y_res,
+        const OutBufferFormat&           format,
+        const std::unique_ptr<RenderSettings>& render_settings);
 
-    void build_buffer(const TileBuffer* input_buffer);
+    void build_buffer(std::unique_ptr<TileBuffer>& input_buffer);
 
     std::vector<unsigned char>& get_pixels();
 
     void clear_buffer();
 
   private:
-    RenderSettings*            m_render_settings_;
+    const std::unique_ptr<RenderSettings>&            m_render_settings_;
     OutBufferFormat            m_format_;
     std::vector<unsigned char> m_pixels_;
 };

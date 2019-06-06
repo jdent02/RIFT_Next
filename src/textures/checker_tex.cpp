@@ -26,9 +26,9 @@
 
 #include <cmath>
 
-Vec3 CheckerTexture::value(const float u, const float v, const Vec3& p) const
+RGBColor CheckerTexture::value(const float u, const float v, const Vec3& p) const
 {
-    float sines = sin(10.f * p.x()) * sin(10.f * p.y()) * sin(10.f * p.z());
+    const float sines = sin(10.f * p.x()) * sin(10.f * p.y()) * sin(10.f * p.z());
     if (sines < 0)
     {
         return m_odd_->value(u, v, p);

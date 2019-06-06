@@ -46,8 +46,8 @@ class RIFT_DLL IRenderControllerFactory
   public:
     virtual ~IRenderControllerFactory() = default;
 
-    virtual std::unique_ptr<IRenderController> create(
-        Scene*          scene,
-        RenderSettings* settings,
-        TileBuffer*     tile_buffer) = 0;
+    static std::unique_ptr<IRenderController> create(Scene* scene, RenderSettings* settings, TileBuffer* tile_buffer)
+    {
+        return std::unique_ptr<IRenderController>();
+    }
 };

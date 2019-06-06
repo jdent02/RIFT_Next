@@ -34,24 +34,22 @@ class RenderWorker
 {
   public:
     RenderWorker(
-        std::mutex&           mutex,
-        Scene*                scene,
-        RenderSettings*       render_settings,
-        TilePool*             tile_pool,
-        TileBuffer*           tile_buffer,
-        ILightIntegratorList& integrator_list,
-        IRandGeneratorList&   rng_list);
+        const std::unique_ptr<Scene>&          scene,
+        const std::unique_ptr<RenderSettings>& render_settings,
+        std::unique_ptr<TileBuffer>&     tile_buffer,
+        std::unique_ptr<TilePool>&       tile_pool,
+        ILightIntegratorList&            integrator_list,
+        IRandGeneratorList&              rng_list);
 
     void execute(uint64_t seed);
 
     bool query_tile_pool() const;
 
   private:
-    std::mutex&           m_mutex_;
-    Scene*                m_scene_;
-    RenderSettings*       m_render_settings_;
-    TilePool*             m_tile_pool_;
-    TileBuffer*           m_tile_buffer_;
-    ILightIntegratorList& m_integrator_list_;
-    IRandGeneratorList&   m_rng_list_;
+    const std::unique_ptr<Scene>&          m_render_scene_;
+    const std::unique_ptr<RenderSettings>& m_settings_;
+    std::unique_ptr<TileBuffer>&     m_tile_buffer_;
+    std::unique_ptr<TilePool>&       m_tile_pool_;
+    ILightIntegratorList&            m_light_integrator_list_;
+    IRandGeneratorList&              m_rng_list_;
 };

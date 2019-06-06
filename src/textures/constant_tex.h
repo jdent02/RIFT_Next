@@ -24,22 +24,23 @@
 
 #include "core/data_types/vec3.h"
 #include "textures/i_texture.h"
+#include "core/data_types/rgb_color.h"
 
 class ConstantTexture : public ITexture
 {
   public:
     ConstantTexture() = default;
 
-    explicit ConstantTexture(const Vec3 c)
+    explicit ConstantTexture(const RGBColor c)
       : m_color_(c){};
 
     ~ConstantTexture() override = default;
 
-    Vec3 value(float u, float v, const Vec3& p) const override
+    RGBColor value(float u, float v, const Vec3& p) const override
     {
         return m_color_;
     };
 
   private:
-    Vec3 m_color_;
+    RGBColor m_color_;
 };

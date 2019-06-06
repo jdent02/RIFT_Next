@@ -33,15 +33,15 @@ void SceneGenerator::make_cornell_box(Scene* scene, RenderSettings& settings)
     const float dist_to_focus = (lookfrom - lookat).length();
     const float aperture = 0.05f;
 
-    scene->create_cam(
-        "thin_lens",
-        lookfrom,
-        lookat,
-        Vec3(0.f, 1.f, 0.f),
-        40.f,
-        float(settings.m_xres) / float(settings.m_yres),
-        aperture,
-        dist_to_focus,
-        0.f,
-        0.5f);
+    // scene->create_cam(
+    //     "thin_lens",
+    //     lookfrom,
+    //     lookat,
+    //     Vec3(0.f, 1.f, 0.f),
+    //     40.f,
+    //     float(settings.m_xres) / float(settings.m_yres),
+    //     aperture,
+    //     dist_to_focus,
+    //     0.f,
+    //     0.5f);
 }

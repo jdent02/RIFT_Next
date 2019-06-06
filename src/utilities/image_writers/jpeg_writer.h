@@ -24,8 +24,10 @@
 
 #include "i_out_writer.h"
 
+#include <memory>
+
 class RIFT_DLL JpegWriter : public IOutWriter
 {
   public:
-    static void write(const TileBuffer* buffer, RenderSettings* render_settings);
+    static void write(std::unique_ptr<TileBuffer>& buffer, const std::unique_ptr<RenderSettings>& render_settings);
 };

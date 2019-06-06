@@ -30,7 +30,7 @@ ImageTexture::ImageTexture(unsigned char* pixels, const int a, const int b)
   , m_ny_(b)
 {}
 
-Vec3 ImageTexture::value(const float u, const float v, const Vec3& p) const
+RGBColor ImageTexture::value(const float u, const float v, const Vec3& p) const
 {
     int i = int((u)*m_nx_);
     int j = int((1.f - v) * m_ny_ - 0.001f);
@@ -50,9 +50,9 @@ Vec3 ImageTexture::value(const float u, const float v, const Vec3& p) const
     {
         j = int(m_ny_ - 1.f);
     }
-    float col_inv = 1.f / 255;
-    float r = int(m_data_[3 * i + 3 * m_nx_ * j]) * col_inv;
-    float g = int(m_data_[3 * i + 3 * m_nx_ * j + 1]) * col_inv;
-    float b = int(m_data_[3 * i + 3 * m_nx_ * j + 2]) * col_inv;
-    return Vec3(r, g, b);
+    const float col_inv = 1.f / 255;
+    const float r = m_data_[3 * i + 3 * m_nx_ * j] * col_inv;
+    const float g = m_data_[3 * i + 3 * m_nx_ * j + 1] * col_inv;
+    const float b = m_data_[3 * i + 3 * m_nx_ * j + 2] * col_inv;
+    return RGBColor(r, g, b);
 }

@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include <utility>
 #include "objects/hitables/i_hitable.h"
 
 #include "core/raytracing/utility_functions.h"
@@ -44,10 +45,10 @@ class Sphere : public IHitable
   public:
     Sphere() = default;
 
-    Sphere(const Vec3 cen, const float r, IMaterial* mat)
+    Sphere(const Vec3 cen, const float r, std::shared_ptr<IMaterial> mat)
       : m_center_(cen)
       , m_radius_(r)
-      , m_material_(mat){};
+      , m_material_(std::move(mat)){};
 
     ~Sphere() override = default;
 
@@ -63,5 +64,5 @@ class Sphere : public IHitable
   private:
     Vec3       m_center_;
     float      m_radius_{};
-    IMaterial* m_material_{};
+    std::shared_ptr<IMaterial> m_material_{};
 };

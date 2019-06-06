@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include <core/data_types/rgb_color.h>
+
 // Forward declaration
 class Vec3;
 
@@ -30,5 +32,5 @@ class ITexture
   public:
     virtual ~ITexture() = default;
 
-    virtual Vec3 value(float u, float v, const Vec3& p) const = 0;
+    virtual RGBColor value(float u, float v, const Vec3& p) const = 0;
 };

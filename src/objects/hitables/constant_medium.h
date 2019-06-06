@@ -29,13 +29,12 @@
 class ConstantMedium : public IHitable
 {
   public:
-    ConstantMedium(IHitable* b, float d, ITexture* a);
-    bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec)
-        const override;
+    ConstantMedium(IHitable* b, float d, std::shared_ptr<ITexture> a);
+    bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const override;
     bool bounding_box(float t0, float t1, AABB& box) const override;
 
   private:
-    std::unique_ptr<IMaterial> m_phase_function_;
-    IHitable*                  m_boundary_;
+    std::shared_ptr<IMaterial> m_phase_function_;
+    std::unique_ptr<IHitable>  m_boundary_;
     float                      m_density_;
 };

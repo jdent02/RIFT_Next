@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include "hitable_list.h"
 #include "objects/hitables/i_hitable.h"
 
 class IMaterial;
@@ -30,16 +31,13 @@ class Box : public IHitable
 {
   public:
     Box() = default;
-    Box(const Vec3& p0, const Vec3& p1, IMaterial* ptr);
+    Box(const Vec3& p0, const Vec3& p1, const std::shared_ptr<IMaterial>& ptr);
 
-    ~Box() override { delete m_list_ptr_; }
-
-    bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec)
-        const override;
+    bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const override;
 
     bool bounding_box(float t0, float t1, AABB& box) const override;
 
   private:
-    Vec3      m_pmin_, m_pmax_;
-    IHitable* m_list_ptr_;
+    Vec3        m_pmin_, m_pmax_;
+    HitableList m_list_;
 };

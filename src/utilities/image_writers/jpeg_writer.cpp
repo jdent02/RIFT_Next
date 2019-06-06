@@ -22,11 +22,11 @@
 
 #include "jpeg_writer.h"
 
+#include "core/data_types/containers/render_settings.h"
 #include "stb_image_write.h"
 #include "utilities/buffer_processing/unsigned_char_buffer.h"
-#include "core/data_types/containers/render_settings.h"
 
-void JpegWriter::write(const TileBuffer* buffer, RenderSettings* render_settings)
+void JpegWriter::write(std::unique_ptr<TileBuffer>& buffer, const std::unique_ptr<RenderSettings>& render_settings)
 {
     UnsignedCharBuffer pixel_buffer(render_settings->m_xres, render_settings->m_yres, RGB, render_settings);
 

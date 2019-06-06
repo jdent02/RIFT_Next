@@ -28,32 +28,30 @@
 class Translate : public IHitable
 {
   public:
-    Translate(IHitable* p, const Vec3& displacement);
+    Translate(std::unique_ptr<IHitable> p, const Vec3& displacement);
 
-    bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec)
-        const override;
+    bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const override;
 
     bool bounding_box(float t0, float t1, AABB& box) const override;
 
   private:
-    IHitable* m_ptr_;
-    Vec3      m_offset_;
+    std::unique_ptr<IHitable> m_ptr_;
+    Vec3                      m_offset_;
 };
 
 class RotateY : public IHitable
 {
   public:
-    RotateY(IHitable* p, float angle);
+    RotateY(std::unique_ptr<IHitable> p, float angle);
 
-    bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec)
-        const override;
+    bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const override;
 
     bool bounding_box(float t0, float t1, AABB& box) const override;
 
   private:
-    IHitable* m_ptr_;
-    float     m_sin_theta_;
-    float     m_cos_theta_;
-    bool      m_hasbox_;
-    AABB      m_bbox_;
+    std::unique_ptr<IHitable> m_ptr_;
+    float                     m_sin_theta_;
+    float                     m_cos_theta_;
+    bool                      m_hasbox_;
+    AABB                      m_bbox_;
 };

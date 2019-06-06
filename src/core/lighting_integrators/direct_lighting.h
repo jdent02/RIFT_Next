@@ -23,13 +23,14 @@
 #pragma once
 
 #include "core/lighting_integrators/i_light_integrator.h"
+#include "core/data_types/rgb_color.h"
 
 class DirectLighting : public ILightIntegrator
 {
   public:
     DirectLighting() = default;
 
-    Vec3 trace(const Ray& r, IHitable* world, IHitable* light_shape, int depth)
+    RGBColor trace(const Ray& r, IHitable* world, IHitable* light_shape, int depth)
         const override;
 };
 

@@ -29,11 +29,7 @@
 
 #include <cfloat>
 
-bool Sphere::hit(
-    const Ray&  r,
-    const float t_min,
-    const float t_max,
-    HitRecord&  rec) const
+bool Sphere::hit(const Ray& r, const float t_min, const float t_max, HitRecord& rec) const
 {
     const Vec3  oc = r.origin() - m_center_;
     const float a = dot(r.direction(), r.direction());
@@ -49,7 +45,7 @@ bool Sphere::hit(
             rec.m_t = temp;
             rec.m_p = r.point_at_parameter(rec.m_t);
             rec.m_normal = (rec.m_p - m_center_) / m_radius_;
-            rec.m_mat_ptr = m_material_;
+            rec.m_mat_ptr = m_material_.get();
             get_sphere_uv((rec.m_p - m_center_) / m_radius_, rec.m_u, rec.m_v);
             return true;
         }
@@ -60,7 +56,7 @@ bool Sphere::hit(
             rec.m_t = temp;
             rec.m_p = r.point_at_parameter(rec.m_t);
             rec.m_normal = (rec.m_p - m_center_) / m_radius_;
-            rec.m_mat_ptr = m_material_;
+            rec.m_mat_ptr = m_material_.get();
             get_sphere_uv((rec.m_p - m_center_) / m_radius_, rec.m_u, rec.m_v);
             return true;
         }
@@ -71,9 +67,7 @@ bool Sphere::hit(
 
 bool Sphere::bounding_box(float t0, float t1, AABB& box) const
 {
-    box = AABB(
-        m_center_ - Vec3(m_radius_, m_radius_, m_radius_),
-        m_center_ + Vec3(m_radius_, m_radius_, m_radius_));
+    box = AABB(m_center_ - Vec3(m_radius_, m_radius_, m_radius_), m_center_ + Vec3(m_radius_, m_radius_, m_radius_));
     return true;
 }
 
@@ -82,9 +76,8 @@ float Sphere::pdf_value(const Vec3& o, const Vec3& v) const
     HitRecord rec;
     if (this->hit(Ray(o, v), 0.001f, FLT_MAX, rec))
     {
-        float cos_theta_max = std::sqrt(
-            1 - m_radius_ * m_radius_ / (m_center_ - o).squared_length());
-        float solid_angle = 2 * FLOAT_M_PI * (1 - cos_theta_max);
+        const float cos_theta_max = std::sqrt(1 - m_radius_ * m_radius_ / (m_center_ - o).squared_length());
+        const float solid_angle = 2 * FLOAT_M_PI * (1 - cos_theta_max);
         return 1 / solid_angle;
     }
     return 0;
@@ -92,9 +85,13 @@ float Sphere::pdf_value(const Vec3& o, const Vec3& v) const
 
 Vec3 Sphere::random(const Vec3& o) const
 {
-    Vec3  direction = m_center_ - o;
-    float distance_squared = direction.squared_length();
-    ONB   uvw;
+    const Vec3 direction = m_center_ - o;
+
+    const float distance_squared = direction.squared_length();
+
+    ONB uvw;
+
     uvw.build_from_w(direction);
+
     return uvw.local(random_to_sphere(m_radius_, distance_squared));
 }

@@ -27,6 +27,7 @@
 #include <vector>
 #include "core/data_types/buffers/view.h"
 #include "utilities/system/_dll/dll_symbol.h"
+#include "core/data_types/rgb_color.h"
 
 class RgbAccumulator : public IAccumulator
 {

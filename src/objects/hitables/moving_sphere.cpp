@@ -21,34 +21,34 @@
 // SOFTWARE.
 
 #include "moving_sphere.h"
-#include "core/raytracing/aabb.h"
+
 #include "core/data_types/ray.h"
 #include "core/data_types/records/hit_record.h"
+#include "core/raytracing/aabb.h"
 
+#include <utility>
 
 MovingSphere::MovingSphere(
-    Vec3       cen0,
-    Vec3       cen1,
-    float      t0,
-    float      t1,
-    float      r,
-    IMaterial* m)
+    const Vec3                 cen0,
+    const Vec3                 cen1,
+    const float                t0,
+    const float                t1,
+    const float                r,
+    std::shared_ptr<IMaterial> m)
   : m_center0(cen0)
   , m_center1(cen1)
   , m_time0(t0)
   , m_time1(t1)
   , m_radius(r)
-  , m_mat_ptr(m)
+  , m_mat_ptr(std::move(m))
 {}
 
-Vec3 MovingSphere::center(float time) const
+Vec3 MovingSphere::center(const float time) const
 {
-    return m_center0 +
-           ((time - m_time0) / (m_time1 - m_time0)) * (m_center1 - m_center0);
+    return m_center0 + ((time - m_time0) / (m_time1 - m_time0)) * (m_center1 - m_center0);
 }
 
-bool MovingSphere::hit(const Ray& r, float t_min, float t_max, HitRecord& rec)
-    const
+bool MovingSphere::hit(const Ray& r, const float t_min, const float t_max, HitRecord& rec) const
 {
     const Vec3  oc = r.origin() - center(r.time());
     const float a = dot(r.direction(), r.direction());
@@ -64,7 +64,7 @@ bool MovingSphere::hit(const Ray& r, float t_min, float t_max, HitRecord& rec)
             rec.m_t = temp;
             rec.m_p = r.point_at_parameter(rec.m_t);
             rec.m_normal = (rec.m_p - center(r.time())) / m_radius;
-            rec.m_mat_ptr = m_mat_ptr;
+            rec.m_mat_ptr = m_mat_ptr.get();
             return true;
         }
 
@@ -74,7 +74,7 @@ bool MovingSphere::hit(const Ray& r, float t_min, float t_max, HitRecord& rec)
             rec.m_t = temp;
             rec.m_p = r.point_at_parameter(rec.m_t);
             rec.m_normal = (rec.m_p - center(r.time())) / m_radius;
-            rec.m_mat_ptr = m_mat_ptr;
+            rec.m_mat_ptr = m_mat_ptr.get();
             return true;
         }
     }
@@ -84,10 +84,8 @@ bool MovingSphere::hit(const Ray& r, float t_min, float t_max, HitRecord& rec)
 
 bool MovingSphere::bounding_box(float t0, float t1, AABB& box) const
 {
-    AABB box_1{m_center0 - Vec3(m_radius, m_radius, m_radius),
-               m_center0 + Vec3(m_radius, m_radius, m_radius)};
-    AABB box_2{m_center1 - Vec3(m_radius, m_radius, m_radius),
-               m_center1 + Vec3(m_radius, m_radius, m_radius)};
+    const AABB box_1{m_center0 - Vec3(m_radius, m_radius, m_radius), m_center0 + Vec3(m_radius, m_radius, m_radius)};
+    const AABB box_2{m_center1 - Vec3(m_radius, m_radius, m_radius), m_center1 + Vec3(m_radius, m_radius, m_radius)};
     box = surrounding_box(box_1, box_2);
     return true;
 }

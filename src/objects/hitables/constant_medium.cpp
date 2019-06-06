@@ -27,7 +27,7 @@
 #include <cfloat>
 #include "core/raytracing/utility_functions.h"
 
-ConstantMedium::ConstantMedium(IHitable* b, float d, ITexture* a)
+ConstantMedium::ConstantMedium(IHitable* b, float d, std::shared_ptr<ITexture> a)
   : m_boundary_(b)
   , m_density_(d)
 {
@@ -37,8 +37,7 @@ ConstantMedium::ConstantMedium(IHitable* b, float d, ITexture* a)
 bool ConstantMedium::hit(const Ray& r, float t_min, float t_max, HitRecord& rec)
     const
 {
-    bool db;
-    db = false;
+    bool db = false;
 
     HitRecord rec1, rec2;
     if (m_boundary_->hit(r, -FLT_MAX, FLT_MAX, rec1))

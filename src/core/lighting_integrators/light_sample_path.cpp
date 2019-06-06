@@ -29,7 +29,7 @@
 
 #include <cfloat>
 
-Vec3 LightSamplePath::trace(
+RGBColor LightSamplePath::trace(
     const Ray& r,
     IHitable*  world,
     IHitable*  light_shape,
@@ -39,7 +39,7 @@ Vec3 LightSamplePath::trace(
     if (world->hit(r, 0.001f, FLT_MAX, hrec))
     {
         ScatterRecord srec;
-        const Vec3    emitted =
+        const RGBColor emitted =
             hrec.m_mat_ptr->emission(r, hrec, hrec.m_u, hrec.m_v, hrec.m_p);
 
         if (depth < 10 && hrec.m_mat_ptr->scatter(r, hrec, srec))
@@ -63,7 +63,7 @@ Vec3 LightSamplePath::trace(
         }
         return emitted;
     }
-    return Vec3(0.f, 0.f, 0.f);
+    return RGBColor(0.f, 0.f, 0.f);
 }
 
 std::unique_ptr<ILightIntegrator> LightSamplePathFactory::create()

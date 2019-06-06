@@ -23,50 +23,32 @@
 #pragma once
 
 #include "core/data_types/records/hit_record.h"
+#include "core/raytracing/aabb.h"
 #include "objects/hitables/i_hitable.h"
 
-#include <utility>
 #include <vector>
 
 class HitableList : public IHitable
 {
   public:
     HitableList() = default;
-    ~HitableList();
+    ~HitableList() = default;
 
-    explicit HitableList(std::unique_ptr<std::vector<IHitable*>> l);
-
-    bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec)
-        const override;
+    bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const override;
 
     bool bounding_box(float t0, float t1, AABB& box) const override;
 
-  private:
-    std::unique_ptr<std::vector<IHitable*>> m_list_;
+    void add_hitable(std::unique_ptr<IHitable> input) { m_list.emplace_back(std::move(input)); }
+
+    std::vector<std::unique_ptr<IHitable>> m_list;
 };
 
-inline HitableList::~HitableList()
-{
-    for (auto hitable : *m_list_)
-    {
-        delete hitable;
-    }
-}
-
-inline HitableList::HitableList(std::unique_ptr<std::vector<IHitable*>> l)
-  : m_list_(std::move(l))
-{}
-
-inline bool HitableList::hit(
-    const Ray& r,
-    float      t_min,
-    float      t_max,
-    HitRecord& rec) const
+inline bool HitableList::hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const
 {
     HitRecord temp_rec;
     bool      hit_anything = false;
     float     closest_so_far = t_max;
-    for (auto hitable : *m_list_)
+    for (const auto& hitable : m_list)
     {
         if (hitable->hit(r, t_min, closest_so_far, temp_rec))
         {
@@ -81,12 +63,12 @@ inline bool HitableList::hit(
 
 inline bool HitableList::bounding_box(float t0, float t1, AABB& box) const
 {
-    if (m_list_->empty())
+    if (m_list.empty())
     {
         return false;
     }
     AABB       temp_box;
-    const bool first_true = m_list_->at(0)->bounding_box(t0, t1, temp_box);
+    const bool first_true = m_list.at(0)->bounding_box(t0, t1, temp_box);
     if (!first_true)
     {
         return false;
@@ -94,9 +76,9 @@ inline bool HitableList::bounding_box(float t0, float t1, AABB& box) const
 
     box = temp_box;
 
-    for (auto item : *m_list_)
+    for (auto& hitable : m_list)
     {
-        if (item->bounding_box(t0, t1, temp_box))
+        if (hitable->bounding_box(t0, t1, temp_box))
         {
             box = surrounding_box(box, temp_box);
         }

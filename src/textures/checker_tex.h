@@ -25,7 +25,6 @@
 #include "textures/i_texture.h"
 
 // Forward declaration
-class Vec3;
 
 class CheckerTexture : public ITexture
 {
@@ -38,7 +37,7 @@ class CheckerTexture : public ITexture
 
     ~CheckerTexture() override = default;
 
-    Vec3 value(float u, float v, const Vec3& p) const override;
+    RGBColor value(float u, float v, const Vec3& p) const override;
 
   private:
     ITexture* m_odd_{};

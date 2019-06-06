@@ -23,7 +23,6 @@
 #pragma once
 
 #include "core/data_types/tiles/image_tile.h"
-
 #include "utilities/system/_dll/dll_symbol.h"
 
 #include <memory>

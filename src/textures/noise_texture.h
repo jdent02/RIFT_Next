@@ -33,11 +33,11 @@ class NoiseTexture : public ITexture
     explicit NoiseTexture(float sc)
       : m_scale_(sc){};
 
-    Vec3 value(float u, float v, const Vec3& p) const override
+    RGBColor value(float u, float v, const Vec3& p) const override
     {
         //        return Vec3(1.f, 1.f, 1.f) * 0.5f * (1 + noise.turb(m_scale *
         //        p)); return Vec3(1.f, 1.f, 1.f) * noise.turb(m_scale * p);
-        return Vec3(1.f, 1.f, 1.f) * 0.5f *
+        return RGBColor(1.f, 1.f, 1.f) * 0.5f *
                (1 + sin(m_scale_ * p.z() + 10.f * m_noise_.turb(p)));
     }
 

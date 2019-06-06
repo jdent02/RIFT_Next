@@ -24,12 +24,12 @@
 
 #include "core/data_types/ray.h"
 
-Vec3 SkyGradient::value(float u, float v, const Vec3& p) const
+RGBColor SkyGradient::value(float u, float v, const Vec3& p) const
 {
-    Ray  direction(Vec3(0.f, 0.f, 0.f), p, 0.f);
-    Vec3 unit_direction = unit_vector(direction.direction());
+    const Ray  direction(Vec3(0.f, 0.f, 0.f), p, 0.f);
+    const Vec3 unit_direction = unit_vector(direction.direction());
 
     const float t = 0.5f * (unit_direction.y() + 1.f);
 
-    return (1.f - t) * Vec3(m_horizon_) + t * Vec3(m_zenith_);
+    return (1.f - t) * RGBColor(m_horizon_) + t * RGBColor(m_zenith_);
 }

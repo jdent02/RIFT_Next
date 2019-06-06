@@ -33,28 +33,17 @@ class DiffuseLight : public IMaterial
 
     ~DiffuseLight() override = default;
 
-    bool scatter(
-        const Ray&       r_in,
-        const HitRecord& rec,
-        ScatterRecord&   srec) const override
-    {
-        return false;
-    }
+    bool scatter(const Ray& r_in, const HitRecord& rec, ScatterRecord& srec) const override { return false; }
 
-    Vec3 emission(
-        const Ray&       r_in,
-        const HitRecord& rec,
-        float            u,
-        float            v,
-        const Vec3&      p) const override
+    RGBColor emission(const Ray& r_in, const HitRecord& rec, float u, float v, const Vec3& p) const override
     {
         if (dot(rec.m_normal, r_in.direction()) < 0.0)
         {
             return m_emit_->value(u, v, p);
         }
-        return Vec3(0.f, 0.f, 0.f);
+        return RGBColor(0.f, 0.f, 0.f);
     }
 
   private:
-    ITexture* m_emit_;
+    std::shared_ptr<ITexture> m_emit_;
 };

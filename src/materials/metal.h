@@ -23,13 +23,14 @@
 #pragma once
 
 #include "materials/i_material.h"
+#include "core/data_types/rgb_color.h"
 
 struct ScatterRecord;
 
 class Metal : public IMaterial
 {
   public:
-    explicit Metal(const Vec3& a, const float& fuzz)
+    explicit Metal(const RGBColor& a, const float& fuzz)
       : m_albedo_(a)
       , m_fuzz_(fuzz){};
 
@@ -39,6 +40,6 @@ class Metal : public IMaterial
         const override;
 
   private:
-    Vec3  m_albedo_;
+    RGBColor  m_albedo_;
     float m_fuzz_;
 };

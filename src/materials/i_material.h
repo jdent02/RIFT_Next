@@ -47,13 +47,13 @@ class IMaterial
         return false;
     }
 
-    virtual Vec3 emission(
+    virtual RGBColor emission(
         const Ray&       r_in,
         const HitRecord& rec,
         float            u,
         float            v,
         const Vec3&      p) const
     {
-        return Vec3(0.f, 0.f, 0.f);
+        return RGBColor(0.f, 0.f, 0.f);
     }
 };

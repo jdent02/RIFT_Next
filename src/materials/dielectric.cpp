@@ -35,7 +35,7 @@ bool Dielectric::scatter(
     float ni_over_nt;
 
     const Vec3 reflected = reflect(r_in.direction(), rec.m_normal);
-    srec.m_attenuation = Vec3(1.f, 1.f, 1.f);
+    srec.m_attenuation = RGBColor(1.f, 1.f, 1.f);
     Vec3 refracted;
 
     float reflect_prob;

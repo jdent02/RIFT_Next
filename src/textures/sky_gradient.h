@@ -28,13 +28,13 @@
 class SkyGradient : public ITexture
 {
   public:
-    SkyGradient(const Vec3& horizon, const Vec3& zenith)
+    SkyGradient(const RGBColor& horizon, const RGBColor& zenith)
       : m_horizon_(horizon)
       , m_zenith_(zenith){};
 
-    Vec3 value(float u, float v, const Vec3& p) const override;
+    RGBColor value(float u, float v, const Vec3& p) const override;
 
   private:
-    Vec3 m_horizon_;
-    Vec3 m_zenith_;
+    RGBColor m_horizon_;
+    RGBColor m_zenith_;
 };

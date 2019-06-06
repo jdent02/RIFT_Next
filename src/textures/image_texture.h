@@ -31,7 +31,7 @@ class ImageTexture : public ITexture
 
     ImageTexture(unsigned char* pixels, int a, int b);
 
-    Vec3 value(float u, float v, const Vec3& p) const override;
+    RGBColor value(float u, float v, const Vec3& p) const override;
 
   private:
     unsigned char* m_data_;

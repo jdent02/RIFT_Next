@@ -27,32 +27,12 @@
 #include "utilities/system/_dll/dll_symbol.h"
 
 #include <memory>
-#include "texture_store.h"
 
 class RIFT_DLL Scene
 {
   public:
     Scene();
     ~Scene();
-
-    // Setters
-    ICamera* create_cam(
-        const char* model,
-        Vec3        lookfrom,
-        Vec3        lookat,
-        Vec3        vup,
-        float       vfov,
-        float       aspect,
-        float       t0,
-        float       t1,
-        float       aperture = 0.f,
-        float       focus_dist = 0.f) const;
-
-    void set_world() const;
-
-    ICamera*  get_cam() const;
-    IHitable* get_world() const;
-    TextureStore& get_texture_store() const;
 
   private:
     struct Impl;

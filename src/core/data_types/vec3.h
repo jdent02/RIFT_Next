@@ -25,11 +25,6 @@
 #include <cmath>
 #include <iostream>
 
-class Vec3;
-
-// Convenience typedef
-typedef Vec3 RGBColor;
-
 class Vec3
 {
   public:
@@ -43,12 +38,6 @@ class Vec3
     float y() const { return m_e[1]; }
 
     float z() const { return m_e[2]; }
-
-    float r() const { return m_e[0]; }
-
-    float g() const { return m_e[1]; }
-
-    float b() const { return m_e[2]; }
 
     // Operator overloads.
     const Vec3& operator+() const { return *this; }

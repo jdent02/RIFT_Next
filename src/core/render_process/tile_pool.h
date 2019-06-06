@@ -22,10 +22,12 @@
 
 #pragma once
 
-#include <deque>
-#include <queue>
-#include <memory>
 #include "utilities/rng/i_rand_generator.h"
+
+#include <deque>
+#include <memory>
+#include <mutex>
+#include <queue>
 
 struct TileOutline
 {
@@ -41,15 +43,17 @@ struct TileOutlinePackage
 class TilePool
 {
   public:
-    TilePool();
+    TilePool() = default;
     ~TilePool() = default;
 
     void create_pool(int x_res, int y_res, int tile_size);
 
-    int get_pool_size() const;
+    int get_pool_size();
 
     TileOutline get_next_tile();
 
   private:
+    std::mutex                                       m_write_lock_;
+    std::mutex                                       m_read_lock_;
     std::queue<TileOutline, std::deque<TileOutline>> m_tile_pool_;
 };

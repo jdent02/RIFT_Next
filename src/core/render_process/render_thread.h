@@ -36,20 +36,25 @@ class RenderWorker
     RenderWorker(
         const std::unique_ptr<Scene>&          scene,
         const std::unique_ptr<RenderSettings>& render_settings,
-        std::unique_ptr<TileBuffer>&     tile_buffer,
-        std::unique_ptr<TilePool>&       tile_pool,
-        ILightIntegratorList&            integrator_list,
-        IRandGeneratorList&              rng_list);
+        std::unique_ptr<TileBuffer>&           tile_buffer,
+        TilePool&                              tile_pool,
+        ILightIntegratorList&                  integrator_list,
+        IRandGeneratorList&                    rng_list);
 
-    void execute(uint64_t seed);
+    void execute(uint64_t seed) const;
+
+    void run_loop(
+        TileOutline                              tile,
+        const std::unique_ptr<ILightIntegrator>& lighting_integrator,
+        std::unique_ptr<IRandGenerator>&         rng) const;
 
     bool query_tile_pool() const;
 
   private:
     const std::unique_ptr<Scene>&          m_render_scene_;
     const std::unique_ptr<RenderSettings>& m_settings_;
-    std::unique_ptr<TileBuffer>&     m_tile_buffer_;
-    std::unique_ptr<TilePool>&       m_tile_pool_;
-    ILightIntegratorList&            m_light_integrator_list_;
-    IRandGeneratorList&              m_rng_list_;
+    std::unique_ptr<TileBuffer>&           m_tile_buffer_;
+    TilePool&                              m_tile_pool_;
+    ILightIntegratorList&                  m_light_integrator_list_;
+    IRandGeneratorList&                    m_rng_list_;
 };

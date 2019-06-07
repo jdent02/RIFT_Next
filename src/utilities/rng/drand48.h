@@ -44,8 +44,7 @@ class DRand48 : public IRandGenerator
 
     float get_1_d() override
     {
-        float seed_val = static_cast<float>(erand48(rand48_seed));
-        std::cout << seed_val << "\n";
+        auto seed_val = static_cast<float>(erand48(rand48_seed));
         return static_cast<float>(erand48(rand48_seed));
     }
 

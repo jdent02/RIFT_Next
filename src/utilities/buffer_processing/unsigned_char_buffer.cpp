@@ -45,7 +45,7 @@ void UnsignedCharBuffer::build_buffer(std::unique_ptr<TileBuffer>& input_buffer)
         const int y_min = tile->m_y_min;
         const int y_max = tile->m_y_max;
 
-        auto pixel_iterator = tile->get_layers().at(0)->get_pixels().begin();
+        auto pixel_iterator = tile->get_layers().at(0)->m_pixels.begin();
 
         for (int y = y_max - 1; y >= y_min; y--)
         {
@@ -57,7 +57,7 @@ void UnsignedCharBuffer::build_buffer(std::unique_ptr<TileBuffer>& input_buffer)
                 Pixel& pixel = *pixel_iterator++;
                 for (int i = 0; i < m_format_; ++i)
                 {
-                    m_pixels_[buffer_index++] = static_cast<unsigned char>(pixel.get_channels().at(i) * 254);
+                    m_pixels_[buffer_index++] = static_cast<unsigned char>(std::sqrt(pixel.m_pixel_data.at(i)) * 254);
                 }
             }
         }

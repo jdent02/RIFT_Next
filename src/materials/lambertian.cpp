@@ -32,6 +32,7 @@ bool Lambertian::scatter(
     srec.m_is_specular = false;
     srec.m_attenuation = m_albedo_->value(hrec.m_u, hrec.m_v, hrec.m_p);
     srec.m_pdf_ptr = std::make_unique<CosinePDF>(hrec.m_normal);
+
     return true;
 }
 
@@ -41,6 +42,7 @@ float Lambertian::scatter_weight(
     const Ray&       scattered) const
 {
     float cosine = dot(rec.m_normal, unit_vector(scattered.direction()));
+
     if (cosine < 0)
     {
         cosine = 0;

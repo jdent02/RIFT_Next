@@ -31,8 +31,8 @@
 
 RGBColor LightSamplePath::trace(
     const Ray& r,
-    IHitable*  world,
-    IHitable*  light_shape,
+    const std::unique_ptr<IHitable>& world,
+    const std::unique_ptr<IHitable>& light_shape,
     const int  depth) const
 {
     HitRecord hrec;

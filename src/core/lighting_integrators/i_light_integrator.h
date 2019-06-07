@@ -21,8 +21,9 @@
 // SOFTWARE.
 
 #pragma once
-#include <memory>
 #include "core/data_types/rgb_color.h"
+
+#include <memory>
 
 class IHitable;
 class Ray;
@@ -41,10 +42,10 @@ class ILightIntegrator
     virtual ~ILightIntegrator() = default;
 
     virtual RGBColor trace(
-        const Ray& r,
-        IHitable*  world,
-        IHitable*  light_shape,
-        int        depth) const = 0;
+        const Ray&                       r,
+        const std::unique_ptr<IHitable>& world,
+        const std::unique_ptr<IHitable>& light_shape,
+        int                              depth) const = 0;
 };
 
 class ILightIntegratorFactory

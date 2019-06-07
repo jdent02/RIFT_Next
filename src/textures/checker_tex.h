@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include <utility>
 #include "textures/i_texture.h"
 
 // Forward declaration
@@ -31,15 +32,15 @@ class CheckerTexture : public ITexture
   public:
     CheckerTexture() = default;
 
-    CheckerTexture(ITexture* t0, ITexture* t1)
-      : m_odd_(t1)
-      , m_even_(t0){};
+    CheckerTexture(std::shared_ptr<ITexture> t0, std::shared_ptr<ITexture> t1)
+      : m_odd_(std::move(t1))
+      , m_even_(std::move(t0)){};
 
     ~CheckerTexture() override = default;
 
     RGBColor value(float u, float v, const Vec3& p) const override;
 
   private:
-    ITexture* m_odd_{};
-    ITexture* m_even_{};
+    const std::shared_ptr<ITexture> m_odd_{};
+    const std::shared_ptr<ITexture> m_even_{};
 };

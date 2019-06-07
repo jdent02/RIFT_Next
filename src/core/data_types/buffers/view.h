@@ -34,10 +34,5 @@ class View
 
     void reserve_buffer(int x_res, int y_res);
 
-    void push_pixel(const Pixel& pixel);
-
-    std::vector<Pixel>& get_pixels();
-
-  private:
-    std::vector<Pixel> m_pixels_;
+    std::vector<Pixel> m_pixels;
 };

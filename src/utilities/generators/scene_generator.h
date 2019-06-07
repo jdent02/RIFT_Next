@@ -34,5 +34,7 @@ class RIFT_DLL SceneGenerator
     SceneGenerator() = default;
     ~SceneGenerator() = default;
 
-    static void make_cornell_box(Scene* scene, RenderSettings& settings);
+    static std::unique_ptr<Scene> make_cornell_box(const std::unique_ptr<RenderSettings>& settings);
+
+    static std::unique_ptr<Scene> make_sphere(const std::unique_ptr<RenderSettings>& settings);
 };

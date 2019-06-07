@@ -22,8 +22,10 @@
 
 #pragma once
 
+#include "materials/i_material.h"
 #include "objects/camera/i_camera.h"
 #include "objects/hitables/i_hitable.h"
+#include "textures/i_texture.h"
 #include "utilities/system/_dll/dll_symbol.h"
 
 #include <memory>
@@ -33,6 +35,14 @@ class RIFT_DLL Scene
   public:
     Scene();
     ~Scene();
+
+    void set_world(std::unique_ptr<IHitable> world) const;
+
+    void set_cam(std::unique_ptr<ICamera> camera) const;
+
+    const std::unique_ptr<ICamera>&  get_cam() const;
+    const std::unique_ptr<IHitable>& get_world() const;
+    const std::unique_ptr<IHitable>& get_lights() const;
 
   private:
     struct Impl;

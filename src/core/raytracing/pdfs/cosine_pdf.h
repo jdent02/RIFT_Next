@@ -30,8 +30,10 @@ class CosinePDF final : public PDF
 {
   public:
     explicit CosinePDF(const Vec3& w) { m_uvw_.build_from_w(w); }
+
     float value(const Vec3& direction) const override;
-    Vec3  generate() const override;
+
+    Vec3 generate() const override;
 
   private:
     ONB m_uvw_;
@@ -39,11 +41,13 @@ class CosinePDF final : public PDF
 
 inline float CosinePDF::value(const Vec3& direction) const
 {
-    float cosine = dot(unit_vector(direction), m_uvw_.w());
+    const float cosine = dot(unit_vector(direction), m_uvw_.w());
+
     if (cosine > 0)
     {
         return cosine * INV_PI;
     }
+
     return 0;
 }
 

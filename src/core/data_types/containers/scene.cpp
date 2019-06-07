@@ -35,8 +35,6 @@ struct Scene::Impl
     std::unique_ptr<ICamera>                m_cam;
     std::unique_ptr<IHitable>               m_world;
     std::unique_ptr<IHitable>               m_lights{nullptr};
-    std::vector<std::shared_ptr<ITexture>>  m_textures;
-    std::vector<std::shared_ptr<IMaterial>> m_materials;
 };
 
 Scene::Scene()
@@ -48,8 +46,34 @@ Scene::~Scene()
     delete m_impl_;
 }
 
+void Scene::set_world(std::unique_ptr<IHitable> world) const
+{
+    m_impl_->m_world = std::move(world);
+}
+
+void Scene::set_cam(std::unique_ptr<ICamera> camera) const
+{
+    m_impl_->m_cam = std::move(camera);
+}
+
+const std::unique_ptr<ICamera>& Scene::get_cam() const
+{
+    return m_impl_->m_cam;
+}
+
+const std::unique_ptr<IHitable>& Scene::get_world() const
+{
+    return m_impl_->m_world;
+}
+
+const std::unique_ptr<IHitable>& Scene::get_lights() const
+{
+    return m_impl_->m_lights;
+}
+
 // Scene factory
 std::unique_ptr<Scene> SceneFactory::create()
 {
     return std::make_unique<Scene>();
 }
+

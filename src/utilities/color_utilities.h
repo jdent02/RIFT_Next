@@ -22,11 +22,9 @@
 
 #pragma once
 
-#include "core/data_types/vec3.h"
-
-inline Vec3 de_nan(const Vec3& c)
+inline RGBColor de_nan(const RGBColor& c)
 {
-    Vec3 temp = c;
+    RGBColor temp = c;
     if (!(temp[0] == temp[0]))
     {
         temp[0] = 0;

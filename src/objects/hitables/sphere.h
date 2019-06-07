@@ -40,7 +40,7 @@ inline void get_sphere_uv(const Vec3& p, float& u, float& v)
     v = (theta + FLOAT_M_PI / 2) / FLOAT_M_PI;
 }
 
-class Sphere : public IHitable
+class Sphere final : public IHitable
 {
   public:
     Sphere() = default;
@@ -63,6 +63,6 @@ class Sphere : public IHitable
 
   private:
     Vec3       m_center_;
-    float      m_radius_{};
-    std::shared_ptr<IMaterial> m_material_{};
+    float      m_radius_;
+    std::shared_ptr<IMaterial> m_material_;
 };

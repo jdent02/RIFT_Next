@@ -22,14 +22,15 @@
 
 #pragma once
 
+#include <utility>
 #include "materials/i_material.h"
 #include "textures/i_texture.h"
 
 class DiffuseLight : public IMaterial
 {
   public:
-    explicit DiffuseLight(ITexture* a)
-      : m_emit_(a){};
+    explicit DiffuseLight(std::shared_ptr<ITexture> a)
+      : m_emit_(std::move(a)){};
 
     ~DiffuseLight() override = default;
 

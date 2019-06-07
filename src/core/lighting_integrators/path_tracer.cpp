@@ -28,34 +28,30 @@
 #include <cfloat>
 
 RGBColor PathTracer::trace(
-    const Ray& r,
-    IHitable*  world,
-    IHitable*  light_shape,
-    int        depth) const
+    const Ray&                       r,
+    const std::unique_ptr<IHitable>& world,
+    const std::unique_ptr<IHitable>& light_shape,
+    const int                        depth) const
 {
     HitRecord hrec;
     if (world->hit(r, 0.001f, FLT_MAX, hrec))
     {
-        ScatterRecord srec;
-        const RGBColor emitted =
-            hrec.m_mat_ptr->emission(r, hrec, hrec.m_u, hrec.m_v, hrec.m_p);
+        ScatterRecord  srec;
+        const RGBColor emitted = hrec.m_mat_ptr->emission(r, hrec, hrec.m_u, hrec.m_v, hrec.m_p);
 
-        if (depth < 10 && hrec.m_mat_ptr->scatter(r, hrec, srec))
+        if (depth < 4 && hrec.m_mat_ptr->scatter(r, hrec, srec))
         {
             if (srec.m_is_specular)
             {
-                return srec.m_attenuation *
-                       trace(
-                           srec.m_specular_ray, world, light_shape, depth + 1);
+                return srec.m_attenuation * trace(srec.m_specular_ray, world, light_shape, depth + 1);
             }
-            Ray   scattered(hrec.m_p, srec.m_pdf_ptr->generate(), r.time());
-            float pdf_val = srec.m_pdf_ptr->value(scattered.direction());
 
-            return emitted +
-                   srec.m_attenuation *
-                       hrec.m_mat_ptr->scatter_weight(r, hrec, scattered) *
-                       trace(scattered, world, light_shape, depth + 1) /
-                       pdf_val;
+            const Ray scattered(hrec.m_p, srec.m_pdf_ptr->generate(), r.time());
+
+            const float pdf_val = srec.m_pdf_ptr->value(scattered.direction());
+
+            return emitted + srec.m_attenuation * hrec.m_mat_ptr->scatter_weight(r, hrec, scattered) *
+                                 trace(scattered, world, light_shape, depth + 1) / pdf_val;
         }
         return emitted;
     }

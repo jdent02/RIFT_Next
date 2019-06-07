@@ -40,7 +40,7 @@ int main(const int argc, char* argv[])
 
     const std::unique_ptr<RenderSettings> settings = CommandLineParser::parse(argc, argv);
 
-    const std::unique_ptr<Scene> scene;
+    const std::unique_ptr<Scene> scene = SceneGenerator::make_sphere(settings);
 
     std::unique_ptr<TileBuffer> tile_buffer = TileBufferFactory::create();
 

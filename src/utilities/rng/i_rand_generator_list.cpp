@@ -26,12 +26,12 @@
 
 IRandGeneratorList::IRandGeneratorList()
 {
-    m_integrator_list_[RAND_48] = std::make_unique<DRand48Factory>();
-    m_integrator_list_[XORO_128] = std::make_unique<Xoro128Factory>();
+    m_integrator_list_[RAND_48] = std::make_shared<DRand48Factory>();
+    m_integrator_list_[XORO_128] = std::make_shared<Xoro128Factory>();
 
 }
 
-IRandGenFactory* IRandGeneratorList::get_integrator(RngEnum& model)
+std::shared_ptr<IRandGenFactory> IRandGeneratorList::get_integrator(const RngEnum& model)
 {
-    return m_integrator_list_[model].get();
+    return m_integrator_list_[model];
 }

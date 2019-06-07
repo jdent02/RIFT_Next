@@ -33,25 +33,22 @@
 
 inline Vec3 random_cosine_direction()
 {
-    float r1 = rand() * INV_RAND_MAX;
-    float r2 = rand() * INV_RAND_MAX;
-    float z = std::sqrt(1 - r2);
-    float phi = 2 * FLOAT_M_PI * r1;
-    float x = cos(phi) * 2 * std::sqrt(r2);
-    float y = sin(phi) * 2 * std::sqrt(r2);
+    const float r1 = rand() * INV_RAND_MAX;
+    const float r2 = rand() * INV_RAND_MAX;
+    const float z = std::sqrt(1 - r2);
+    const float phi = 2 * FLOAT_M_PI * r1;
+    const float x = cos(phi) * 2 * std::sqrt(r2);
+    const float y = sin(phi) * 2 * std::sqrt(r2);
     return Vec3(x, y, z);
 }
 
 inline Vec3 random_in_unit_sphere()
 {
     Vec3 p;
+
     do
     {
-        p = 2.f * Vec3(
-                      rand() * INV_RAND_MAX,
-                      rand() * INV_RAND_MAX,
-                      rand() * INV_RAND_MAX) -
-            Vec3(1.f, 1.f, 1.f);
+        p = 2.f * Vec3(rand() * INV_RAND_MAX, rand() * INV_RAND_MAX, rand() * INV_RAND_MAX) - Vec3(1.f, 1.f, 1.f);
     } while (dot(p, p) >= 1.f);
 
     return p;
@@ -60,13 +57,10 @@ inline Vec3 random_in_unit_sphere()
 inline Vec3 random_on_unit_sphere()
 {
     Vec3 p;
+
     do
     {
-        p = 2.f * Vec3(
-                      rand() * INV_RAND_MAX,
-                      rand() * INV_RAND_MAX,
-                      rand() * INV_RAND_MAX) -
-            Vec3(1.f, 1.f, 1.f);
+        p = 2.f * Vec3(rand() * INV_RAND_MAX, rand() * INV_RAND_MAX, rand() * INV_RAND_MAX) - Vec3(1.f, 1.f, 1.f);
     } while (dot(p, p) >= 1.f);
 
     return unit_vector(p);
@@ -74,22 +68,23 @@ inline Vec3 random_on_unit_sphere()
 
 inline Vec3 random_to_sphere(const float radius, const float distance_squared)
 {
-    float r1 = rand() * INV_RAND_MAX;
-    float r2 = rand() * INV_RAND_MAX;
-    float z = 1 + r2 * (std::sqrt(1 - radius * radius / distance_squared) - 1);
-    float phi = 2 * FLOAT_M_PI * r1;
-    float x = cos(phi) * std::sqrt(1 - z * z);
-    float y = sin(phi) * std::sqrt(1 - z * z);
+    const float r1 = rand() * INV_RAND_MAX;
+    const float r2 = rand() * INV_RAND_MAX;
+    const float z = 1 + r2 * (std::sqrt(1 - radius * radius / distance_squared) - 1);
+    const float phi = 2 * FLOAT_M_PI * r1;
+    const float x = cos(phi) * std::sqrt(1 - z * z);
+    const float y = sin(phi) * std::sqrt(1 - z * z);
+
     return Vec3(x, y, z);
 }
 
 inline Vec3 random_in_unit_disk()
 {
     Vec3 p;
+
     do
     {
-        p = 2.f * Vec3(rand() * INV_RAND_MAX, rand() * INV_RAND_MAX, 0.f) -
-            Vec3(1.f, 1.f, 0.f);
+        p = 2.f * Vec3(rand() * INV_RAND_MAX, rand() * INV_RAND_MAX, 0.f) - Vec3(1.f, 1.f, 0.f);
     } while (dot(p, p) >= 1.f);
 
     return p;

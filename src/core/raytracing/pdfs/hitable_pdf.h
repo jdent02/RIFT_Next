@@ -28,7 +28,7 @@
 class HitablePDF : public PDF
 {
   public:
-    HitablePDF(IHitable* p, const Vec3& origin)
+    HitablePDF(const std::unique_ptr<IHitable>& p, const Vec3& origin)
       : m_o_(origin)
       , m_ptr_(p)
     {}
@@ -42,5 +42,5 @@ class HitablePDF : public PDF
 
   private:
     Vec3      m_o_;
-    IHitable* m_ptr_;
+    const std::unique_ptr<IHitable>& m_ptr_;
 };

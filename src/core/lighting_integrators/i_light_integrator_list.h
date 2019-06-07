@@ -32,9 +32,9 @@ class ILightIntegratorList
   public:
     ILightIntegratorList();
 
-    ILightIntegratorFactory* get_integrator(IntegratorEnum& model);
+    std::shared_ptr<ILightIntegratorFactory> get_integrator(const IntegratorEnum& model);
 
   private:
-    std::unordered_map<IntegratorEnum, std::unique_ptr<ILightIntegratorFactory>>
+    std::unordered_map<IntegratorEnum, std::shared_ptr<ILightIntegratorFactory>>
         m_integrator_list_;
 };

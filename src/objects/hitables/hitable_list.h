@@ -38,8 +38,6 @@ class HitableList : public IHitable
 
     bool bounding_box(float t0, float t1, AABB& box) const override;
 
-    void add_hitable(std::unique_ptr<IHitable> input) { m_list.emplace_back(std::move(input)); }
-
     std::vector<std::unique_ptr<IHitable>> m_list;
 };
 

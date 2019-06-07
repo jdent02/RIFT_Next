@@ -31,9 +31,9 @@ class RIFT_DLL TestRenderController : public IRenderController
 {
   public:
     TestRenderController(
-        Scene*          scene,
-        RenderSettings* settings,
-        TileBuffer*     tile_buffer);
+        const std::unique_ptr<Scene>&          scene,
+        const std::unique_ptr<RenderSettings>& settings,
+        std::unique_ptr<TileBuffer>&     tile_buffer);
     ~TestRenderController() override;
 
     void render() const override;
@@ -48,7 +48,7 @@ class RIFT_DLL TestRenderControllerFactory : IRenderControllerFactory
 {
   public:
     static std::unique_ptr<IRenderController> create(
-        Scene*          scene,
-        RenderSettings* settings,
-        TileBuffer*     tile_buffer);
+        const std::unique_ptr<Scene>&          scene,
+        const std::unique_ptr<RenderSettings>& settings,
+        std::unique_ptr<TileBuffer>&   tile_buffer);
 };

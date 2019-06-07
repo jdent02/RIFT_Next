@@ -31,14 +31,14 @@
 ILightIntegratorList::ILightIntegratorList()
 {
     m_integrator_list_[DIRECT_LIGHTING] =
-        std::make_unique<DirectLightingFactory>();
-    m_integrator_list_[PATH_TRACING] = std::make_unique<PathTracerFactory>();
+        std::make_shared<DirectLightingFactory>();
+    m_integrator_list_[PATH_TRACING] = std::make_shared<PathTracerFactory>();
     m_integrator_list_[LIGHT_SAMPLE_PATH_TRACING] =
-        std::make_unique<LightSamplePathFactory>();
+        std::make_shared<LightSamplePathFactory>();
 }
 
-ILightIntegratorFactory* ILightIntegratorList::get_integrator(
-    IntegratorEnum& model)
+std::shared_ptr<ILightIntegratorFactory> ILightIntegratorList::get_integrator(
+    const IntegratorEnum& model)
 {
-    return m_integrator_list_[model].get();
+    return m_integrator_list_[model];
 }

@@ -23,22 +23,11 @@
 #include "view.h"
 
 #include "core/data_types/pixel_types/pixel.h"
-#include "core/data_types/vec3.h"
 
 #include <vector>
 
 void View::reserve_buffer(const int x_res, const int y_res)
 {
     const int pixel_count = x_res * y_res;
-    m_pixels_.reserve(pixel_count);
-}
-
-void View::push_pixel(const Pixel& pixel)
-{
-    m_pixels_.emplace_back(pixel);
-}
-
-std::vector<Pixel>& View::get_pixels()
-{
-    return m_pixels_;
+    m_pixels.reserve(pixel_count);
 }

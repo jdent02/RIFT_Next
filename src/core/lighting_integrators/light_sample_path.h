@@ -29,7 +29,11 @@ class LightSamplePath : public ILightIntegrator
   public:
     LightSamplePath() = default;
 
-    RGBColor trace(const Ray& r, IHitable* world, IHitable* light_shape, int depth)
+    RGBColor trace(
+        const Ray&                       r,
+        const std::unique_ptr<IHitable>& world,
+        const std::unique_ptr<IHitable>& light_shape,
+        int                              depth)
         const override;
 };
 

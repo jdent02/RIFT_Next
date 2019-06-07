@@ -41,10 +41,18 @@ Box::Box(const Vec3& p0, const Vec3& p1, const std::shared_ptr<IMaterial>& ptr)
   : m_pmin_(p0)
   , m_pmax_(p1)
 {
-    m_list_.add_hitable(std::make_unique<XYRect>(p0.x(), p1.x(), p0.y(), p1.y(), p1.z(), ptr));
-    m_list_.add_hitable(std::make_unique<FlipNormals>(std::make_unique<XYRect>(p0.x(), p1.x(), p0.y(), p1.y(), p0.z(), ptr)));
-    m_list_.add_hitable(std::make_unique<XZRect>(p0.x(), p1.x(), p0.z(), p1.z(), p1.y(), ptr));
-    m_list_.add_hitable(std::make_unique<FlipNormals>(std::make_unique<XZRect>(p0.x(), p1.x(), p0.z(), p1.z(), p0.y(), ptr)));
-    m_list_.add_hitable(std::make_unique<YZRect>(p0.y(), p1.y(), p0.z(), p1.z(), p1.x(), ptr));
-    m_list_.add_hitable(std::make_unique<FlipNormals>(std::make_unique<YZRect>(p0.y(), p1.y(), p0.z(), p1.z(), p0.x(), ptr)));
+    m_list_.m_list.emplace_back(std::make_unique<XYRect>(p0.x(), p1.x(), p0.y(), p1.y(), p1.z(), ptr));
+
+    m_list_.m_list.emplace_back(
+        std::make_unique<FlipNormals>(std::make_unique<XYRect>(p0.x(), p1.x(), p0.y(), p1.y(), p0.z(), ptr)));
+
+    m_list_.m_list.emplace_back(std::make_unique<XZRect>(p0.x(), p1.x(), p0.z(), p1.z(), p1.y(), ptr));
+
+    m_list_.m_list.emplace_back(
+        std::make_unique<FlipNormals>(std::make_unique<XZRect>(p0.x(), p1.x(), p0.z(), p1.z(), p0.y(), ptr)));
+
+    m_list_.m_list.emplace_back(std::make_unique<YZRect>(p0.y(), p1.y(), p0.z(), p1.z(), p1.x(), ptr));
+
+    m_list_.m_list.emplace_back(
+        std::make_unique<FlipNormals>(std::make_unique<YZRect>(p0.y(), p1.y(), p0.z(), p1.z(), p0.x(), ptr)));
 }

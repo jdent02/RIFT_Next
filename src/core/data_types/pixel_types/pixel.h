@@ -22,37 +22,51 @@
 
 #pragma once
 
+#include "core/data_types/rgb_color.h"
+
 #include <vector>
 
 class Pixel
 {
   public:
-    Pixel() = default;
-
     // Create greyscale pixel
-    explicit Pixel(const float i) { m_pixel_data_.push_back(i); }
+    explicit Pixel(const int& channels, const float i)
+    {
+        m_pixel_data.reserve(channels);
+
+        m_pixel_data.push_back(i);
+    }
 
     // Create RGB pixel
-    Pixel(const float r, const float g, const float b)
+    Pixel(const int& channels, const float r, const float g, const float b)
     {
-        m_pixel_data_.push_back(r);
-        m_pixel_data_.push_back(g);
-        m_pixel_data_.push_back(b);
+        m_pixel_data.reserve(channels);
+
+        m_pixel_data.push_back(r);
+        m_pixel_data.push_back(g);
+        m_pixel_data.push_back(b);
     }
 
     // Create RGBA pixel
-    Pixel(const float r, const float g, const float b, const float a)
+    Pixel(const int& channels, const float r, const float g, const float b, const float a)
     {
-        m_pixel_data_.push_back(r);
-        m_pixel_data_.push_back(g);
-        m_pixel_data_.push_back(b);
-        m_pixel_data_.push_back(a);
+        m_pixel_data.reserve(channels);
+
+        m_pixel_data.push_back(r);
+        m_pixel_data.push_back(g);
+        m_pixel_data.push_back(b);
+        m_pixel_data.push_back(a);
     }
 
-    std::vector<float>& get_channels() { return m_pixel_data_; }
+    // Create pixel from RGBColor
+    explicit Pixel(const int& channels, RGBColor& color_in)
+    {
+        m_pixel_data.reserve(channels);
 
-    // std::vector<float> m_pixel_data_{};
+        m_pixel_data.push_back(color_in.r());
+        m_pixel_data.push_back(color_in.g());
+        m_pixel_data.push_back(color_in.b());
+    }
 
-  private:
-    std::vector<float> m_pixel_data_{};
+    std::vector<float> m_pixel_data;
 };

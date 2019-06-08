@@ -38,9 +38,9 @@ void PgmWriter::write(UnsignedCharBuffer& buffer, RenderSettings* render_setting
 
     for (int i = 0; i < render_settings->m_xres * render_settings->m_yres; i++)
     {
-        const int r = int(buffer.get_pixels().at(pixel_index++) * 254);
-        const int g = int(buffer.get_pixels().at(pixel_index++) * 254);
-        const int b = int(buffer.get_pixels().at(pixel_index++) * 254);
+        const int r = int(buffer.m_pixels.at(pixel_index++) * 254);
+        const int g = int(buffer.m_pixels.at(pixel_index++) * 254);
+        const int b = int(buffer.m_pixels.at(pixel_index++) * 254);
 
         fprintf(out_file, "%i %i %i\n", r, g, b);
     }

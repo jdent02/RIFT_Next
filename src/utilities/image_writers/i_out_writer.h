@@ -26,7 +26,6 @@
 
 #include <memory>
 
-
 struct RenderSettings;
 class TileBuffer;
 
@@ -40,7 +39,9 @@ enum OutWriterEnum
 class RIFT_DLL IOutWriter
 {
   public:
+    IOutWriter() = default;
     virtual ~IOutWriter() = default;
 
-    static void write(std::unique_ptr<TileBuffer>& buffer, const std::unique_ptr<RenderSettings>& render_settings) {};
+    /// Accepts a TileBuffer from the render process and outputs a written image file.
+    static void write(std::unique_ptr<TileBuffer>& buffer, const std::unique_ptr<RenderSettings>& render_settings){};
 };

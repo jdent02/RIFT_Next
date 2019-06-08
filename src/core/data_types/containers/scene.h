@@ -40,6 +40,8 @@ class RIFT_DLL Scene
 
     void set_cam(std::unique_ptr<ICamera> camera) const;
 
+    void set_lights(std::unique_ptr<IHitable> lamps) const;
+
     const std::unique_ptr<ICamera>&  get_cam() const;
     const std::unique_ptr<IHitable>& get_world() const;
     const std::unique_ptr<IHitable>& get_lights() const;

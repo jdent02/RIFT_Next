@@ -77,19 +77,16 @@ void RenderWorker::run_loop(
         for (int i = tile.x_min; i < tile.x_max; i++)
         {
             RGBColor col(0.f, 0.f, 0.f);
+
             for (int s = 0; s < m_settings_->m_samples; s++)
             {
-
                 const float u = (float(i) + rng->get_1_d()) * inv_nx;
                 const float v = (float(j) + rng->get_1_d()) * inv_ny;
 
                 Ray r = m_render_scene_->get_cam()->get_ray(u, v);
 
-#ifdef _DEBUG
-                std::cout << "Creating Ray\n";
-#endif
-
-                col += de_nan(lighting_integrator->trace(r, m_render_scene_->get_world(), m_render_scene_->get_lights(), 0));
+                col += de_nan(
+                    lighting_integrator->trace(r, m_render_scene_->get_world(), m_render_scene_->get_lights(), 0));
             }
 
             col *= inv_samples;

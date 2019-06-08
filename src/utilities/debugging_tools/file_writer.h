@@ -22,21 +22,29 @@
 
 #pragma once
 
-inline RGBColor de_nan(const RGBColor& c)
-{
-    RGBColor temp = c;
-    if (!(temp[0] == c[0]))
-    {
-        temp[0] = 0;
-    }
-    if (!(temp[1] == c[1]))
-    {
-        temp[1] = 0;
-    }
-    if (!(temp[2] == c[2]))
-    {
-        temp[2] = 0;
-    }
+#include <cstdio>
 
-    return temp;
+class FileWriter
+{
+  public:
+    explicit FileWriter(const char* filename);
+    ~FileWriter();
+
+    void write_line(const char* input) const;
+
+    FILE* m_out_file;
+};
+
+inline FileWriter::FileWriter(const char* filename)
+  : m_out_file(fopen(filename, "w"))
+{}
+
+inline FileWriter::~FileWriter()
+{
+    fclose(m_out_file);
+}
+
+inline void FileWriter::write_line(const char* input) const
+{
+    fprintf(m_out_file, "%s\n", input);
 }

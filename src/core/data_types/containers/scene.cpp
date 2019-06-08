@@ -56,6 +56,11 @@ void Scene::set_cam(std::unique_ptr<ICamera> camera) const
     m_impl_->m_cam = std::move(camera);
 }
 
+void Scene::set_lights(std::unique_ptr<IHitable> lamps) const
+{
+    m_impl_->m_lights = std::move(lamps);
+}
+
 const std::unique_ptr<ICamera>& Scene::get_cam() const
 {
     return m_impl_->m_cam;

@@ -23,35 +23,24 @@
 #pragma once
 
 #include "core/data_types/tiles/tile_buffer.h"
+#include "utilities/buffer_processing/buffer_utilities.h"
 
 #include <vector>
 
 struct RenderSettings;
 
-enum OutBufferFormat
-{
-    SINGLE = 1,
-    RGB = 3,
-    RGBA = 4
-};
-
 class UnsignedCharBuffer
 {
   public:
     UnsignedCharBuffer(
-        int&                             x_res,
-        int&                             y_res,
-        const OutBufferFormat&           format,
+        int&                                   x_res,
+        int&                                   y_res,
+        const OutBufferFormat&                 format,
         const std::unique_ptr<RenderSettings>& render_settings);
 
     void build_buffer(std::unique_ptr<TileBuffer>& input_buffer);
 
-    std::vector<unsigned char>& get_pixels();
-
-    void clear_buffer();
-
-  private:
-    const std::unique_ptr<RenderSettings>&            m_render_settings_;
-    OutBufferFormat            m_format_;
-    std::vector<unsigned char> m_pixels_;
+    const std::unique_ptr<RenderSettings>& m_render_settings;
+    OutBufferFormat                        m_format;
+    std::vector<unsigned char>             m_pixels;
 };

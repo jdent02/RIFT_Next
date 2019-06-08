@@ -35,9 +35,9 @@ struct RenderSettings
     int            m_xres{640};
     int            m_yres{640};
     int            m_tile_size{64};
-    int            m_samples{32};
-    std::string    m_output_path{"../out_tiles.jpg"};
-    OutWriterEnum  m_output_writer{JPEG};
+    int            m_samples{128};
+    std::string    m_output_path{"../out_tiled"};
+    OutWriterEnum  m_output_writer{PNG};
     RngEnum        m_rng{RAND_48};
     IntegratorEnum m_light_integrator{PATH_TRACING};
 };

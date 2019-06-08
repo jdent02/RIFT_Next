@@ -133,26 +133,22 @@ inline std::ostream& operator<<(std::ostream& os, const RGBColor& t)
 
 inline RGBColor operator+(const RGBColor& v1, const RGBColor& v2)
 {
-    return RGBColor{
-        v1.m_e[0] + v2.m_e[0], v1.m_e[1] + v2.m_e[1], v1.m_e[2] + v2.m_e[2]};
+    return RGBColor{v1.m_e[0] + v2.m_e[0], v1.m_e[1] + v2.m_e[1], v1.m_e[2] + v2.m_e[2]};
 }
 
 inline RGBColor operator-(const RGBColor& v1, const RGBColor& v2)
 {
-    return RGBColor{
-        v1.m_e[0] - v2.m_e[0], v1.m_e[1] - v2.m_e[1], v1.m_e[2] - v2.m_e[2]};
+    return RGBColor{v1.m_e[0] - v2.m_e[0], v1.m_e[1] - v2.m_e[1], v1.m_e[2] - v2.m_e[2]};
 }
 
 inline RGBColor operator*(const RGBColor& v1, const RGBColor& v2)
 {
-    return RGBColor{
-        v1.m_e[0] * v2.m_e[0], v1.m_e[1] * v2.m_e[1], v1.m_e[2] * v2.m_e[2]};
+    return RGBColor{v1.m_e[0] * v2.m_e[0], v1.m_e[1] * v2.m_e[1], v1.m_e[2] * v2.m_e[2]};
 }
 
 inline RGBColor operator/(const RGBColor& v1, const RGBColor& v2)
 {
-    return RGBColor{
-        v1.m_e[0] / v2.m_e[0], v1.m_e[1] / v2.m_e[1], v1.m_e[2] / v2.m_e[2]};
+    return RGBColor{v1.m_e[0] / v2.m_e[0], v1.m_e[1] / v2.m_e[1], v1.m_e[2] / v2.m_e[2]};
 }
 
 inline RGBColor operator*(const float t, const RGBColor& v)

@@ -27,14 +27,16 @@
 
 class Scene;
 
-// Utility function to generate a pre defined Scene
+/// Utility class to generate a pre defined Scene.
 class RIFT_DLL SceneGenerator
 {
   public:
     SceneGenerator() = default;
     ~SceneGenerator() = default;
 
+    /// Generates a Cornell Box demo scene
     static std::unique_ptr<Scene> make_cornell_box(const std::unique_ptr<RenderSettings>& settings);
 
+    /// Generates a scene with three spheres, each displaying one of the primary BSDF models.
     static std::unique_ptr<Scene> make_sphere(const std::unique_ptr<RenderSettings>& settings);
 };

@@ -32,35 +32,47 @@
 #include <memory>
 #include <thread>
 
-std::unique_ptr<RenderSettings> CommandLineParser::parse(
-    const int argc,
-    char*     argv[])
+std::unique_ptr<RenderSettings> CommandLineParser::parse(const int argc, char* argv[])
 {
-    const char* integrator_string{"Path Tracer"};
+    std::string integrator_string{"Path Tracer"};
 
-    std::unique_ptr<RenderSettings> settings =
-        std::make_unique<RenderSettings>();
+    std::unique_ptr<RenderSettings> settings = std::make_unique<RenderSettings>();
 
     for (int i = 0; i < argc; i++)
     {
         if (!static_cast<bool>(strcmp(argv[i], "--threads")))
         {
-            char*  temp_threads = argv[i + 1];
-            size_t str_len = strlen(temp_threads);
+            char* temp_threads = argv[i + 1];
+
+            const size_t str_len = strlen(temp_threads);
+
             settings->m_threads = convert_number(str_len, temp_threads);
+        }
+        else if (!static_cast<bool>(strcmp(argv[i], "--tile_size")))
+        {
+            char* temp_tile_size = argv[i + 1];
+
+            const size_t str_len = strlen(temp_tile_size);
+
+            settings->m_tile_size = convert_number(str_len, temp_tile_size);
         }
         else if (!static_cast<bool>(strcmp(argv[i], "--resolution")))
         {
-            char*  x = argv[i + 1];
-            size_t x_len = strlen(x);
+            char* x = argv[i + 1];
+
+            const size_t x_len = strlen(x);
+
             settings->m_xres = convert_number(x_len, x);
-            char*  y = argv[i + 2];
-            size_t y_len = strlen(y);
+
+            char* y = argv[i + 2];
+
+            const size_t y_len = strlen(y);
+
             settings->m_yres = convert_number(y_len, y);
         }
         else if (!static_cast<bool>(strcmp(argv[i], "--filepath")))
         {
-            // settings->m_output_filepath = argv[i + 1];
+            settings->m_output_path = argv[i + 1];
         }
         else if (!static_cast<bool>(strcmp(argv[i], "--integrator")))
         {
@@ -71,18 +83,22 @@ std::unique_ptr<RenderSettings> CommandLineParser::parse(
             else if (!static_cast<bool>(strcmp(argv[i + 1], "direct")))
             {
                 settings->m_light_integrator = DIRECT_LIGHTING;
+
                 integrator_string = "Direct Lighting";
             }
             else if (!static_cast<bool>(strcmp(argv[i + 1], "importance")))
             {
                 settings->m_light_integrator = LIGHT_SAMPLE_PATH_TRACING;
+
                 integrator_string = "Material Importance Sampling";
             }
         }
         else if (!static_cast<bool>(strcmp(argv[i], "--samples")))
         {
-            char*  sample_num = argv[i + 1];
+            char* sample_num = argv[i + 1];
+
             const size_t str_len = strlen(sample_num);
+
             settings->m_samples = convert_number(str_len, sample_num);
         }
         else if (!static_cast<bool>(strcmp(argv[i], "--help")))
@@ -95,19 +111,11 @@ std::unique_ptr<RenderSettings> CommandLineParser::parse(
             {
                 settings->m_output_writer = JPEG;
             }
-#ifdef RIFT_USE_PLUGINS
-            else if (!static_cast<bool>(strcmp(argv[i + 1], "oiio")))
+            if (!static_cast<bool>(strcmp(argv[i + 1], "openexr")))
             {
-                settings->m_output_writer = OPENIMAGEIO;
+                settings->m_output_writer = OPENEXR;
             }
-#else
-            else if (!static_cast<bool>(strcmp(argv[i + 1], "oiio")))
-            {
-                printf("ERROR: OpenImageIO writer is not available.  Please "
-                       "compile RIFT with plugin support\n");
-                exit(EXIT_FAILURE);
-            }
-#endif
+
         }
     }
 
@@ -116,12 +124,14 @@ std::unique_ptr<RenderSettings> CommandLineParser::parse(
         "Resolution: %i %i\n"
         "Number of Samples: %i\n"
         "Integrator: %s\n"
-        "Rendering Threads: %i\n",
+        "Rendering Threads: %i\n"
+        "Tile Size: %i\n",
         settings->m_xres,
         settings->m_yres,
         settings->m_samples,
-        integrator_string,
-        settings->m_threads);
+        integrator_string.c_str(),
+        settings->m_threads,
+        settings->m_tile_size);
 
     return settings;
 }
@@ -131,17 +141,12 @@ void CommandLineParser::print_help()
     printf(
         "RIFT Renderer version %s\n\n"
         "Options:\n\n"
-        "   --threads: Number of rendering threads.  Defaults to system max if "
-        "not specified\n"
-        "   --samples: Number of rendering samples.  This will be split "
-        "amongst "
-        "the available threads\n"
+        "   --threads: Number of rendering threads.  Defaults to system max if not specified\n"
+        "   --tile_size: Squared size of the rendered tiles\n"
+        "   --samples: Number of rendering samples.  This will be split amongst the available threads\n"
         "   --resolution: Resolution of the render in width and height\n"
-        "   --filepath: Output filepath for the rendered image.  The extension "
-        "type will be automatically added\n"
-        "   --writer: Image writer for renders, options are oiio (if RIFT "
-        "was compiled with plugins enabled), png or "
-        "jpeg\n",
+        "   --filepath: Output filepath for the rendered image.  The extension type will be automatically added\n"
+        "   --writer: Image writer for renders, options are openexr, png or jpeg\n",
         VERSION_STRING);
 
     exit(EXIT_SUCCESS);

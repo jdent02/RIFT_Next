@@ -29,8 +29,10 @@
 class IMaterial
 {
   public:
+    IMaterial() = default;
     virtual ~IMaterial() = default;
 
+    /// Scatter is called for every ray hit point.
     virtual bool scatter(
         const Ray&       r_in,
         const HitRecord& hrec,
@@ -39,6 +41,7 @@ class IMaterial
         return false;
     }
 
+    /// Scatter weight is used to determine the contribution of a BSDF sample on a scattering object.
     virtual float scatter_weight(
         const Ray&       r_in,
         const HitRecord& hrec,

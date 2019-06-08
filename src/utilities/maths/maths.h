@@ -22,7 +22,7 @@
 
 #pragma once
 
-#include "utility/math_functions/scalars.h"
+#include "utilities/maths/scalars.h"
 
 #include <cassert>
 #include <cstddef>

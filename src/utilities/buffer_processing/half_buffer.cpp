@@ -20,27 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "unsigned_char_buffer.h"
+#include "half_buffer.h"
 
-#include "core/data_types/containers/render_settings.h"
+#include "core/data_types/pixel_types/pixel.h"
+#include "core/data_types/tiles/tile_buffer.h"
 
-#include "utilities/maths/maths.h"
-
-#include <math.h>
-
-UnsignedCharBuffer::UnsignedCharBuffer(
-    int&                             x_res,
-    int&                             y_res,
-    const OutBufferFormat&           format,
+HalfBuffer::HalfBuffer(
+    int&                                   x_res,
+    int&                                   y_res,
+    const OutBufferFormat&                 format,
     const std::unique_ptr<RenderSettings>& render_settings)
   : m_render_settings(render_settings)
   , m_format(format)
 {
-    const int pixel_count = x_res * y_res * format;
-    m_pixels = std::vector<unsigned char>(pixel_count, 0);
+    const int pixel_count = x_res * y_res;
+    m_pixels.reserve(pixel_count);
 }
 
-void UnsignedCharBuffer::build_buffer(std::unique_ptr<TileBuffer>& input_buffer)
+void HalfBuffer::build_buffer(std::unique_ptr<TileBuffer>& input_buffer)
 {
     for (auto& tile : input_buffer->get_tiles())
     {
@@ -54,17 +51,12 @@ void UnsignedCharBuffer::build_buffer(std::unique_ptr<TileBuffer>& input_buffer)
         for (int y = y_max - 1; y >= y_min; y--)
         {
             int buffer_index =
-                (m_render_settings->m_yres - 1 - y) * (m_render_settings->m_xres * m_format) + x_min * m_format;
+                (m_render_settings->m_yres - 1 - y) * m_render_settings->m_xres + x_min;
 
             for (int x = x_min; x < x_max; x++)
             {
                 Pixel& pixel = *pixel_iterator++;
-                for (int i = 0; i < m_format; ++i)
-                {
-                    auto value = fast_sqrt(pixel.m_pixel_data.at(i)) * 254;
-                    isnan(value) ? value = static_cast<unsigned char>(0) : value;
-                    m_pixels[buffer_index++] = value;
-                }
+                m_pixels[buffer_index++] = Rgba(pixel.m_pixel_data.at(0), pixel.m_pixel_data.at(1), pixel.m_pixel_data.at(2));
             }
         }
     }

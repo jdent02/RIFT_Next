@@ -25,6 +25,9 @@ set (
     objects/camera/i_camera.h
     objects/camera/thin_lens_camera.h
     objects/camera/thin_lens_camera.cpp
+    objects/hitables/bvh_node.h
+    objects/hitables/bvh_node.cpp
+    objects/hitables/bvh_utils.h
     objects/hitables/constant_medium.h
     objects/hitables/constant_medium.cpp
     objects/hitables/i_hitable.h
@@ -78,9 +81,6 @@ set (
     core/raytracing/pdfs/pdf.h
     core/raytracing/aabb.h
     core/raytracing/aabb.cpp
-    core/raytracing/bvh_node.h
-    core/raytracing/bvh_node.cpp
-    core/raytracing/bvh_utils.h
     core/raytracing/onb.h
     core/raytracing/scatter_functions.h
     core/raytracing/utility_functions.h
@@ -126,15 +126,16 @@ set (
     utilities/buffer_processing/buffer_utilities.cpp
     utilities/buffer_processing/unsigned_char_buffer.h
     utilities/buffer_processing/unsigned_char_buffer.cpp
+    utilities/buffer_processing/half_buffer.h
+    utilities/buffer_processing/half_buffer.cpp
+    utilities/debugging_tools/file_writer.h
     utilities/generators/scene_generator.h
     utilities/generators/scene_generator.cpp
     utilities/image_writers/i_out_writer.h
-    utilities/image_writers/jpeg_writer.h
-    utilities/image_writers/jpeg_writer.cpp
-    # utilities/image_writers/pgm_writer.h
-    # utilities/image_writers/pgm_writer.cpp
-    utilities/image_writers/png_writer.h
-    utilities/image_writers/png_writer.cpp
+    utilities/image_writers/output_writer.h
+    utilities/image_writers/output_writer.cpp
+    utilities/image_writers/pgm_writer.h
+    utilities/image_writers/pgm_writer.cpp
     utilities/maths/maths.h
     utilities/maths/scalars.h
     utilities/noises/perlin.h
@@ -168,10 +169,6 @@ add_library(
     RIFT
     SHARED
     ${CPP_SOURCES}
-)
-
-set_property (TARGET RIFT APPEND PROPERTY
-    COMPILE_DEFINITIONS_RELEASE "_NDEBUG"
 )
 
 target_include_directories(
@@ -326,6 +323,11 @@ source_group(
 source_group(
     "src\\utilities\\buffer_processing" REGULAR_EXPRESSION
     utilities/buffer_processing/.*
+)
+
+source_group(
+    "src\\utilities\\debugging_tools" REGULAR_EXPRESSION
+    utilities/debugging_tools/.*
 )
 
 source_group(

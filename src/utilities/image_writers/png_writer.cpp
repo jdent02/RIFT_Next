@@ -25,22 +25,19 @@
 #include "core/data_types/containers/render_settings.h"
 #include "utilities/buffer_processing/unsigned_char_buffer.h"
 
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-#define STBI_MSC_SECURE_CRT
-#include "stb_image_write.h"
-
-
 void PngWriter::write(std::unique_ptr<TileBuffer>& buffer, const std::unique_ptr<RenderSettings>& render_settings)
 {
-    UnsignedCharBuffer pixel_buffer(render_settings->m_xres, render_settings->m_yres, RGBA, render_settings);
+    UnsignedCharBuffer pixel_buffer(render_settings->m_xres, render_settings->m_yres, RGB, render_settings);
+
+    const std::string out_path = render_settings->m_output_path + ".png";
 
     pixel_buffer.build_buffer(buffer);
 
     stbi_write_png(
-        render_settings->m_output_path.c_str(),
+        out_path.c_str(),
         render_settings->m_xres,
         render_settings->m_yres,
-        4,
+        3,
         pixel_buffer.get_pixels().data(),
-        render_settings->m_xres * 4);
+        render_settings->m_xres * 3);
 }

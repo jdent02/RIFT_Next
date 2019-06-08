@@ -36,7 +36,7 @@ class RIFT_DLL FinalRenderController : public IRenderController
     FinalRenderController(
         const std::unique_ptr<Scene>&          scene,
         const std::unique_ptr<RenderSettings>& settings,
-        std::unique_ptr<TileBuffer>&     tile_buffer);
+        std::unique_ptr<TileBuffer>&           tile_buffer);
 
     ~FinalRenderController();
 
@@ -54,5 +54,5 @@ class RIFT_DLL FinalRenderControllerFactory : IRenderControllerFactory
     static std::unique_ptr<IRenderController> create(
         const std::unique_ptr<Scene>&          scene,
         const std::unique_ptr<RenderSettings>& settings,
-        std::unique_ptr<TileBuffer>&     tile_buffer);
+        std::unique_ptr<TileBuffer>&           tile_buffer);
 };

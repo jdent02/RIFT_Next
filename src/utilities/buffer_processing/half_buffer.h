@@ -22,12 +22,26 @@
 
 #pragma once
 
-#include "i_out_writer.h"
+#include "core/data_types/containers/render_settings.h"
+#include "utilities/buffer_processing/buffer_utilities.h"
 
-#include <memory>
+#include <OpenEXR/ImfRgba.h>
+#include <vector>
 
-class RIFT_DLL JpegWriter : public IOutWriter
+using namespace Imf_2_3;
+
+class HalfBuffer
 {
   public:
-    static void write(std::unique_ptr<TileBuffer>& buffer, const std::unique_ptr<RenderSettings>& render_settings);
+    HalfBuffer(
+        int&                                   x_res,
+        int&                                   y_res,
+        const OutBufferFormat&                 format,
+        const std::unique_ptr<RenderSettings>& render_settings);
+
+    void build_buffer(std::unique_ptr<TileBuffer>& input_buffer);
+
+    const std::unique_ptr<RenderSettings>& m_render_settings;
+    OutBufferFormat                        m_format;
+    std::vector<Rgba>                      m_pixels;
 };

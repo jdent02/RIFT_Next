@@ -40,19 +40,23 @@ RGBColor DirectLighting::trace(
 
     if (world->hit(r, 0.001f, FLT_MAX, hrec))
     {
-        ScatterRecord  srec;
+        ScatterRecord srec;
+
         const RGBColor emission = hrec.m_mat_ptr->emission(r, hrec, hrec.m_u, hrec.m_v, hrec.m_p);
 
-        if (depth < 10 && hrec.m_mat_ptr->scatter(r, hrec, srec))
+        if (depth < 1 && hrec.m_mat_ptr->scatter(r, hrec, srec))
         {
             if (srec.m_is_specular)
+
             {
                 return srec.m_attenuation * trace(srec.m_specular_ray, world, light_shape, depth + 1);
             }
 
             const HitablePDF light(light_shape, hrec.m_p);
-            const Ray        scattered(hrec.m_p, light.generate(), r.time());
-            const float      pdf_weight = light.value(scattered.direction());
+
+            const Ray scattered(hrec.m_p, light.generate(), r.time());
+
+            const float pdf_weight = light.value(scattered.direction());
 
             return emission + srec.m_attenuation * hrec.m_mat_ptr->scatter_weight(r, hrec, scattered) *
                                   trace(scattered, world, light_shape, depth + 1) / pdf_weight;

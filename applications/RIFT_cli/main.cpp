@@ -28,8 +28,7 @@
 #include "core/render_process/i_render_controller.h"
 #include "core/render_process/test_render_controller.h"
 #include "utilities/generators/scene_generator.h"
-#include "utilities/image_writers/jpeg_writer.h"
-#include "utilities/image_writers/png_writer.h"
+#include "utilities/image_writers/output_writer.h"
 
 #include <cstdio>
 #include <ctime>
@@ -40,7 +39,7 @@ int main(const int argc, char* argv[])
 
     const std::unique_ptr<RenderSettings> settings = CommandLineParser::parse(argc, argv);
 
-    const std::unique_ptr<Scene> scene = SceneGenerator::make_sphere(settings);
+    const std::unique_ptr<Scene> scene = SceneGenerator::make_cornell_box(settings);
 
     std::unique_ptr<TileBuffer> tile_buffer = TileBufferFactory::create();
 
@@ -49,7 +48,7 @@ int main(const int argc, char* argv[])
 
     engine->render();
 
-    JpegWriter::write(tile_buffer, settings);
+    OutputWriter::write(tile_buffer, settings);
 
     // generate scene
     // set up render controller

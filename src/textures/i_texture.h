@@ -30,7 +30,9 @@ class Vec3;
 class ITexture
 {
   public:
+    ITexture() = default;
     virtual ~ITexture() = default;
 
+    /// Returns the texture color value for the hit point "p".
     virtual RGBColor value(float u, float v, const Vec3& p) const = 0;
 };

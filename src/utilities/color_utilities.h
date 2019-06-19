@@ -22,6 +22,8 @@
 
 #pragma once
 
+#include "utilities/data_structures/rgb_color.h"
+
 inline RGBColor de_nan(const RGBColor& c)
 {
     RGBColor temp = c;

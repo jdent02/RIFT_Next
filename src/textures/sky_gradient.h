@@ -22,8 +22,8 @@
 
 #pragma once
 
-#include "core/data_types/vec3.h"
 #include "textures/i_texture.h"
+#include "utilities/data_structures/rgb_color.h"
 
 class SkyGradient : public ITexture
 {

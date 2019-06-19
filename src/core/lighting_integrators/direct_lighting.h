@@ -22,8 +22,7 @@
 
 #pragma once
 
-#include "core/lighting_integrators/i_light_integrator.h"
-#include "core/data_types/rgb_color.h"
+#include "i_light_integrator.h"
 
 class DirectLighting : public ILightIntegrator
 {
@@ -34,8 +33,7 @@ class DirectLighting : public ILightIntegrator
         const Ray&                       r,
         const std::unique_ptr<IHitable>& world,
         const std::unique_ptr<IHitable>& light_shape,
-        int                              depth)
-        const override;
+        int                              depth) const override;
 };
 
 class DirectLightingFactory : public ILightIntegratorFactory

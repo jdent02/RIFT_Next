@@ -22,9 +22,9 @@
 
 #pragma once
 
-#include "core/data_types/ray.h"
-#include "core/data_types/records/hit_record.h"
-#include "core/data_types/records/scatter_record.h"
+#include "utilities/containers/records/hit_record.h"
+#include "utilities/containers/records/scatter_record.h"
+#include "utilities/data_structures/rgb_color.h"
 
 class IMaterial
 {
@@ -33,29 +33,12 @@ class IMaterial
     virtual ~IMaterial() = default;
 
     /// Scatter is called for every ray hit point.
-    virtual bool scatter(
-        const Ray&       r_in,
-        const HitRecord& hrec,
-        ScatterRecord&   srec) const
-    {
-        return false;
-    }
+    virtual bool scatter(const Ray& r_in, const HitRecord& hrec, ScatterRecord& srec) const { return false; }
 
     /// Scatter weight is used to determine the contribution of a BSDF sample on a scattering object.
-    virtual float scatter_weight(
-        const Ray&       r_in,
-        const HitRecord& hrec,
-        const Ray&       scattered) const
-    {
-        return false;
-    }
+    virtual float scatter_weight(const Ray& r_in, const HitRecord& hrec, const Ray& scattered) const { return false; }
 
-    virtual RGBColor emission(
-        const Ray&       r_in,
-        const HitRecord& rec,
-        float            u,
-        float            v,
-        const Vec3&      p) const
+    virtual RGBColor emission(const Ray& r_in, const HitRecord& rec, float u, float v, const Vec3& p) const
     {
         return RGBColor(0.f, 0.f, 0.f);
     }

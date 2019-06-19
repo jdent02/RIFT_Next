@@ -22,9 +22,10 @@
 
 #pragma once
 
-#include "core/data_types/ray.h"
-#include "core/data_types/vec3.h"
 #include "objects/camera/i_camera.h"
+#include "utilities/data_structures/ray.h"
+
+class Vec3;
 
 class ThinLensCamera : public ICamera
 {

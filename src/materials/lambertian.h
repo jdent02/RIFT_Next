@@ -22,10 +22,14 @@
 
 #pragma once
 
-#include <utility>
 #include "materials/i_material.h"
 #include "textures/i_texture.h"
 
+#include <memory>
+#include <utility>
+
+struct HitRecord;
+class Ray;
 struct ScatterRecord;
 
 class Lambertian : public IMaterial
@@ -36,15 +40,9 @@ class Lambertian : public IMaterial
 
     ~Lambertian() = default;
 
-    bool scatter(
-        const Ray&       r_in,
-        const HitRecord& hrec,
-        ScatterRecord&   srec) const override;
+    bool scatter(const Ray& r_in, const HitRecord& hrec, ScatterRecord& srec) const override;
 
-    float scatter_weight(
-        const Ray&       r_in,
-        const HitRecord& rec,
-        const Ray&       scattered) const override;
+    float scatter_weight(const Ray& r_in, const HitRecord& rec, const Ray& scattered) const override;
 
   private:
     std::shared_ptr<ITexture> m_albedo_;

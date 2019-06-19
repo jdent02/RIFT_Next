@@ -22,31 +22,21 @@
 
 #pragma once
 
-#include "core/data_types/tiles/image_tile.h"
-#include "utilities/system/_dll/dll_symbol.h"
+#include "utilities/containers/render_buffers/view.h"
 
 #include <memory>
-#include <vector>
 
-class RIFT_DLL TileBuffer
+class Ray;
+struct ScatterRecord;
+struct HitRecord;
+
+class IAccumulator
 {
   public:
-    TileBuffer();
-    ~TileBuffer();
+    IAccumulator() = default;
+    virtual ~IAccumulator() = default;
 
-    void add_tile(std::unique_ptr<ImageTile> tile) const;
+    virtual void add_sample(HitRecord& hrec, ScatterRecord& srec, Ray& r, Ray& scattered) = 0;
 
-    void set_number_of_tiles(int num_tiles) const;
-
-    std::vector<std::unique_ptr<ImageTile>>& get_tiles() const;
-
-  private:
-    struct Impl;
-    Impl* m_impl_;
-};
-
-class RIFT_DLL TileBufferFactory
-{
-  public:
-    static std::unique_ptr<TileBuffer> create();
+    virtual std::unique_ptr<View> export_to_view() = 0;
 };

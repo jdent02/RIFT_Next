@@ -22,7 +22,6 @@
 
 #pragma once
 
-#include "core/data_types/containers/render_settings.h"
 #include "core/render_process/i_render_controller.h"
 #include "utilities/system/_dll/dll_symbol.h"
 

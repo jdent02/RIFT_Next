@@ -22,25 +22,25 @@
 
 #pragma once
 
-#include "materials/i_material.h"
-#include "utilities/data_structures/rgb_color.h"
+#include "utilities/containers/render_buffers/view.h"
 
-struct HitRecord;
-class Ray;
-struct ScatterRecord;
+#include <memory>
 
-class Metal : public IMaterial
+class ImageTile
 {
   public:
-    explicit Metal(const RGBColor& a, const float& fuzz)
-      : m_albedo_(a)
-      , m_fuzz_(fuzz){};
+    ImageTile(int x_min, int y_min, int x_max, int y_max);
+    ~ImageTile() = default;
 
-    ~Metal() override = default;
+    void add_layer(std::unique_ptr<View> buffer);
 
-    bool scatter(const Ray& r_in, const HitRecord& hrec, ScatterRecord& srec) const override;
+    std::vector<std::unique_ptr<View>>& get_layers();
+
+    const int m_x_min{};
+    const int m_x_max{};
+    const int m_y_min{};
+    const int m_y_max{};
 
   private:
-    RGBColor m_albedo_;
-    float    m_fuzz_;
+    std::vector<std::unique_ptr<View>> m_layers_;
 };

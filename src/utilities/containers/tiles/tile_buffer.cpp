@@ -20,28 +20,45 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#pragma once
+#include "tile_buffer.h"
 
-#include "core/data_types/accumulators/i_accumulator.h"
-#include "utilities/color_utilities.h"
-#include <vector>
-#include "core/data_types/buffers/view.h"
-#include "utilities/system/_dll/dll_symbol.h"
-#include "core/data_types/rgb_color.h"
+#include "image_tile.h"
 
-class RgbAccumulator : public IAccumulator
+#include <mutex>
+
+struct TileBuffer::Impl
 {
-  public:
-    RgbAccumulator() = default;
-
-    void add_sample(
-        HitRecord&     hrec,
-        ScatterRecord& srec,
-        Ray&           r,
-        Ray&           scattered) override;
-
-    std::unique_ptr<View> export_to_view() override;
-
-  private:
-    std::vector<std::vector<RGBColor>> m_samples_;
+    std::mutex                              m_write_guard;
+    std::vector<std::unique_ptr<ImageTile>> m_tiles;
 };
+
+TileBuffer::TileBuffer()
+  : m_impl_(new Impl)
+{}
+
+TileBuffer::~TileBuffer()
+{
+    delete m_impl_;
+}
+
+void TileBuffer::add_tile(std::unique_ptr<ImageTile> tile) const
+{
+    std::lock_guard<std::mutex> lock(m_impl_->m_write_guard);
+
+    m_impl_->m_tiles.emplace_back(std::move(tile));
+}
+
+void TileBuffer::set_number_of_tiles(const int num_tiles) const
+{
+    m_impl_->m_tiles.reserve(num_tiles);
+}
+
+std::vector<std::unique_ptr<ImageTile>>& TileBuffer::get_tiles() const
+{
+    return m_impl_->m_tiles;
+}
+
+std::unique_ptr<TileBuffer> TileBufferFactory::create()
+{
+    return std::make_unique<TileBuffer>();
+}

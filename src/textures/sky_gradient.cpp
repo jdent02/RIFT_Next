@@ -22,7 +22,7 @@
 
 #include "sky_gradient.h"
 
-#include "core/data_types/ray.h"
+#include "utilities/data_structures/ray.h"
 
 RGBColor SkyGradient::value(float u, float v, const Vec3& p) const
 {

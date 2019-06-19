@@ -23,23 +23,24 @@
 #include "lambertian.h"
 
 #include "core/raytracing/pdfs/cosine_pdf.h"
+#include "utilities/containers/records/hit_record.h"
+#include "utilities/containers/records/scatter_record.h"
+#include "utilities/data_structures/ray.h"
 
-bool Lambertian::scatter(
-    const Ray&       r_in,
-    const HitRecord& hrec,
-    ScatterRecord&   srec) const
+#include <memory>
+
+bool Lambertian::scatter(const Ray& r_in, const HitRecord& hrec, ScatterRecord& srec) const
 {
     srec.m_is_specular = false;
+
     srec.m_attenuation = m_albedo_->value(hrec.m_u, hrec.m_v, hrec.m_p);
+
     srec.m_pdf_ptr = std::make_unique<CosinePDF>(hrec.m_normal);
 
     return true;
 }
 
-float Lambertian::scatter_weight(
-    const Ray&       r_in,
-    const HitRecord& rec,
-    const Ray&       scattered) const
+float Lambertian::scatter_weight(const Ray& r_in, const HitRecord& rec, const Ray& scattered) const
 {
     float cosine = dot(rec.m_normal, unit_vector(scattered.direction()));
 

@@ -22,14 +22,14 @@
 
 #include "rect.h"
 
-#include "core/data_types/ray.h"
-#include "core/data_types/records/hit_record.h"
 #include "core/raytracing/aabb.h"
 #include "core/raytracing/utility_functions.h"
 
 #include <cfloat>
 #include <cmath>
 #include <utility>
+#include "utilities/data_structures/ray.h"
+#include "utilities/containers/records/hit_record.h"
 
 bool XYRect::hit(const Ray& r, const float t0, const float t1, HitRecord& rec) const
 {

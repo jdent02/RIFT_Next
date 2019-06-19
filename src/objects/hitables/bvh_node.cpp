@@ -22,9 +22,9 @@
 
 #include "bvh_node.h"
 
-#include "objects/hitables/bvh_utils.h"
 #include "core/raytracing/utility_functions.h"
-#include "core/data_types/records/hit_record.h"
+#include "objects/hitables/bvh_utils.h"
+#include "utilities/containers/records/hit_record.h"
 
 bool BVHNode::bounding_box(float t0, float t1, AABB& b) const
 {
@@ -32,11 +32,7 @@ bool BVHNode::bounding_box(float t0, float t1, AABB& b) const
     return true;
 }
 
-bool BVHNode::hit(
-    const Ray&  r,
-    const float t_min,
-    const float t_max,
-    HitRecord&  rec) const
+bool BVHNode::hit(const Ray& r, const float t_min, const float t_max, HitRecord& rec) const
 {
     if (m_box_.hit(r, t_min, t_max))
     {
@@ -72,11 +68,7 @@ bool BVHNode::hit(
     return false;
 }
 
-BVHNode::BVHNode(
-    IHitable**  l,
-    const int   n,
-    const float time0,
-    const float time1)
+BVHNode::BVHNode(IHitable** l, const int n, const float time0, const float time1)
 {
     const int axis = int(3 * (rand() * INV_RAND_MAX));
     if (axis == 0)
@@ -108,8 +100,7 @@ BVHNode::BVHNode(
     }
 
     AABB box_left, box_right;
-    if (!m_left_->bounding_box(time0, time1, box_left) ||
-        !m_right_->bounding_box(time0, time1, box_right))
+    if (!m_left_->bounding_box(time0, time1, box_left) || !m_right_->bounding_box(time0, time1, box_right))
     {
         std::cerr << "no bounding Box in BVHNode constructor\n";
     }

@@ -24,7 +24,7 @@
 
 #include "materials/i_material.h"
 
-// Forward declaration
+class Ray;
 class Vec3;
 
 class Dielectric : public IMaterial
@@ -35,8 +35,7 @@ class Dielectric : public IMaterial
 
     ~Dielectric() override = default;
 
-    bool scatter(const Ray& r_in, const HitRecord& rec, ScatterRecord& srec)
-        const override;
+    bool scatter(const Ray& r_in, const HitRecord& rec, ScatterRecord& srec) const override;
 
   private:
     float m_ref_idx_;

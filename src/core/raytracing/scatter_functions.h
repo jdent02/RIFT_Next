@@ -22,13 +22,9 @@
 
 #pragma once
 
-#include "core/data_types/vec3.h"
+#include "utilities/data_structures/vec3.h"
 
-inline bool refract(
-    const Vec3& v,
-    const Vec3& n,
-    const float ni_over_nt,
-    Vec3&       refracted)
+inline bool refract(const Vec3& v, const Vec3& n, const float ni_over_nt, Vec3& refracted)
 {
     const Vec3  uv = unit_vector(v);
     const float dt = dot(uv, n);

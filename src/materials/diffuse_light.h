@@ -22,9 +22,12 @@
 
 #pragma once
 
-#include <utility>
 #include "materials/i_material.h"
 #include "textures/i_texture.h"
+#include "utilities/data_structures/ray.h"
+#include "utilities/data_structures/vec3.h"
+
+#include <utility>
 
 class DiffuseLight : public IMaterial
 {

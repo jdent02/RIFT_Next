@@ -22,7 +22,6 @@
 
 #pragma once
 
-#include "core/data_types/Vec3.h"
 #include "core/raytracing/utility_functions.h"
 
 inline float trilinear_interp(Vec3 c[2][2][2], float u, float v, float w)

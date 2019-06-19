@@ -46,26 +46,6 @@ set (
 
 set (
     CORE_SOURCES
-    core/data_types/accumulators/i_accumulator.h
-    core/data_types/accumulators/alpha_accumulator.h
-    core/data_types/accumulators/alpha_accumulator.cpp
-    core/data_types/accumulators/rgb_accumulator.h
-    core/data_types/accumulators/rgb_accumulator.cpp
-    core/data_types/buffers/view.h
-    core/data_types/buffers/view.cpp
-    core/data_types/containers/render_settings.h
-    core/data_types/containers/scene.h
-    core/data_types/containers/scene.cpp
-    core/data_types/pixel_types/pixel.h
-    core/data_types/tiles/image_tile.h
-    core/data_types/tiles/image_tile.cpp
-    core/data_types/tiles/tile_buffer.h
-    core/data_types/tiles/tile_buffer.cpp
-    core/data_types/records/hit_record.h
-    core/data_types/records/scatter_record.h
-    core/data_types/ray.h
-    core/data_types/rgb_color.h
-    core/data_types/vec3.h
     core/lighting_integrators/i_light_integrator.h
     core/lighting_integrators/i_light_integrator_list.h
     core/lighting_integrators/i_light_integrator_list.cpp
@@ -121,14 +101,36 @@ set (
     textures/sky_gradient.h)
 
 set (
+
     UTILITY_SOURCES
+    utilities/accumulators/i_accumulator.h
+    utilities/accumulators/alpha_accumulator.h
+    utilities/accumulators/alpha_accumulator.cpp
+    utilities/accumulators/rgb_accumulator.h
+    utilities/accumulators/rgb_accumulator.cpp
+    utilities/containers/render_buffers/view.h
+    utilities/containers/render_buffers/view.cpp
+    utilities/containers/render_settings.h
+    utilities/containers/scene.h
+    utilities/containers/scene.cpp
+    utilities/data_structures/pixel.h
+    utilities/data_structures/matrix4x4.cpp
+    utilities/data_structures/matrix4x4.h
+    utilities/containers/tiles/image_tile.h
+    utilities/containers/tiles/image_tile.cpp
+    utilities/containers/tiles/tile_buffer.h
+    utilities/containers/tiles/tile_buffer.cpp
+    utilities/containers/records/hit_record.h
+    utilities/containers/records/scatter_record.h
+    utilities/data_structures/ray.h
+    utilities/data_structures/rgb_color.h
+    utilities/data_structures/vec3.h
     utilities/buffer_processing/buffer_utilities.h
     utilities/buffer_processing/buffer_utilities.cpp
     utilities/buffer_processing/unsigned_char_buffer.h
     utilities/buffer_processing/unsigned_char_buffer.cpp
     utilities/buffer_processing/half_buffer.h
     utilities/buffer_processing/half_buffer.cpp
-    utilities/debugging_tools/file_writer.h
     utilities/generators/scene_generator.h
     utilities/generators/scene_generator.cpp
     utilities/image_writers/i_out_writer.h
@@ -136,6 +138,7 @@ set (
     utilities/image_writers/output_writer.cpp
     utilities/image_writers/pgm_writer.h
     utilities/image_writers/pgm_writer.cpp
+    utilities/logging/master_logger.h
     utilities/maths/maths.h
     utilities/maths/scalars.h
     utilities/noises/perlin.h
@@ -153,7 +156,7 @@ set (
     utilities/system/_dll/targetver.h
     utilities/color_utilities.h
     utilities/utility_functions.h
-)
+    )
 
 set (
     CPP_SOURCES
@@ -245,40 +248,7 @@ set(
 add_copy_target_to_sandbox_command (RIFT)
 
 #Visual Studio folder layout
-source_group(
-    "src\\core\\data_types\\accumulators" REGULAR_EXPRESSION
-    core/data_types/accumulators/.*
-)
 
-source_group(
-    "src\\core\\data_types\\buffers" REGULAR_EXPRESSION
-    core/data_types/buffers/.*
-)
-
-source_group(
-    "src\\core\\data_types\\containers" REGULAR_EXPRESSION
-    core/data_types/containers/.*
-)
-
-source_group(
-    "src\\core\\data_types\\pixel_types" REGULAR_EXPRESSION
-    core/data_types/pixel_types/.*
-)
-
-source_group(
-    "src\\core\\data_types\\records" REGULAR_EXPRESSION
-    core/data_types/records/.*
-)
-
-source_group(
-    "src\\core\\data_types\\tiles" REGULAR_EXPRESSION
-    core/data_types/tiles/.*
-)
-
-source_group(
-    "src\\core\\data_types" REGULAR_EXPRESSION
-    core/data_types/.*
-)
 
 source_group(
     "src\\core\\lighting_integrators" REGULAR_EXPRESSION
@@ -321,13 +291,42 @@ source_group(
 )
 
 source_group(
+    "src\\utilities\\accumulators" REGULAR_EXPRESSION
+    utilities/accumulators/.*
+)
+
+source_group(
     "src\\utilities\\buffer_processing" REGULAR_EXPRESSION
     utilities/buffer_processing/.*
 )
 
 source_group(
-    "src\\utilities\\debugging_tools" REGULAR_EXPRESSION
-    utilities/debugging_tools/.*
+    "src\\utilities\\containers" REGULAR_EXPRESSION
+    utilities/containers/.*
+)
+
+source_group(
+    "src\\utilities\\containers\\records" REGULAR_EXPRESSION
+    utilities/containers/records/.*
+)
+
+source_group(
+    "src\\utilities\\containers\\render_buffers" REGULAR_EXPRESSION
+    utilities/containers/render_buffers/.*
+)
+
+source_group(
+    "src\\utilities\\containers\\tiles" REGULAR_EXPRESSION
+    utilities/containers/tiles/.*
+)
+
+source_group(
+    "src\\utilities\\data_structures" REGULAR_EXPRESSION
+    utilities/data_structures/.*
+)
+source_group(
+    "src\\utilities\\data_structures" REGULAR_EXPRESSION
+    utilities/data_structures/.*
 )
 
 source_group(
@@ -338,6 +337,11 @@ source_group(
 source_group(
     "src\\utilities\\image_writers" REGULAR_EXPRESSION
     utilities/image_writers/.*
+)
+
+source_group(
+    "src\\utilities\\logging" REGULAR_EXPRESSION
+    utilities/logging/.*
 )
 
 source_group(
@@ -365,7 +369,4 @@ source_group(
     utilities/system/_dll/.*
 )
 
-source_group(
-    "src\\utilities\\system\\third_party" REGULAR_EXPRESSION
-    utilities/system/third_party/.*
-)
+

@@ -22,28 +22,16 @@
 
 #pragma once
 
-#include "core/data_types/vec3.h"
+#include "utilities/data_structures/vec3.h"
 
-class Ray
+class IMaterial;
+
+struct HitRecord
 {
-  public:
-    Ray() = default;
-
-    Ray(const Vec3& a, const Vec3& b, const float ti = 0.f)
-      : A(a)
-      , B(b)
-      , m_time(ti){};
-
-    Vec3 origin() const { return A; }
-
-    Vec3 direction() const { return B; }
-
-    float time() const { return m_time; }
-
-    Vec3 point_at_parameter(const float t) const { return A + t * B; }
-
-    // properties
-    Vec3  A;
-    Vec3  B;
-    float m_time{};
+    float      m_t;
+    float      m_u;
+    float      m_v;
+    Vec3       m_p;
+    Vec3       m_normal;
+    IMaterial* m_mat_ptr;
 };

@@ -22,16 +22,15 @@
 
 #pragma once
 
-#include "core/data_types/vec3.h"
-
-class IMaterial;
-
-struct HitRecord
+template<typename T>
+class Matrix4x4
 {
-    float      m_t;
-    float      m_u;
-    float      m_v;
-    Vec3       m_p;
-    Vec3       m_normal;
-    IMaterial* m_mat_ptr;
+  public:
+    Matrix4x4();
+
+    T m_vector[4][4];
 };
+
+// Convenience typedefs
+typedef Matrix4x4<int> Matrix4i;
+typedef Matrix4x4<float> Matrix4f;

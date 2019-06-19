@@ -22,13 +22,11 @@
 
 #pragma once
 
-#include "core/data_types/containers/render_settings.h"
-#include "core/data_types/containers/scene.h"
 #include "core/lighting_integrators/i_light_integrator_list.h"
 #include "core/render_process/tile_pool.h"
+#include "utilities/containers/render_settings.h"
+#include "utilities/containers/scene.h"
 #include "utilities/rng/i_rand_generator_list.h"
-
-#include <mutex>
 
 class RenderWorker
 {

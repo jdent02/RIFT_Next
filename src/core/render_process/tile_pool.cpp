@@ -21,7 +21,6 @@
 // SOFTWARE.
 
 #include "tile_pool.h"
-#include <iostream>
 
 void TilePool::create_pool(const int x_res, const int y_res, const int tile_size)
 {
@@ -84,10 +83,6 @@ int TilePool::get_pool_size()
 TileOutline TilePool::get_next_tile()
 {
     std::lock_guard<std::mutex> lock(m_write_lock_);
-
-#ifdef _DEBUG
-    std::cout << "Firing Tile\n";
-#endif
 
     const TileOutline tile{m_tile_pool_.front()};
 

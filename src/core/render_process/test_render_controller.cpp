@@ -22,9 +22,11 @@
 
 #include "test_render_controller.h"
 
-#include "core/data_types/accumulators/rgb_accumulator.h"
-#include "core/data_types/containers/render_settings.h"
-#include "core/data_types/tiles/tile_buffer.h"
+#include "utilities/containers/render_buffers/view.h"
+#include "utilities/containers/render_settings.h"
+#include "utilities/containers/tiles/image_tile.h"
+#include "utilities/containers/tiles/tile_buffer.h"
+#include "utilities/data_structures/pixel.h"
 #include "utilities/image_writers/pgm_writer.h"
 
 #include <cstdio>

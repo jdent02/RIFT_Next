@@ -20,27 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#pragma once
+#include "matrix4x4.h"
 
-#include "materials/i_material.h"
-#include "utilities/data_structures/rgb_color.h"
-
-struct HitRecord;
-class Ray;
-struct ScatterRecord;
-
-class Metal : public IMaterial
+template<typename T>
+Matrix4x4<T>::Matrix4x4()
+: m_vector(
+    {{static_cast<T>(1.0),  static_cast<T>(0.0), static_cast<T>(0.0), static_cast<T>(0.0)},
+     {static_cast<T>(0.0),  static_cast<T>(1.0), static_cast<T>(0.0), static_cast<T>(0.0)},
+     {static_cast<T>(0.0),  static_cast<T>(0.0), static_cast<T>(1.0), static_cast<T>(0.0)},
+     {static_cast<T>(0.0),  static_cast<T>(0.0), static_cast<T>(0.0), static_cast<T>(1.0)}})
 {
-  public:
-    explicit Metal(const RGBColor& a, const float& fuzz)
-      : m_albedo_(a)
-      , m_fuzz_(fuzz){};
-
-    ~Metal() override = default;
-
-    bool scatter(const Ray& r_in, const HitRecord& hrec, ScatterRecord& srec) const override;
-
-  private:
-    RGBColor m_albedo_;
-    float    m_fuzz_;
-};
+}

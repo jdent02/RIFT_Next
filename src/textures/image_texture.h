@@ -23,6 +23,7 @@
 #pragma once
 
 #include "textures/i_texture.h"
+#include "utilities/data_structures/rgb_color.h"
 
 class ImageTexture : public ITexture
 {

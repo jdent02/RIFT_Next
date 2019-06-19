@@ -22,10 +22,10 @@
 
 #include "final_render_controller.h"
 
-#include "core/data_types/tiles/tile_buffer.h"
 #include "core/lighting_integrators/i_light_integrator_list.h"
 #include "core/render_process/render_thread.h"
 #include "core/render_process/tile_pool.h"
+#include "utilities/containers/tiles/tile_buffer.h"
 
 #include <ctime>
 #include <thread>
@@ -65,7 +65,8 @@ void FinalRenderController::render() const
 {
     srand(static_cast<unsigned int>(time(nullptr)));
 
-    m_impl_->m_tile_pool.create_pool(m_impl_->m_settings->m_xres, m_impl_->m_settings->m_yres, m_impl_->m_settings->m_tile_size);
+    m_impl_->m_tile_pool.create_pool(
+        m_impl_->m_settings->m_xres, m_impl_->m_settings->m_yres, m_impl_->m_settings->m_tile_size);
 
     m_impl_->m_tile_buffer->set_number_of_tiles(m_impl_->m_tile_pool.get_pool_size());
 

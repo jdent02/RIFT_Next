@@ -22,8 +22,8 @@
 
 #pragma once
 
-#include "core/data_types/vec3.h"
 #include "core/raytracing/pdfs/pdf.h"
+#include "utilities/data_structures/vec3.h"
 
 #include <cstdlib>
 
@@ -38,8 +38,7 @@ class MixturePDF : public PDF
 
     float value(const Vec3& direction) const override
     {
-        return float(
-            0.5 * m_p_[0]->value(direction) + 0.5 * m_p_[1]->value(direction));
+        return float(0.5 * m_p_[0]->value(direction) + 0.5 * m_p_[1]->value(direction));
     }
 
     Vec3 generate() const override

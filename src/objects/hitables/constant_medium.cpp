@@ -24,8 +24,10 @@
 
 // #include "materials/isotropic.h"
 
-#include <cfloat>
 #include "core/raytracing/utility_functions.h"
+#include "utilities/data_structures/ray.h"
+
+#include <cfloat>
 
 ConstantMedium::ConstantMedium(IHitable* b, float d, std::shared_ptr<ITexture> a)
   : m_boundary_(b)
@@ -34,8 +36,7 @@ ConstantMedium::ConstantMedium(IHitable* b, float d, std::shared_ptr<ITexture> a
     // m_phase_function_ = std::make_unique<Isotropic>(a);
 }
 
-bool ConstantMedium::hit(const Ray& r, float t_min, float t_max, HitRecord& rec)
-    const
+bool ConstantMedium::hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const
 {
     bool db = false;
 
@@ -55,8 +56,7 @@ bool ConstantMedium::hit(const Ray& r, float t_min, float t_max, HitRecord& rec)
             if (rec1.m_t < 0)
                 rec1.m_t = 0;
 
-            const float distance_inside_boundary =
-                (rec2.m_t = rec1.m_t) * r.direction().length();
+            const float distance_inside_boundary = (rec2.m_t = rec1.m_t) * r.direction().length();
             const float hit_distance = -(1 / m_density_) * std::log(rand() * INV_RAND_MAX);
             if (hit_distance < distance_inside_boundary)
             {

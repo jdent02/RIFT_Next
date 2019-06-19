@@ -22,7 +22,8 @@
 
 #pragma once
 
-#include "core/lighting_integrators/i_light_integrator.h"
+#include "i_light_integrator.h"
+#include "utilities/data_structures/rgb_color.h"
 
 class LightSamplePath : public ILightIntegrator
 {
@@ -33,12 +34,11 @@ class LightSamplePath : public ILightIntegrator
         const Ray&                       r,
         const std::unique_ptr<IHitable>& world,
         const std::unique_ptr<IHitable>& light_shape,
-        int                              depth)
-        const override;
+        int                              depth) const override;
 };
 
 class LightSamplePathFactory : public ILightIntegratorFactory
 {
-public:
+  public:
     std::unique_ptr<ILightIntegrator> create() override;
 };

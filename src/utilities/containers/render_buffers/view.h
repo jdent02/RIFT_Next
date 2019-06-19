@@ -22,29 +22,17 @@
 
 #pragma once
 
-#include <cstdio>
+#include "utilities/data_structures/pixel.h"
 
-class FileWriter
+#include <vector>
+
+class View
 {
   public:
-    explicit FileWriter(const char* filename);
-    ~FileWriter();
+    View() = default;
+    ~View() = default;
 
-    void write_line(const char* input) const;
+    void reserve_buffer(int x_res, int y_res);
 
-    FILE* m_out_file;
+    std::vector<Pixel> m_pixels;
 };
-
-inline FileWriter::FileWriter(const char* filename)
-  : m_out_file(fopen(filename, "w"))
-{}
-
-inline FileWriter::~FileWriter()
-{
-    fclose(m_out_file);
-}
-
-inline void FileWriter::write_line(const char* input) const
-{
-    fprintf(m_out_file, "%s\n", input);
-}

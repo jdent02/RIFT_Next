@@ -20,45 +20,33 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "tile_buffer.h"
+#pragma once
 
-#include "core/data_types/tiles/image_tile.h"
+#include "image_tile.h"
+#include "utilities/system/_dll/dll_symbol.h"
 
-#include <mutex>
+#include <memory>
+#include <vector>
 
-struct TileBuffer::Impl
+class RIFT_DLL TileBuffer
 {
-    std::mutex                              m_write_guard;
-    std::vector<std::unique_ptr<ImageTile>> m_tiles;
+  public:
+    TileBuffer();
+    ~TileBuffer();
+
+    void add_tile(std::unique_ptr<ImageTile> tile) const;
+
+    void set_number_of_tiles(int num_tiles) const;
+
+    std::vector<std::unique_ptr<ImageTile>>& get_tiles() const;
+
+  private:
+    struct Impl;
+    Impl* m_impl_;
 };
 
-TileBuffer::TileBuffer()
-  : m_impl_(new Impl)
-{}
-
-TileBuffer::~TileBuffer()
+class RIFT_DLL TileBufferFactory
 {
-    delete m_impl_;
-}
-
-void TileBuffer::add_tile(std::unique_ptr<ImageTile> tile) const
-{
-    std::lock_guard<std::mutex> lock(m_impl_->m_write_guard);
-
-    m_impl_->m_tiles.emplace_back(std::move(tile));
-}
-
-void TileBuffer::set_number_of_tiles(const int num_tiles) const
-{
-    m_impl_->m_tiles.reserve(num_tiles);
-}
-
-std::vector<std::unique_ptr<ImageTile>>& TileBuffer::get_tiles() const
-{
-    return m_impl_->m_tiles;
-}
-
-std::unique_ptr<TileBuffer> TileBufferFactory::create()
-{
-    return std::make_unique<TileBuffer>();
-}
+  public:
+    static std::unique_ptr<TileBuffer> create();
+};

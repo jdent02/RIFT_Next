@@ -21,14 +21,13 @@
 // SOFTWARE.
 
 #include "command_line_parser.h"
-#include "core/data_types/containers/render_settings.h"
-#include "core/data_types/containers/scene.h"
-#include "core/data_types/tiles/tile_buffer.h"
 #include "core/render_process/final_render_controller.h"
 #include "core/render_process/i_render_controller.h"
 #include "core/render_process/test_render_controller.h"
+#include "utilities/containers/tiles/tile_buffer.h"
 #include "utilities/generators/scene_generator.h"
 #include "utilities/image_writers/output_writer.h"
+#include "utilities/logging/master_logger.h"
 
 #include <cstdio>
 #include <ctime>
@@ -36,6 +35,8 @@
 int main(const int argc, char* argv[])
 {
     const time_t start_time = time(nullptr);
+
+    std::unique_ptr<MasterLogger> logger;
 
     const std::unique_ptr<RenderSettings> settings = CommandLineParser::parse(argc, argv);
 

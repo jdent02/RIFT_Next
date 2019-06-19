@@ -22,9 +22,7 @@
 
 #pragma once
 
-#include "core/data_types/vec3.h"
 #include "textures/i_texture.h"
-#include "core/data_types/rgb_color.h"
 
 class ConstantTexture : public ITexture
 {

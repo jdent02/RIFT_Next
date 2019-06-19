@@ -20,19 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#include "rgb_accumulator.h"
+#include "view.h"
 
-#include <memory>
-#include "core/data_types/buffers/view.h"
-
-void RgbAccumulator::add_sample(
-    HitRecord&     hrec,
-    ScatterRecord& srec,
-    Ray&           r,
-    Ray&           scattered)
-{}
-
-std::unique_ptr<View> RgbAccumulator::export_to_view()
+void View::reserve_buffer(const int x_res, const int y_res)
 {
-    return std::make_unique<View>();
+    const int pixel_count = x_res * y_res;
+    m_pixels.reserve(pixel_count);
 }

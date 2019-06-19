@@ -22,9 +22,9 @@
 
 #include "output_writer.h"
 
-#include "core/data_types/containers/render_settings.h"
 #include "utilities/buffer_processing/half_buffer.h"
 #include "utilities/buffer_processing/unsigned_char_buffer.h"
+#include "utilities/containers/render_settings.h"
 
 #include "OpenEXR/ImfRgbaFile.h"
 

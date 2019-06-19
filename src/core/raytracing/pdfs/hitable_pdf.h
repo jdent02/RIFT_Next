@@ -24,6 +24,7 @@
 
 #include "core/raytracing/pdfs/pdf.h"
 #include "objects/hitables/i_hitable.h"
+#include "utilities/data_structures/vec3.h"
 
 class HitablePDF : public PDF
 {
@@ -33,14 +34,11 @@ class HitablePDF : public PDF
       , m_ptr_(p)
     {}
 
-    float value(const Vec3& direction) const override
-    {
-        return m_ptr_->pdf_value(m_o_, direction);
-    }
+    float value(const Vec3& direction) const override { return m_ptr_->pdf_value(m_o_, direction); }
 
     Vec3 generate() const override { return m_ptr_->random(m_o_); };
 
   private:
-    Vec3      m_o_;
+    Vec3                             m_o_;
     const std::unique_ptr<IHitable>& m_ptr_;
 };

@@ -22,8 +22,11 @@
 
 #pragma once
 
-#include <utility>
 #include "textures/i_texture.h"
+#include "utilities/data_structures/rgb_color.h"
+
+#include <memory>
+#include <utility>
 
 // Forward declaration
 

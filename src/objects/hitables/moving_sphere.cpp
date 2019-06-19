@@ -22,9 +22,9 @@
 
 #include "moving_sphere.h"
 
-#include "core/data_types/ray.h"
-#include "core/data_types/records/hit_record.h"
 #include "core/raytracing/aabb.h"
+#include "utilities/containers/records/hit_record.h"
+#include "utilities/data_structures/ray.h"
 
 #include <utility>
 

@@ -22,10 +22,10 @@
 
 #pragma once
 
-#include <utility>
+#include "core/raytracing/utility_functions.h"
 #include "objects/hitables/i_hitable.h"
 
-#include "core/raytracing/utility_functions.h"
+#include <utility>
 
 // Forward declarations
 class IMaterial;
@@ -52,8 +52,7 @@ class Sphere final : public IHitable
 
     ~Sphere() override = default;
 
-    bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec)
-        const override;
+    bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const override;
 
     bool bounding_box(float t0, float t1, AABB& box) const override;
 
@@ -62,7 +61,7 @@ class Sphere final : public IHitable
     Vec3 random(const Vec3& o) const override;
 
   private:
-    Vec3       m_center_;
-    float      m_radius_;
+    Vec3                       m_center_;
+    float                      m_radius_;
     std::shared_ptr<IMaterial> m_material_;
 };

@@ -22,7 +22,7 @@
 
 #include "checker_tex.h"
 
-#include "core/data_types/vec3.h"
+#include "utilities/data_structures/vec3.h"
 
 #include <cmath>
 

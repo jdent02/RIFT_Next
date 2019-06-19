@@ -22,8 +22,7 @@
 
 #include "scene_generator.h"
 
-#include "core/data_types/containers/scene.h"
-#include "core/data_types/vec3.h"
+#include "utilities/containers/render_settings.h"
 #include "materials/dielectric.h"
 #include "materials/diffuse_light.h"
 #include "materials/lambertian.h"
@@ -37,6 +36,9 @@
 #include "textures/sky_gradient.h"
 #include "objects/hitables/instancers.h"
 #include "objects/hitables/box.h"
+#include "utilities/containers/scene.h"
+
+#include <memory>
 
 std::unique_ptr<Scene> SceneGenerator::make_cornell_box(const std::unique_ptr<RenderSettings>& settings)
 {

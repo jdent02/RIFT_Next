@@ -22,7 +22,9 @@
 
 #pragma once
 
-#include "core/data_types/containers/render_settings.h"
+#include "utilities/containers/render_settings.h"
+
+#include <memory>
 
 class CommandLineParser
 {

@@ -22,7 +22,7 @@
 
 #pragma once
 
-#include "core/lighting_integrators/i_light_integrator.h"
+#include "i_light_integrator.h"
 
 #include <memory>
 #include <unordered_map>
@@ -35,6 +35,5 @@ class ILightIntegratorList
     std::shared_ptr<ILightIntegratorFactory> get_integrator(const IntegratorEnum& model);
 
   private:
-    std::unordered_map<IntegratorEnum, std::shared_ptr<ILightIntegratorFactory>>
-        m_integrator_list_;
+    std::unordered_map<IntegratorEnum, std::shared_ptr<ILightIntegratorFactory>> m_integrator_list_;
 };

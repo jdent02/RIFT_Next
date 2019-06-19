@@ -25,7 +25,6 @@
 #include "utilities/rng/i_rand_generator.h"
 
 #include <deque>
-#include <memory>
 #include <mutex>
 #include <queue>
 

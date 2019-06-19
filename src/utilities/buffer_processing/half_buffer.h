@@ -22,10 +22,11 @@
 
 #pragma once
 
-#include "core/data_types/containers/render_settings.h"
 #include "utilities/buffer_processing/buffer_utilities.h"
+#include "utilities/containers/render_settings.h"
 
-#include <OpenEXR/ImfRgba.h>
+#include "OpenEXR/ImfRgba.h"
+
 #include <vector>
 
 using namespace Imf_2_3;

@@ -22,8 +22,8 @@
 
 #include "half_buffer.h"
 
-#include "core/data_types/pixel_types/pixel.h"
-#include "core/data_types/tiles/tile_buffer.h"
+#include "utilities/containers/tiles/tile_buffer.h"
+#include "utilities/data_structures/pixel.h"
 
 HalfBuffer::HalfBuffer(
     int&                                   x_res,
@@ -50,13 +50,13 @@ void HalfBuffer::build_buffer(std::unique_ptr<TileBuffer>& input_buffer)
 
         for (int y = y_max - 1; y >= y_min; y--)
         {
-            int buffer_index =
-                (m_render_settings->m_yres - 1 - y) * m_render_settings->m_xres + x_min;
+            int buffer_index = (m_render_settings->m_yres - 1 - y) * m_render_settings->m_xres + x_min;
 
             for (int x = x_min; x < x_max; x++)
             {
                 Pixel& pixel = *pixel_iterator++;
-                m_pixels[buffer_index++] = Rgba(pixel.m_pixel_data.at(0), pixel.m_pixel_data.at(1), pixel.m_pixel_data.at(2));
+                m_pixels[buffer_index++] =
+                    Rgba(pixel.m_pixel_data.at(0), pixel.m_pixel_data.at(1), pixel.m_pixel_data.at(2));
             }
         }
     }

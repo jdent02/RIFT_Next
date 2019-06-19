@@ -22,9 +22,10 @@
 
 #pragma once
 
-#include "core/data_types/tiles/tile_buffer.h"
 #include "utilities/buffer_processing/buffer_utilities.h"
+#include "utilities/containers/tiles/tile_buffer.h"
 
+#include <memory>
 #include <vector>
 
 struct RenderSettings;

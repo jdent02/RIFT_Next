@@ -21,7 +21,8 @@
 // SOFTWARE.
 
 #pragma once
-#include "core/data_types/rgb_color.h"
+
+#include "utilities/data_structures/rgb_color.h"
 
 #include <memory>
 

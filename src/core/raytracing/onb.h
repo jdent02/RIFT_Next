@@ -22,7 +22,6 @@
 
 #pragma once
 
-#include "core/data_types/vec3.h"
 
 class ONB
 {

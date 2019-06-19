@@ -24,6 +24,9 @@
 
 #include "objects/hitables/i_hitable.h"
 
+#include <memory>
+
+class Vec3;
 class AABB;
 struct HitRecord;
 class Ray;
@@ -42,7 +45,8 @@ class XYRect final : public IHitable
 
   private:
     std::shared_ptr<IMaterial> m_mp_;
-    float                      m_x0_, m_x1_, m_y0_, m_y1_, m_k_;
+
+    float m_x0_, m_x1_, m_y0_, m_y1_, m_k_;
 };
 
 class XZRect final : public IHitable

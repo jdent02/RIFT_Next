@@ -22,7 +22,7 @@
 
 #include "core/raytracing/aabb.h"
 
-#include "core/data_types/ray.h"
+#include "utilities/data_structures/ray.h"
 
 bool AABB::hit(const Ray& r, float tmin, float tmax) const
 {

@@ -22,17 +22,21 @@
 
 #pragma once
 
-#include "core/data_types/pixel_types/pixel.h"
+#include "utilities/system/_dll/dll_symbol.h"
 
-#include <vector>
+#include <memory>
 
-class View
+class RIFT_DLL MasterLogger
 {
   public:
-    View() = default;
-    ~View() = default;
+    MasterLogger() = default;
+    ~MasterLogger() = default;
+};
 
-    void reserve_buffer(int x_res, int y_res);
-
-    std::vector<Pixel> m_pixels;
+class RIFT_DLL MasterLoggerFactory
+{
+  public:
+    MasterLoggerFactory() = default;
+    ~MasterLoggerFactory() = default;
+    static std::unique_ptr<MasterLogger> create() { return std::make_unique<MasterLogger>(); }
 };

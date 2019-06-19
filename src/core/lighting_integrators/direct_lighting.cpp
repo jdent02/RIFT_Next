@@ -22,11 +22,12 @@
 
 #include "direct_lighting.h"
 
-#include "core/data_types/records/hit_record.h"
-#include "core/data_types/records/scatter_record.h"
 #include "core/raytracing/pdfs/hitable_pdf.h"
 #include "materials/i_material.h"
 #include "objects/hitables/i_hitable.h"
+#include "utilities/containers/records/hit_record.h"
+#include "utilities/containers/records/scatter_record.h"
+#include "utilities/data_structures/ray.h"
 
 #include <cfloat>
 

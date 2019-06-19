@@ -23,6 +23,7 @@
 #pragma once
 
 #include "textures/i_texture.h"
+#include "utilities/data_structures/rgb_color.h"
 #include "utilities/noises/perlin.h"
 
 class NoiseTexture : public ITexture
@@ -37,8 +38,7 @@ class NoiseTexture : public ITexture
     {
         //        return Vec3(1.f, 1.f, 1.f) * 0.5f * (1 + noise.turb(m_scale *
         //        p)); return Vec3(1.f, 1.f, 1.f) * noise.turb(m_scale * p);
-        return RGBColor(1.f, 1.f, 1.f) * 0.5f *
-               (1 + sin(m_scale_ * p.z() + 10.f * m_noise_.turb(p)));
+        return RGBColor(1.f, 1.f, 1.f) * 0.5f * (1 + sin(m_scale_ * p.z() + 10.f * m_noise_.turb(p)));
     }
 
   private:

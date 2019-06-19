@@ -22,16 +22,16 @@
 
 #include "unsigned_char_buffer.h"
 
-#include "core/data_types/containers/render_settings.h"
-
+#include "utilities/containers/render_settings.h"
+#include "utilities/data_structures/pixel.h"
 #include "utilities/maths/maths.h"
 
-#include <math.h>
+#include <cmath>
 
 UnsignedCharBuffer::UnsignedCharBuffer(
-    int&                             x_res,
-    int&                             y_res,
-    const OutBufferFormat&           format,
+    int&                                   x_res,
+    int&                                   y_res,
+    const OutBufferFormat&                 format,
     const std::unique_ptr<RenderSettings>& render_settings)
   : m_render_settings(render_settings)
   , m_format(format)

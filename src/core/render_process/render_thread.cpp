@@ -22,11 +22,12 @@
 
 #include "render_thread.h"
 
-#include "core/data_types/accumulators/alpha_accumulator.h"
-#include "core/data_types/accumulators/i_accumulator.h"
-#include "core/data_types/accumulators/rgb_accumulator.h"
-#include "core/data_types/tiles/image_tile.h"
-#include "core/data_types/tiles/tile_buffer.h"
+#include "utilities/color_utilities.h"
+#include "utilities/containers/render_buffers/view.h"
+#include "utilities/containers/tiles/image_tile.h"
+#include "utilities/containers/tiles/tile_buffer.h"
+#include "utilities/data_structures/pixel.h"
+#include "utilities/data_structures/ray.h"
 #include "utilities/rng/drand48.h"
 
 RenderWorker::RenderWorker(

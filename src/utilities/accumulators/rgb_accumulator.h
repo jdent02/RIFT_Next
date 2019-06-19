@@ -22,22 +22,22 @@
 
 #pragma once
 
-#include "core/data_types/accumulators/i_accumulator.h"
+#include "i_accumulator.h"
+#include "utilities/color_utilities.h"
+#include "utilities/containers/render_buffers/view.h"
 #include "utilities/system/_dll/dll_symbol.h"
 
-class AlphaAccumulator : public IAccumulator
+#include <vector>
+
+class RgbAccumulator : public IAccumulator
 {
   public:
-    AlphaAccumulator() = default;
+    RgbAccumulator() = default;
 
-    void add_sample(
-        HitRecord&     hrec,
-        ScatterRecord& srec,
-        Ray&           r,
-        Ray&           scattered) override;
+    void add_sample(HitRecord& hrec, ScatterRecord& srec, Ray& r, Ray& scattered) override;
 
     std::unique_ptr<View> export_to_view() override;
 
   private:
-    std::vector<std::vector<float>> m_samples_;
+    std::vector<std::vector<RGBColor>> m_samples_;
 };

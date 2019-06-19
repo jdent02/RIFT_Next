@@ -22,14 +22,28 @@
 
 #pragma once
 
-#include "core/data_types/ray.h"
-#include "core/data_types/rgb_color.h"
-#include "core/raytracing/pdfs/pdf.h"
+#include "vec3.h"
 
-struct ScatterRecord
+class Ray
 {
-    Ray                  m_specular_ray;
-    bool                 m_is_specular;
-    RGBColor             m_attenuation;
-    std::unique_ptr<PDF> m_pdf_ptr;
+  public:
+    Ray() = default;
+
+    Ray(const Vec3& a, const Vec3& b, const float ti = 0.f)
+      : A(a)
+      , B(b)
+      , m_time(ti){};
+
+    Vec3 origin() const { return A; }
+
+    Vec3 direction() const { return B; }
+
+    float time() const { return m_time; }
+
+    Vec3 point_at_parameter(const float t) const { return A + t * B; }
+
+    // properties
+    Vec3  A;
+    Vec3  B;
+    float m_time{};
 };

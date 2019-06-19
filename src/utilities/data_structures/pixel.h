@@ -22,24 +22,51 @@
 
 #pragma once
 
-#include <memory>
-#include "core/data_types/buffers/view.h"
+#include "rgb_color.h"
 
-class Ray;
-struct ScatterRecord;
-struct HitRecord;
+#include <vector>
 
-class IAccumulator
+class Pixel
 {
   public:
-    IAccumulator() = default;
-    virtual ~IAccumulator() = default;
+    // Create greyscale pixel
+    explicit Pixel(const int& channels, const float i)
+    {
+        m_pixel_data.reserve(channels);
 
-    virtual void add_sample(
-        HitRecord&     hrec,
-        ScatterRecord& srec,
-        Ray&           r,
-        Ray&           scattered) = 0;
+        m_pixel_data.push_back(i);
+    }
 
-    virtual std::unique_ptr<View> export_to_view() = 0;
+    // Create RGB pixel
+    Pixel(const int& channels, const float r, const float g, const float b)
+    {
+        m_pixel_data.reserve(channels);
+
+        m_pixel_data.push_back(r);
+        m_pixel_data.push_back(g);
+        m_pixel_data.push_back(b);
+    }
+
+    // Create RGBA pixel
+    Pixel(const int& channels, const float r, const float g, const float b, const float a)
+    {
+        m_pixel_data.reserve(channels);
+
+        m_pixel_data.push_back(r);
+        m_pixel_data.push_back(g);
+        m_pixel_data.push_back(b);
+        m_pixel_data.push_back(a);
+    }
+
+    // Create pixel from RGBColor
+    explicit Pixel(const int& channels, RGBColor& color_in)
+    {
+        m_pixel_data.reserve(channels);
+
+        m_pixel_data.push_back(color_in.r());
+        m_pixel_data.push_back(color_in.g());
+        m_pixel_data.push_back(color_in.b());
+    }
+
+    std::vector<float> m_pixel_data;
 };

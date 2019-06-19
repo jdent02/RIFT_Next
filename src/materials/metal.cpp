@@ -24,16 +24,21 @@
 
 #include "core/raytracing/scatter_functions.h"
 #include "objects/hitables/sphere.h"
+#include "utilities/containers/records/hit_record.h"
+#include "utilities/containers/records/scatter_record.h"
+#include "utilities/data_structures/ray.h"
 
-bool Metal::scatter(const Ray& r_in, const HitRecord& hrec, ScatterRecord& srec)
-    const
+bool Metal::scatter(const Ray& r_in, const HitRecord& hrec, ScatterRecord& srec) const
 {
-    const Vec3 reflected =
-        reflect(unit_vector(r_in.direction()), hrec.m_normal);
-    srec.m_specular_ray =
-        Ray(hrec.m_p, reflected + m_fuzz_ * random_in_unit_sphere());
+    const Vec3 reflected = reflect(unit_vector(r_in.direction()), hrec.m_normal);
+
+    srec.m_specular_ray = Ray(hrec.m_p, reflected + m_fuzz_ * random_in_unit_sphere());
+
     srec.m_attenuation = m_albedo_;
+
     srec.m_is_specular = true;
+
     srec.m_pdf_ptr = nullptr;
+
     return true;
 }

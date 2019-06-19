@@ -22,10 +22,9 @@
 
 #pragma once
 
-#include "core/data_types/containers/render_settings.h"
+#include "utilities/containers/render_settings.h"
+#include "utilities/containers/scene.h"
 #include "utilities/system/_dll/dll_symbol.h"
-
-class Scene;
 
 /// Utility class to generate a pre defined Scene.
 class RIFT_DLL SceneGenerator

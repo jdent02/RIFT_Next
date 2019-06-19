@@ -22,7 +22,7 @@
 
 #pragma once
 
-#include "core/data_types/ray.h"
+#include "utilities/data_structures/ray.h"
 
 class ICamera
 {
@@ -30,5 +30,4 @@ class ICamera
     virtual ~ICamera() = default;
 
     virtual Ray get_ray(float s, float t) const = 0;
-
 };

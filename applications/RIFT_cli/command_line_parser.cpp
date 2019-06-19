@@ -58,17 +58,13 @@ std::unique_ptr<RenderSettings> CommandLineParser::parse(const int argc, char* a
         }
         else if (!static_cast<bool>(strcmp(argv[i], "--resolution")))
         {
-            char* x = argv[i + 1];
+            const char* x = argv[i + 1];
 
-            const size_t x_len = strlen(x);
+            settings->m_xres = int(strtof(x, nullptr));
 
-            settings->m_xres = convert_number(x_len, x);
+            const char* y = argv[i + 2];
 
-            char* y = argv[i + 2];
-
-            const size_t y_len = strlen(y);
-
-            settings->m_yres = convert_number(y_len, y);
+            settings->m_yres = int(strtof(y, nullptr));
         }
         else if (!static_cast<bool>(strcmp(argv[i], "--filepath")))
         {
@@ -115,7 +111,6 @@ std::unique_ptr<RenderSettings> CommandLineParser::parse(const int argc, char* a
             {
                 settings->m_output_writer = OPENEXR;
             }
-
         }
     }
 

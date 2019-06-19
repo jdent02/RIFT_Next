@@ -23,6 +23,7 @@
 #pragma once
 
 #include "i_light_integrator.h"
+#include "utilities/data_structures/rgb_color.h"
 
 class PathTracer : public ILightIntegrator
 {
@@ -32,13 +33,12 @@ class PathTracer : public ILightIntegrator
         const Ray&                       r,
         const std::unique_ptr<IHitable>& world,
         const std::unique_ptr<IHitable>& light_shape,
-        int depth)
-        const override;
+        int                              depth) const override;
 };
 
 class PathTracerFactory : public ILightIntegratorFactory
 {
-public:
+  public:
     PathTracerFactory() = default;
 
     std::unique_ptr<ILightIntegrator> create() override;

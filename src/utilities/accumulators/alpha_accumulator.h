@@ -22,25 +22,22 @@
 
 #pragma once
 
-#include "core/data_types/buffers/view.h"
+#include "i_accumulator.h"
+#include "utilities/system/_dll/dll_symbol.h"
 
-#include <memory>
-
-class ImageTile
+class AlphaAccumulator : public IAccumulator
 {
   public:
-    ImageTile(int x_min, int y_min, int x_max, int y_max);
-    ~ImageTile() = default;
+    AlphaAccumulator() = default;
 
-    void add_layer(std::unique_ptr<View> buffer);
+    void add_sample(
+        HitRecord&     hrec,
+        ScatterRecord& srec,
+        Ray&           r,
+        Ray&           scattered) override;
 
-    std::vector<std::unique_ptr<View>>& get_layers();
-
-    const int m_x_min{};
-    const int m_x_max{};
-    const int m_y_min{};
-    const int m_y_max{};
+    std::unique_ptr<View> export_to_view() override;
 
   private:
-    std::vector<std::unique_ptr<View>> m_layers_;
+    std::vector<std::vector<float>> m_samples_;
 };

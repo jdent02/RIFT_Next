@@ -22,11 +22,10 @@
 
 #include "pgm_writer.h"
 
-#include "core/data_types/buffers/view.h"
-#include "core/data_types/containers/render_settings.h"
 #include "utilities/buffer_processing/unsigned_char_buffer.h"
 
 #include <cstdio>
+#include "utilities/containers/render_settings.h"
 
 void PgmWriter::write(UnsignedCharBuffer& buffer, RenderSettings* render_settings)
 {

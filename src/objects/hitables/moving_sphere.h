@@ -23,6 +23,9 @@
 #pragma once
 
 #include "i_hitable.h"
+#include "utilities/data_structures/vec3.h"
+
+#include <memory>
 
 class IMaterial;
 
@@ -31,22 +34,16 @@ class MovingSphere : public IHitable
   public:
     MovingSphere() = default;
 
-    MovingSphere(
-        Vec3       cen0,
-        Vec3       cen1,
-        float      t0,
-        float      t1,
-        float      r, std::shared_ptr<IMaterial> m);
+    MovingSphere(Vec3 cen0, Vec3 cen1, float t0, float t1, float r, std::shared_ptr<IMaterial> m);
 
-    bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec)
-        const override;
+    bool hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const override;
 
     bool bounding_box(float t0, float t1, AABB& box) const override;
 
     Vec3 center(float time) const;
 
-    Vec3       m_center0, m_center1;
-    float      m_time0{}, m_time1{};
-    float      m_radius{};
+    Vec3                       m_center0, m_center1;
+    float                      m_time0{}, m_time1{};
+    float                      m_radius{};
     std::shared_ptr<IMaterial> m_mat_ptr{};
 };

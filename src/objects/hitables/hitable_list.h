@@ -22,9 +22,9 @@
 
 #pragma once
 
-#include "core/data_types/records/hit_record.h"
 #include "core/raytracing/aabb.h"
 #include "objects/hitables/i_hitable.h"
+#include "utilities/containers/records/hit_record.h"
 
 #include <vector>
 
@@ -41,7 +41,7 @@ class HitableList : public IHitable
     std::vector<std::unique_ptr<IHitable>> m_list;
 };
 
-inline bool HitableList::hit(const Ray& r, float t_min, float t_max, HitRecord& rec) const
+inline bool HitableList::hit(const Ray& r, const float t_min, const float t_max, HitRecord& rec) const
 {
     HitRecord temp_rec;
     bool      hit_anything = false;
@@ -59,7 +59,7 @@ inline bool HitableList::hit(const Ray& r, float t_min, float t_max, HitRecord& 
     return hit_anything;
 }
 
-inline bool HitableList::bounding_box(float t0, float t1, AABB& box) const
+inline bool HitableList::bounding_box(const float t0, const float t1, AABB& box) const
 {
     if (m_list.empty())
     {

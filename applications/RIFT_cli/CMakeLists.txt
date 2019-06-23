@@ -64,7 +64,9 @@ target_link_libraries(
 )
 
 #Post build
+if(MSVC)
 add_copy_target_to_sandbox_command (RIFT.cli)
+endif()
 
 source_group(
     "" FILES

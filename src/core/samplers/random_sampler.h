@@ -22,33 +22,25 @@
 
 #pragma once
 
-#include <cstdint>
-#include <memory>
+#include "i_render_sampler.h"
+#include "utilities/rng/drand48.h"
 
-enum RngEnum
-{
-    XORO_128,
-    RAND_48
-};
-
-class IRandGenerator
+class RandomSampler : public IRenderSampler
 {
   public:
-    IRandGenerator() = default;
+    explicit RandomSampler(const uint64_t& seed);
 
-    virtual ~IRandGenerator() = default;
+    void seed_rng(const uint64_t& seed) override;
 
-    virtual float get_1_d() = 0;
+    SampleOffset generate_sample_offset() override;
 
-    virtual float get_2d() = 0;
+    CameraSampleOffset generate_camera_offset() override;
 
-    virtual void seed_gen(const uint64_t& seed) = 0;
+    DRand48 m_rng_generator;
 };
 
-class IRandGenFactory
+class RandomSamplerFactory : public IRenderSamplerFactory
 {
   public:
-    virtual ~IRandGenFactory() = default;
-
-    virtual std::unique_ptr<IRandGenerator> create() = 0;
+    std::unique_ptr<IRenderSampler> create(const uint64_t& seed) override;
 };

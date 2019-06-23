@@ -24,7 +24,7 @@
 
 #include <cmath>
 
-void DRand48::seed_gen(const uint64_t seed)
+void DRand48::seed_gen(const uint64_t& seed)
 {
     rand48_seed[0] = RAND48_SEED_0;
     rand48_seed[1] = static_cast<unsigned short>(seed);
@@ -35,34 +35,34 @@ void DRand48::seed_gen(const uint64_t seed)
     rand48_add = RAND48_ADD;
 }
 
-double DRand48::erand48(unsigned short* xseed)
+double DRand48::e_rand48(unsigned short* x_seed)
 {
-    dorand48(xseed);
-    return ldexp(static_cast<double>(xseed[0]), -48) +
-           ldexp(static_cast<double>(xseed[1]), -32) +
-           ldexp(static_cast<double>(xseed[2]), -16);
+    do_rand48(x_seed);
+    return ldexp(static_cast<double>(x_seed[0]), -48) +
+           ldexp(static_cast<double>(x_seed[1]), -32) +
+           ldexp(static_cast<double>(x_seed[2]), -16);
 }
 
-void DRand48::dorand48(unsigned short* xseed)
+void DRand48::do_rand48(unsigned short* x_seed)
 {
     unsigned short temp[2];
 
     unsigned long accu = static_cast<unsigned long>(rand48_mult[0]) *
-                             static_cast<unsigned long>(xseed[0]) +
+                             static_cast<unsigned long>(x_seed[0]) +
                          static_cast<unsigned long>(rand48_add);
     temp[0] = static_cast<unsigned short>(accu); /* lower 16 bits */
     accu >>= sizeof(unsigned short) * 8;
     accu += static_cast<unsigned long>(rand48_mult[0]) *
-                static_cast<unsigned long>(xseed[1]) +
+                static_cast<unsigned long>(x_seed[1]) +
             static_cast<unsigned long>(rand48_mult[1]) *
-                static_cast<unsigned long>(xseed[0]);
+                static_cast<unsigned long>(x_seed[0]);
     temp[1] = static_cast<unsigned short>(accu); /* middle 16 bits */
     accu >>= sizeof(unsigned short) * 8;
-    accu += rand48_mult[0] * xseed[2] + rand48_mult[1] * xseed[1] +
-            rand48_mult[2] * xseed[0];
-    xseed[0] = temp[0];
-    xseed[1] = temp[1];
-    xseed[2] = static_cast<unsigned short>(accu);
+    accu += rand48_mult[0] * x_seed[2] + rand48_mult[1] * x_seed[1] +
+            rand48_mult[2] * x_seed[0];
+    x_seed[0] = temp[0];
+    x_seed[1] = temp[1];
+    x_seed[2] = static_cast<unsigned short>(accu);
 }
 
 std::unique_ptr<IRandGenerator> DRand48Factory::create()

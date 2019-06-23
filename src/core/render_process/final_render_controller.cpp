@@ -25,6 +25,7 @@
 #include "core/lighting_integrators/i_light_integrator_list.h"
 #include "core/render_process/render_thread.h"
 #include "core/render_process/tile_pool.h"
+#include "core/samplers/i_render_sampler_list.h"
 #include "utilities/containers/tiles/tile_buffer.h"
 
 #include <ctime>
@@ -46,7 +47,7 @@ struct FinalRenderController::Impl
     std::unique_ptr<TileBuffer>&           m_tile_buffer;
     TilePool                               m_tile_pool{};
     ILightIntegratorList                   m_light_integrator_list{};
-    IRandGeneratorList                     m_rng_list{};
+    IRenderSamplerList                     m_sampler_list{};
 };
 
 FinalRenderController::FinalRenderController(
@@ -81,7 +82,7 @@ void FinalRenderController::render() const
                                  m_impl_->m_tile_buffer,
                                  m_impl_->m_tile_pool,
                                  m_impl_->m_light_integrator_list,
-                                 m_impl_->m_rng_list};
+                                 m_impl_->m_sampler_list};
 
     for (int i = 0; i < m_impl_->m_settings->m_threads; ++i)
         worker_threads.emplace_back(

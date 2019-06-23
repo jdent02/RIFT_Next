@@ -28,7 +28,6 @@
 #include "utilities/containers/tiles/tile_buffer.h"
 #include "utilities/data_structures/pixel.h"
 #include "utilities/data_structures/ray.h"
-#include "utilities/rng/drand48.h"
 
 RenderWorker::RenderWorker(
     const std::unique_ptr<Scene>&          scene,
@@ -36,35 +35,33 @@ RenderWorker::RenderWorker(
     std::unique_ptr<TileBuffer>&           tile_buffer,
     TilePool&                              tile_pool,
     ILightIntegratorList&                  integrator_list,
-    IRandGeneratorList&                    rng_list)
+    IRenderSamplerList&                    sampler_list)
   : m_render_scene_(scene)
   , m_settings_(render_settings)
   , m_tile_buffer_(tile_buffer)
   , m_tile_pool_(tile_pool)
   , m_light_integrator_list_(integrator_list)
-  , m_rng_list_(rng_list)
+  , m_sampler_list_(sampler_list)
 {}
 
 void RenderWorker::execute(const uint64_t seed) const
 {
-    std::unique_ptr<IRandGenerator> rng = m_rng_list_.get_integrator(m_settings_->m_rng)->create();
-
     const std::unique_ptr<ILightIntegrator> lighting_integrator =
         m_light_integrator_list_.get_integrator(m_settings_->m_light_integrator)->create();
 
-    rng->seed_gen(seed);
+    std::unique_ptr<IRenderSampler> sampler = m_sampler_list_.get_sampler(m_settings_->m_sampler)->create(seed);
 
     while (query_tile_pool())
     {
         const TileOutline tile = m_tile_pool_.get_next_tile();
-        run_loop(tile, lighting_integrator, rng);
+        run_loop(tile, lighting_integrator, sampler);
     }
 }
 
 void RenderWorker::run_loop(
     const TileOutline                        tile,
     const std::unique_ptr<ILightIntegrator>& lighting_integrator,
-    std::unique_ptr<IRandGenerator>&         rng) const
+    std::unique_ptr<IRenderSampler>&         sampler) const
 {
     const float inv_nx = 1.f / float(m_settings_->m_xres);
     const float inv_ny = 1.f / float(m_settings_->m_xres);
@@ -81,8 +78,10 @@ void RenderWorker::run_loop(
 
             for (int s = 0; s < m_settings_->m_samples; s++)
             {
-                const float u = (float(i) + rng->get_1_d()) * inv_nx;
-                const float v = (float(j) + rng->get_1_d()) * inv_ny;
+                const SampleOffset sample_offset = sampler->generate_sample_offset();
+
+                const float u = (float(i) + sample_offset.m_offset_x) * inv_nx;
+                const float v = (float(j) + sample_offset.m_offset_y) * inv_ny;
 
                 Ray r = m_render_scene_->get_cam()->get_ray(u, v);
 
@@ -92,7 +91,7 @@ void RenderWorker::run_loop(
 
             col *= inv_samples;
 
-            view_convert->m_pixels.emplace_back(Pixel(3, col));
+            view_convert->m_pixels.emplace_back(Pixel(col));
         }
     }
 

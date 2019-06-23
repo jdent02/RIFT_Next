@@ -72,9 +72,10 @@ set (
     core/render_process/render_thread.cpp
     core/render_process/test_render_controller.h
     core/render_process/test_render_controller.cpp
-    core/render_process/final_render_controller.h
     core/render_process/i_render_controller.h
-)
+    core/samplers/random_sampler.cpp
+    core/samplers/random_sampler.h
+    core/samplers/i_render_sampler.h core/samplers/i_render_sampler_list.cpp core/samplers/i_render_sampler_list.h)
 
 set (
     MATERIAL_SOURCES
@@ -101,7 +102,6 @@ set (
     textures/sky_gradient.h)
 
 set (
-
     UTILITY_SOURCES
     utilities/accumulators/i_accumulator.h
     utilities/accumulators/alpha_accumulator.h
@@ -245,7 +245,9 @@ set(
 )
 
 #Post build
+if(MSVC)
 add_copy_target_to_sandbox_command (RIFT)
+endif()
 
 #Visual Studio folder layout
 
@@ -263,6 +265,11 @@ source_group(
 source_group(
     "src\\core\\render_process" REGULAR_EXPRESSION
     core/render_process/.*
+)
+
+source_group(
+    "src\\core\\samplers" REGULAR_EXPRESSION
+    core/samplers/.*
 )
 
 source_group(

@@ -22,15 +22,10 @@
 
 #pragma once
 
-template<typename T>
 class Matrix4x4
 {
   public:
     Matrix4x4();
 
-    T m_vector[4][4];
+    float m_vector[4][4] = {};
 };
-
-// Convenience typedefs
-typedef Matrix4x4<int> Matrix4i;
-typedef Matrix4x4<float> Matrix4f;

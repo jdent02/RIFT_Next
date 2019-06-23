@@ -50,7 +50,7 @@ class Xoro128 : public IRandGenerator
 
     float get_1_d() override;
 
-    void seed_gen(uint64_t seed) override;
+    void seed_gen(const uint64_t& seed) override;
 
     float get_2d() override { return 0.f; }
 

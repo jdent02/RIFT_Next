@@ -27,17 +27,17 @@
 inline RGBColor de_nan(const RGBColor& c)
 {
     RGBColor temp = c;
-    if (!(temp[0] == c[0]))
+    if (!(temp[0] == temp[0]))
     {
-        temp[0] = 0;
+        temp[0] = 0.01;
     }
-    if (!(temp[1] == c[1]))
+    if (!(temp[1] == temp[1]))
     {
-        temp[1] = 0;
+        temp[1] = 0.01;
     }
-    if (!(temp[2] == c[2]))
+    if (!(temp[2] == temp[2]))
     {
-        temp[2] = 0;
+        temp[2] = 0.01;
     }
 
     return temp;

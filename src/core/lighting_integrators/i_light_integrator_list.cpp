@@ -26,13 +26,13 @@
 #include "core/lighting_integrators/light_sample_path.h"
 #include "core/lighting_integrators/path_tracer.h"
 
-#include <memory>
-
 ILightIntegratorList::ILightIntegratorList()
 {
     m_integrator_list_[DIRECT_LIGHTING] =
         std::make_shared<DirectLightingFactory>();
+
     m_integrator_list_[PATH_TRACING] = std::make_shared<PathTracerFactory>();
+
     m_integrator_list_[LIGHT_SAMPLE_PATH_TRACING] =
         std::make_shared<LightSamplePathFactory>();
 }

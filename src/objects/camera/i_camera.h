@@ -24,6 +24,8 @@
 
 #include "utilities/data_structures/ray.h"
 
+struct CameraSampleOffset;
+
 class ICamera
 {
   public:

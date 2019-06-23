@@ -22,33 +22,18 @@
 
 #pragma once
 
-#include <cstdint>
+#include "i_render_sampler.h"
+
 #include <memory>
+#include <unordered_map>
 
-enum RngEnum
-{
-    XORO_128,
-    RAND_48
-};
-
-class IRandGenerator
+class IRenderSamplerList
 {
   public:
-    IRandGenerator() = default;
+    IRenderSamplerList();
 
-    virtual ~IRandGenerator() = default;
+    std::shared_ptr<IRenderSamplerFactory> get_sampler(RenderSamplerEnum& model);
 
-    virtual float get_1_d() = 0;
-
-    virtual float get_2d() = 0;
-
-    virtual void seed_gen(const uint64_t& seed) = 0;
-};
-
-class IRandGenFactory
-{
-  public:
-    virtual ~IRandGenFactory() = default;
-
-    virtual std::unique_ptr<IRandGenerator> create() = 0;
+  private:
+    std::unordered_map<RenderSamplerEnum, std::shared_ptr<IRenderSamplerFactory>> m_sampler_list_;
 };

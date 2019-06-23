@@ -20,35 +20,31 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#pragma once
+#include "random_sampler.h"
 
-#include <cstdint>
 #include <memory>
 
-enum RngEnum
+SampleOffset RandomSampler::generate_sample_offset()
 {
-    XORO_128,
-    RAND_48
-};
+    return SampleOffset{m_rng_generator.get_1_d(), m_rng_generator.get_1_d()};
+}
 
-class IRandGenerator
+RandomSampler::RandomSampler(const uint64_t& seed)
 {
-  public:
-    IRandGenerator() = default;
+    m_rng_generator.seed_gen(seed);
+}
 
-    virtual ~IRandGenerator() = default;
-
-    virtual float get_1_d() = 0;
-
-    virtual float get_2d() = 0;
-
-    virtual void seed_gen(const uint64_t& seed) = 0;
-};
-
-class IRandGenFactory
+void RandomSampler::seed_rng(const uint64_t& seed)
 {
-  public:
-    virtual ~IRandGenFactory() = default;
+    m_rng_generator.seed_gen(seed);
+}
 
-    virtual std::unique_ptr<IRandGenerator> create() = 0;
-};
+CameraSampleOffset RandomSampler::generate_camera_offset()
+{
+    return CameraSampleOffset{m_rng_generator.get_1_d(), m_rng_generator.get_1_d(), m_rng_generator.get_1_d()};
+}
+
+std::unique_ptr<IRenderSampler> RandomSamplerFactory::create(const uint64_t& seed)
+{
+    return std::make_unique<RandomSampler>(seed);
+}

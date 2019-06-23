@@ -31,7 +31,7 @@ class IRandGeneratorList
   public:
     IRandGeneratorList();
 
-    std::shared_ptr<IRandGenFactory> get_integrator(const RngEnum& model);
+    std::shared_ptr<IRandGenFactory> get_rng_gen(const RngEnum& model);
 
   private:
     std::unordered_map<RngEnum, std::shared_ptr<IRandGenFactory>> m_integrator_list_;

@@ -30,17 +30,17 @@ class Pixel
 {
   public:
     // Create greyscale pixel
-    explicit Pixel(const int& channels, const float i)
+    explicit Pixel(const float i)
     {
-        m_pixel_data.reserve(channels);
+        m_pixel_data.reserve(1);
 
         m_pixel_data.push_back(i);
     }
 
     // Create RGB pixel
-    Pixel(const int& channels, const float r, const float g, const float b)
+    Pixel(const float r, const float g, const float b)
     {
-        m_pixel_data.reserve(channels);
+        m_pixel_data.reserve(3);
 
         m_pixel_data.push_back(r);
         m_pixel_data.push_back(g);
@@ -48,9 +48,9 @@ class Pixel
     }
 
     // Create RGBA pixel
-    Pixel(const int& channels, const float r, const float g, const float b, const float a)
+    Pixel(const float r, const float g, const float b, const float a)
     {
-        m_pixel_data.reserve(channels);
+        m_pixel_data.reserve(4);
 
         m_pixel_data.push_back(r);
         m_pixel_data.push_back(g);
@@ -59,9 +59,9 @@ class Pixel
     }
 
     // Create pixel from RGBColor
-    explicit Pixel(const int& channels, RGBColor& color_in)
+    explicit Pixel(const RGBColor& color_in)
     {
-        m_pixel_data.reserve(channels);
+        m_pixel_data.reserve(3);
 
         m_pixel_data.push_back(color_in.r());
         m_pixel_data.push_back(color_in.g());

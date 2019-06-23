@@ -35,7 +35,7 @@ float Xoro128::get_1_d()
     return result * inv_uint64;
 }
 
-void Xoro128::seed_gen(const uint64_t seed)
+void Xoro128::seed_gen(const uint64_t& seed)
 {
     s[0] = seed;
     s[1] = seed << 16;

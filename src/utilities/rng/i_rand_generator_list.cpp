@@ -31,7 +31,7 @@ IRandGeneratorList::IRandGeneratorList()
 
 }
 
-std::shared_ptr<IRandGenFactory> IRandGeneratorList::get_integrator(const RngEnum& model)
+std::shared_ptr<IRandGenFactory> IRandGeneratorList::get_rng_gen(const RngEnum& model)
 {
     return m_integrator_list_[model];
 }

@@ -1,5 +1,3 @@
-// Released under MIT License
-
 // Copyright (c) 2018 Jonathan Dent.
 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,34 +19,42 @@
 // SOFTWARE.
 
 #pragma once
-
-#include <cstdint>
 #include <memory>
 
-enum RngEnum
+struct SampleOffset
 {
-    XORO_128,
-    RAND_48
+    float m_offset_x;
+    float m_offset_y;
 };
 
-class IRandGenerator
+struct CameraSampleOffset
 {
-  public:
-    IRandGenerator() = default;
-
-    virtual ~IRandGenerator() = default;
-
-    virtual float get_1_d() = 0;
-
-    virtual float get_2d() = 0;
-
-    virtual void seed_gen(const uint64_t& seed) = 0;
+    float m_time;
+    float m_disc_x;
+    float m_disc_y;
 };
 
-class IRandGenFactory
+enum RenderSamplerEnum
+{
+    RANDOM_SAMPLER
+};
+
+class IRenderSampler
 {
   public:
-    virtual ~IRandGenFactory() = default;
+    virtual ~IRenderSampler() = default;
 
-    virtual std::unique_ptr<IRandGenerator> create() = 0;
+    virtual SampleOffset generate_sample_offset() = 0;
+
+    virtual CameraSampleOffset generate_camera_offset() = 0;
+
+    virtual void seed_rng(const uint64_t& seed) = 0;
+};
+
+class IRenderSamplerFactory
+{
+  public:
+    virtual ~IRenderSamplerFactory() = default;
+
+    virtual std::unique_ptr<IRenderSampler> create(const uint64_t& seed) = 0;
 };

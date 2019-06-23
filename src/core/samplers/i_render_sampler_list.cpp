@@ -20,35 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-#pragma once
+#include "i_render_sampler_list.h"
 
-#include <cstdint>
-#include <memory>
+#include "random_sampler.h"
 
-enum RngEnum
+std::shared_ptr<IRenderSamplerFactory> IRenderSamplerList::get_sampler(RenderSamplerEnum& model)
 {
-    XORO_128,
-    RAND_48
-};
+    return m_sampler_list_[model];
+}
 
-class IRandGenerator
+IRenderSamplerList::IRenderSamplerList()
 {
-  public:
-    IRandGenerator() = default;
-
-    virtual ~IRandGenerator() = default;
-
-    virtual float get_1_d() = 0;
-
-    virtual float get_2d() = 0;
-
-    virtual void seed_gen(const uint64_t& seed) = 0;
-};
-
-class IRandGenFactory
-{
-  public:
-    virtual ~IRandGenFactory() = default;
-
-    virtual std::unique_ptr<IRandGenerator> create() = 0;
-};
+    m_sampler_list_[RANDOM_SAMPLER] = std::make_shared<RandomSamplerFactory>();
+}

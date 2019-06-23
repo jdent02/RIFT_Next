@@ -23,21 +23,21 @@
 #pragma once
 
 #include "core/lighting_integrators/i_light_integrator.h"
+#include "core/samplers/i_render_sampler.h"
 #include "utilities/image_writers/i_out_writer.h"
-#include "utilities/rng/i_rand_generator.h"
 
 #include <string>
 #include <thread>
 
 struct RenderSettings
 {
-    int            m_threads{static_cast<int>(std::thread::hardware_concurrency())};
-    int            m_xres{640};
-    int            m_yres{640};
-    int            m_tile_size{64};
-    int            m_samples{128};
-    std::string    m_output_path{"../out_tiled"};
-    OutWriterEnum  m_output_writer{PNG};
-    RngEnum        m_rng{RAND_48};
-    IntegratorEnum m_light_integrator{PATH_TRACING};
+    int               m_threads{static_cast<int>(std::thread::hardware_concurrency())};
+    int               m_xres{640};
+    int               m_yres{640};
+    int               m_tile_size{64};
+    int               m_samples{256};
+    std::string       m_output_path{"../out_tiled"};
+    OutWriterEnum     m_output_writer{OPENEXR};
+    RenderSamplerEnum m_sampler{RANDOM_SAMPLER};
+    IntegratorEnum    m_light_integrator{LIGHT_SAMPLE_PATH_TRACING};
 };

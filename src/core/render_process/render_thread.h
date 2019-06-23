@@ -24,6 +24,7 @@
 
 #include "core/lighting_integrators/i_light_integrator_list.h"
 #include "core/render_process/tile_pool.h"
+#include "core/samplers/i_render_sampler_list.h"
 #include "utilities/containers/render_settings.h"
 #include "utilities/containers/scene.h"
 #include "utilities/rng/i_rand_generator_list.h"
@@ -37,14 +38,14 @@ class RenderWorker
         std::unique_ptr<TileBuffer>&           tile_buffer,
         TilePool&                              tile_pool,
         ILightIntegratorList&                  integrator_list,
-        IRandGeneratorList&                    rng_list);
+        IRenderSamplerList&                    sampler_list);
 
     void execute(uint64_t seed) const;
 
     void run_loop(
         TileOutline                              tile,
         const std::unique_ptr<ILightIntegrator>& lighting_integrator,
-        std::unique_ptr<IRandGenerator>&         rng) const;
+        std::unique_ptr<IRenderSampler>&         sampler) const;
 
     bool query_tile_pool() const;
 
@@ -54,5 +55,5 @@ class RenderWorker
     std::unique_ptr<TileBuffer>&           m_tile_buffer_;
     TilePool&                              m_tile_pool_;
     ILightIntegratorList&                  m_light_integrator_list_;
-    IRandGeneratorList&                    m_rng_list_;
+    IRenderSamplerList&                    m_sampler_list_;
 };
